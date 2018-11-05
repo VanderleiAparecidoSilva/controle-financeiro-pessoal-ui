@@ -1,0 +1,68 @@
+<div class="container">
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <h1>Centro de Custo</h1>
+    </div>
+
+  <div class="ui-g">
+    <div class="ui-g-12">
+        <p-table #dt [columns]="cols" [value]="dataSource" [responsive]="true" [resizableColumns]="true"
+          [paginator]="true" [rows]="filter.linesPerPage" [(selection)]="selectedRows" dataKey="id" [lazy]="true"
+          (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecords" [loading]="loading"
+          (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+          <ng-template pTemplate="caption">
+            <div class="ui-helper-clearfix">
+              <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Exportar todos" (click)="dt.exportCSV()" style="float:left"></button>
+              <button type="button" pButton icon="fa fa-file" iconPos="left" label="Exportar selecionados" (click)="dt.exportCSV({selectionOnly:true})" style="float:right"></button>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th style="width: 3em">
+                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th *ngFor="let col of columns" pResizableColumn>
+                {{ col.header }}
+              </th>
+              <th></th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+            <tr [pSelectableRow]="rowData" [style.background]="rowData.ativo === false ? '#C48F8F' : null">
+              <td><p-tableCheckbox [value]="rowData"></p-tableCheckbox></td>
+              <td class="ui-resizable-column">{{ rowData.nome }}</td>
+              <td class="ui-resizable-column">{{ rowData.aplicarNaReceita ? 'Sim' : 'Não' }}</td>
+              <td class="ui-resizable-column">{{ rowData.aplicarNaDespesa ? 'Sim' : 'Não' }}</td>
+              <td class="ui-resizable-column">
+                <a pButton icon="fa fa-pencil" pTooltip="Editar" tooltipPosition="top" style="margin-right:5px"
+                  [routerLink]="['/centrocustos', rowData.id]"></a>
+                <button pButton icon="fa fa-eye" pTooltip="Ativar" tooltipPosition="top"
+                  style="margin-right:5px" (click)="enable(rowData)" [disabled]="rowData.ativo === true"></button>
+                <button pButton icon="fa fa-eye-slash" pTooltip="Desativar" tooltipPosition="top"
+                  style="margin-right:5px;" (click)="disable(rowData)" [disabled]="rowData.ativo === false"></button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+              <td [attr.colspan]="columns.length">
+                Nenhum registro encontrado
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+    </div>
+
+    <div class="ui-g-12">
+        <p-toolbar>
+            <div class="ui-toolbar-group-left">
+              <a pButton type="button" label="Novo" icon="pi pi-plus" routerLink="/centrocustos/novo"></a>
+              <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
+              <button pButton type="button" label="Desmarcar todos" icon="pi pi-warning"
+                class="ui-button-success" (click)="uncheckAll()" [disabled]="qtdSelectedRows == 0"></button>
+            </div>
+        </p-toolbar>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<div class="container" style="max-width: 400px; margin-top: 100px">
+    <form autocomplete="off" #f="ngForm">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <strong>Faça login para continuar</strong>
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="center-block">
+                            <img class="profile-img"
+                              src="src/assets/blank_profile.png?sz=120" alt="">
+                          </div>
+                        </div>
+
+                        <div class="ui-g-12">
+                          <div class="ui-inputgroup">
+                            <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+                            <input pInputText type="email" name="usuario" placeholder="E-mail"
+                              ngModel required [(ngModel)]="creds.email">
+                          </div>
+                        </div>
+
+                        <div class="ui-g-12">
+                          <div class="ui-inputgroup">
+                            <span class="ui-inputgroup-addon"><i class="fa fa-key"></i></span>
+                            <input pInputText type="password" name="senha" placeholder="Senha"
+                              ngModel required [(ngModel)]="creds.senha">
+                          </div>
+                        </div>
+
+                        <div class="ui-g-12">
+                          <button pButton type="submit" label="Login" [disabled]="!f.valid"
+                            (click)="login()"></button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
