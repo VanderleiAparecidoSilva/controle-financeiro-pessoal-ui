@@ -7,8 +7,6 @@ import { JwtHelper } from 'angular2-jwt';
 
 import { API_CONFIG } from 'src/config/api.config';
 import { CredenciaisDTO } from './../../models/credenciais.dto';
-import { UsuarioDTO } from './../../models/domain/usuario.dto';
-
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +30,16 @@ export class AuthService {
     return this.http.post(
       `${API_CONFIG.baseUrl}/login`,
       creds,
+      {
+        observe: 'response',
+        responseType: 'text'
+      });
+  }
+
+  refreshToken() {
+    return this.http.post(
+      `${API_CONFIG.baseUrl}/api/authorization/refresh_token`,
+      {},
       {
         observe: 'response',
         responseType: 'text'
