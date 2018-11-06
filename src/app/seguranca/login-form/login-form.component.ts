@@ -32,23 +32,6 @@ export class LoginFormComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.auth.refreshToken()
-      .subscribe(response => {
-        this.auth.successfulLogin(response.headers.get('Authorization'));
-        this.router.navigate(['/centrocustos']);
-      },
-      error => {});
-
-    const localUser = this.storage.getLocalUser();
-    if (localUser && localUser.email) {
-      this.user.findByEmail(localUser.email)
-        .subscribe(response => {
-          this.usuario = response;
-          this.storage.setUser(this.usuario);
-          this.getImageIfExists();
-        },
-        error => {});
-    }
   }
 
   login() {
@@ -61,13 +44,4 @@ export class LoginFormComponent implements OnInit {
         this.errorHandler.handle(error);
       });
     }
-
-  getImageIfExists() {
-    this.user.getImageFromBucket(this.usuario.id)
-      .subscribe(response => {
-        this.usuario.imageUrl = `${API_CONFIG.bucketBaseUrl}${API_CONFIG.photoPrefix + this.usuario.id}.jpg`;
-      },
-      error => {});
-  }
-
 }

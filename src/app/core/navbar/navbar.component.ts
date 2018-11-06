@@ -1,8 +1,10 @@
+import { AuthService } from 'src/app/seguranca/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 import { MenuItem } from 'primeng/api';
 
 import { StorageService } from 'src/app/seguranca/storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +15,11 @@ export class NavbarComponent implements OnInit {
 
   items: MenuItem[];
 
-  constructor(private storage: StorageService) { }
+  constructor(
+    private storage: StorageService,
+    private auth: AuthService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.items = [
@@ -77,6 +83,11 @@ export class NavbarComponent implements OnInit {
           ]
       }
     ];
+  }
+
+  logout() {
+    this.auth.logout();
+    this.router.navigate(['/login']);
   }
 
 }

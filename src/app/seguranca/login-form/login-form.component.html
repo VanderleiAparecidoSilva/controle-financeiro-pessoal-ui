@@ -10,17 +10,11 @@
                     <div class="panel-heading">
                       <strong>Faça login para continuar</strong>
                       <div class="panel-body">
-                        <div class="row">
-                          <div class="center-block">
-                            <img class="profile-img" [src]="usuario?.imageUrl || src/assets/blank_profile.png">
-                          </div>
-                        </div>
-
                         <div class="ui-g-12">
                           <div class="ui-inputgroup">
                             <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
                             <input pInputText type="email" name="usuario" placeholder="E-mail"
-                              ngModel required [(ngModel)]="creds.email">
+                              ngModel required [(ngModel)]="creds.email" autofocus>
                           </div>
                         </div>
 

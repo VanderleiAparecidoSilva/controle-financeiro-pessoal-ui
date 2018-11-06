@@ -50,19 +50,23 @@ export class CentrocustoPesquisaComponent implements OnInit {
       { field: 'aplicarNaReceita', header: 'Aplicar na Receita' },
       { field: 'aplicarNaDespesa', header: 'Aplicar na Despesa' }
     ];
-
-    this.loading = true;
+    setTimeout(() => {
+      this.loading = true;
+    });
   }
 
   loadTransactionsLazy(event: LazyLoadEvent) {
-    this.loading = true;
+    setTimeout(() => {
+      this.loading = true;
+    });
 
     setTimeout(function() {
       const page = event.first / event.rows;
       this.findAll(page);
     }.bind(this, 1));
-
-    this.loading = false;
+    setTimeout(() => {
+      this.loading = false;
+    });
   }
 
   findAll(page = 0) {
