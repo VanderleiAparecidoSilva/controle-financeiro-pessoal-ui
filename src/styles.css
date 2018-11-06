@@ -24,3 +24,30 @@ label {
     margin: 0 auto;
   }
 }
+
+.col-receita-header {
+  width: 160px;
+}
+
+.col-receita {
+  width: 160px;
+  text-align: center;
+}
+
+.col-despesa-header {
+  width: 160px;
+}
+
+.col-despesa {
+  width: 160px;
+  text-align: center;
+}
+
+.col-acoes-header {
+  width: 140px;
+}
+
+.col-acoes {
+  width: 140px;
+  text-align: center;
+}

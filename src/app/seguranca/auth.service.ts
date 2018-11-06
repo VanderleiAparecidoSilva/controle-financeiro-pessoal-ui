@@ -26,7 +26,7 @@ export class AuthService {
     private storage: StorageService
     ) { }
 
-  authenticate(creds: CredenciaisDTO) {
+  login(creds: CredenciaisDTO) {
     return this.http.post(
       `${API_CONFIG.baseUrl}/login`,
       creds,
@@ -34,6 +34,10 @@ export class AuthService {
         observe: 'response',
         responseType: 'text'
       });
+  }
+
+  logout() {
+    this.storage.setLocalUser(null);
   }
 
   refreshToken() {
@@ -52,9 +56,5 @@ export class AuthService {
     this.user.email = this.jwtHelper.decodeToken(tok).sub;
 
     this.storage.setLocalUser(this.user);
-  }
-
-  logout() {
-    this.storage.setLocalUser(null);
   }
 }

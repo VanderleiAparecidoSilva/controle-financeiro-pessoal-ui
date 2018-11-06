@@ -18,13 +18,11 @@
           </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr>
-              <th style="width: 3em">
-                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-              </th>
-              <th *ngFor="let col of columns" pResizableColumn>
-                {{ col.header }}
-              </th>
-              <th></th>
+              <th style="width: 3em"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+              <th>Nome</th>
+              <th class="col-receita-header">Aplicar na Receita</th>
+              <th class="col-despesa-header">Aplicar na Despesa</th>
+              <th class="col-acoes-header"></th>
             </tr>
           </ng-template>
 
@@ -32,9 +30,9 @@
             <tr [pSelectableRow]="rowData" [style.background]="rowData.ativo === false ? '#C48F8F' : null">
               <td><p-tableCheckbox [value]="rowData"></p-tableCheckbox></td>
               <td class="ui-resizable-column">{{ rowData.nome }}</td>
-              <td class="ui-resizable-column">{{ rowData.aplicarNaReceita ? 'Sim' : 'Não' }}</td>
-              <td class="ui-resizable-column">{{ rowData.aplicarNaDespesa ? 'Sim' : 'Não' }}</td>
-              <td class="ui-resizable-column">
+              <td class="ui-resizable-column, col-receita">{{ rowData.aplicarNaReceita ? 'Sim' : 'Não' }}</td>
+              <td class="ui-resizable-column, col-despesa">{{ rowData.aplicarNaDespesa ? 'Sim' : 'Não' }}</td>
+              <td class="ui-resizable-column, col-acoes">
                 <a pButton icon="fa fa-pencil" pTooltip="Editar" tooltipPosition="top" style="margin-right:5px"
                   [routerLink]="['/centrocustos', rowData.id]"></a>
                 <button pButton icon="fa fa-eye" pTooltip="Ativar" tooltipPosition="top"
@@ -46,7 +44,7 @@
           </ng-template>
           <ng-template pTemplate="emptymessage" let-columns>
             <tr>
-              <td [attr.colspan]="columns.length">
+              <td [attr.colspan]="5">
                 Nenhum registro encontrado
               </td>
             </tr>

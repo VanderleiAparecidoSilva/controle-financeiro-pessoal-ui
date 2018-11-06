@@ -23,8 +23,6 @@ export class CentrocustoPesquisaComponent implements OnInit {
 
   centroCustos: CentroCustoDTO[];
 
-  cols: any[];
-
   selectedRows: CentroCustoDTO;
 
   qtdSelectedRows = 0;
@@ -45,11 +43,6 @@ export class CentrocustoPesquisaComponent implements OnInit {
   ngOnInit() {
     this.title.setTitle(`${TITLE_CONFIG.childTitle} Pesquisa de Centro de Custos`);
 
-    this.cols = [
-      { field: 'nome', header: 'Nome' },
-      { field: 'aplicarNaReceita', header: 'Aplicar na Receita' },
-      { field: 'aplicarNaDespesa', header: 'Aplicar na Despesa' }
-    ];
     setTimeout(() => {
       this.loading = true;
     });
