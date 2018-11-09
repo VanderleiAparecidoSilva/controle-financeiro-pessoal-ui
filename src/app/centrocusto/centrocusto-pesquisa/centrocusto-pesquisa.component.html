@@ -10,11 +10,16 @@
           [paginator]="true" [rows]="filter.linesPerPage" [(selection)]="selectedRow" dataKey="id" [lazy]="true"
           (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecords" [loading]="loading"
           (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
-          (onHeaderCheckboxToggle)="onRowsSelectUnSelect($event.checked)">
+          (onHeaderCheckboxToggle)="onRowsSelectUnSelect($event.checked)" [globalFilterFields]="['nome']">
           <ng-template pTemplate="caption">
             <div class="ui-helper-clearfix">
               <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Exportar todos" (click)="dt.exportCSV()" style="float:left"></button>
-              <button type="button" pButton icon="fa fa-file" iconPos="left" label="Exportar selecionados" (click)="dt.exportCSV({selectionOnly:true})" style="float:right"></button>
+              <button type="button" pButton icon="fa fa-file" iconPos="left" label="Exportar selecionados" (click)="dt.exportCSV({selectionOnly:true})" style="float:left"></button>
+              <div style="text-align: right">
+                <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                <input #gf type="text" pInputText size="50" placeholder="Pesquisar" pTooltip="Digite o texto e pressione enter"
+                  tooltipPosition="top" style="width:auto" (keyup)="columnFilter($event)">
+              </div>
             </div>
           </ng-template>
           <ng-template pTemplate="header" let-columns>
@@ -35,7 +40,7 @@
               <td class="ui-resizable-column, col-despesa">{{ rowData.aplicarNaDespesa ? 'Sim' : 'Não' }}</td>
               <td class="ui-resizable-column, col-acoes">
                 <a pButton icon="fa fa-pencil" pTooltip="Editar" tooltipPosition="top" style="margin-right:5px"
-                  [routerLink]="['/centrocustos', rowData.id]"></a>
+                  [routerLink]="['/centrocusto', rowData.id]"></a>
                 <button pButton icon="fa fa-eye" pTooltip="Ativar" tooltipPosition="top"
                   style="margin-right:5px" (click)="enable(rowData)" [disabled]="rowData.ativo === true"></button>
                 <button pButton icon="fa fa-eye-slash" pTooltip="Desativar" tooltipPosition="top"
@@ -56,7 +61,7 @@
     <div class="ui-g-12">
         <p-toolbar>
             <div class="ui-toolbar-group-left">
-              <a pButton type="button" label="Novo" icon="pi pi-plus" routerLink="/centrocustos/novo"></a>
+              <a pButton type="button" label="Novo" icon="pi pi-plus" routerLink="/centrocusto/novo"></a>
               <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
               <button pButton type="button" label="Desmarcar todos" icon="pi pi-warning"
                 class="ui-button-success" (click)="uncheckAll()" [disabled]="qtdSelectedRows == 0"></button>

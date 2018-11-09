@@ -1,4 +1,3 @@
-import { AuthService } from './seguranca/auth.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -7,10 +6,10 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 import { AppComponent } from './app.component';
 
+import { CentrocustoModule } from './centrocusto/centrocusto.module';
 import { LancamentosModule } from './lancamentos/lancamentos.module';
 import { CoreModule } from './core/core.module';
 import { PessoasModule } from './pessoas/pessoas.module';
-import { CentrocustoModule } from './centrocusto/centrocusto.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SegurancaModule } from './seguranca/seguranca.module';
 
@@ -27,9 +26,9 @@ import { SegurancaModule } from './seguranca/seguranca.module';
     AngularFontAwesomeModule,
 
     CoreModule,
+    CentrocustoModule,
     LancamentosModule,
     PessoasModule,
-    CentrocustoModule,
     SegurancaModule,
 
     AppRoutingModule

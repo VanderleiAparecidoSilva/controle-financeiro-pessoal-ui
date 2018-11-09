@@ -1,7 +1,6 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { Table } from 'primeng/components/table/table';
 import { LazyLoadEvent, MessageService, ConfirmationService } from 'primeng/components/common/api';
 
 import { CentroCustoDTO } from './../../../models/domain/centrocusto.dto';
@@ -69,9 +68,29 @@ export class CentrocustoPesquisaComponent implements OnInit {
     });
   }
 
+  columnFilter(event: any) {
+    if (event.key === 'Enter') {
+      if (event.target.value === '') {
+        this.findAll(this.filter.page);
+      } else {
+        this.findByName(this.filter.page, event.target.value, 'false');
+      }
+    }
+  }
+
   findAll(page = 0) {
     this.filter.page = page;
     this.service.findAll(this.filter)
+      .then(resultado => {
+        this.dataSource = resultado.obj;
+        this.totalRecords = resultado.totalElements;
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  findByName(page = 0, nome = '', ativo = 'true') {
+    this.filter.page = page;
+    this.service.findByName(this.filter, nome, ativo)
       .then(resultado => {
         this.dataSource = resultado.obj;
         this.totalRecords = resultado.totalElements;

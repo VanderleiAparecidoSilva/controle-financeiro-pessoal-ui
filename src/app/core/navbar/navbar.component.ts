@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit {
           label: 'Cadastros',
           icon: 'fa fa-keyboard-o',
           items: [
-              {label: 'Centro de Custo', icon: 'fa fa-sitemap', routerLink: '/centrocustos'},
+              {label: 'Centro de Custo', icon: 'fa fa-sitemap', routerLink: '/centrocusto'},
               {label: 'Conta Bancária', icon: 'fa fa-address-card-o'}
           ]
       },

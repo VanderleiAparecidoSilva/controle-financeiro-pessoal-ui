@@ -41,6 +41,28 @@ export class CentrocustoService {
       });
   }
 
+  findByName(filter: Filter, nome: string, ativo: string): Promise<any> {
+    const httpOptions = {
+      params: new HttpParams()
+        .set('email', this.auth.jwtPayload.user_name)
+        .set('page', filter.page.toString())
+        .set('linesPerPage', filter.linesPerPage.toString())
+        .set('nome', nome)
+        .set('ativo', ativo)};
+    return this.httpClient.get<any>(`${API_CONFIG.baseUrl}/api/centrocustos/email/nome`, httpOptions)
+      .toPromise()
+      .then( response => {
+        const obj = response.content;
+
+        const result = {
+          obj,
+          totalElements: response.totalElements
+        };
+
+        return result;
+      });
+  }
+
   save(obj: CentroCustoDTO): Promise<CentroCustoDTO> {
     const httpOptions = {
       headers: new HttpHeaders()

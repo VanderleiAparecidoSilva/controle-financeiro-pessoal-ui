@@ -5,9 +5,9 @@ import { CentrocustoPesquisaComponent } from './centrocusto-pesquisa/centrocusto
 import { CentrocustoCadastroComponent } from './centrocusto-cadastro/centrocusto-cadastro.component';
 
 const routes: Routes = [
-  { path: 'centrocustos', component: CentrocustoPesquisaComponent },
-  { path: 'centrocustos/novo', component: CentrocustoCadastroComponent },
-  { path: 'centrocustos/:id', component: CentrocustoCadastroComponent }
+  { path: 'centrocusto', component: CentrocustoPesquisaComponent },
+  { path: 'centrocusto/novo', component: CentrocustoCadastroComponent },
+  { path: 'centrocusto/:id', component: CentrocustoCadastroComponent }
 ];
 
 @NgModule({
