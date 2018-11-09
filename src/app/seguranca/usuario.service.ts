@@ -1,10 +1,9 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MoneyHttp } from './money-http';
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
 import { API_CONFIG } from './../../config/api.config';
-import { StorageService } from './storage.service';
 import { UsuarioDTO } from 'src/models/domain/usuario.dto';
 
 @Injectable({
@@ -13,8 +12,7 @@ import { UsuarioDTO } from 'src/models/domain/usuario.dto';
 export class UsuarioService {
 
   constructor(
-    private http: HttpClient,
-    private storage: StorageService) {}
+    private http: MoneyHttp) {}
 
   findByEmail(email: string): Observable<UsuarioDTO> {
     return this.http.get<UsuarioDTO>(`${API_CONFIG.baseUrl}/api/usuarios/email?value=${email}`);

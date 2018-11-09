@@ -4,10 +4,12 @@ import { RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService, MessageService } from 'primeng/components/common/api';
+import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/components/common/api';
 import { ToastModule } from 'primeng/toast';
 import { MenubarModule } from 'primeng/menubar';
-import { JwtHelper } from 'angular2-jwt';
+import {FileUploadModule} from 'primeng/fileupload';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { NavbarComponent } from './navbar/navbar.component';
 import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
@@ -16,8 +18,7 @@ import { CentrocustoService } from '../centrocusto/centrocusto.service';
 import { ErrorHandlerService } from './error-handler.service';
 import { AuthService } from './../seguranca/auth.service';
 import { UsuarioService } from '../seguranca/usuario.service';
-import { AuthInterceptorProvider } from './../../interceptors/auth.interceptor';
-import { StorageService } from './../seguranca/storage.service';
+import { MoneyHttp } from '../seguranca/money-http';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { StorageService } from './../seguranca/storage.service';
     ConfirmDialogModule,
     ToastModule,
     MenubarModule,
+    FileUploadModule,
     RouterModule
   ],
   declarations: [
@@ -35,21 +37,21 @@ import { StorageService } from './../seguranca/storage.service';
   exports: [
     NavbarComponent,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    FileUploadModule
   ],
   providers: [
+    MoneyHttp,
+    CentrocustoService,
+    ErrorHandlerService,
+    JwtHelperService,
+    AuthService,
+    UsuarioService,
+
     ConfirmationService,
     MessageService,
     Title,
-    { provide: LOCALE_ID, useValue: 'pt-BR' },
-
-    CentrocustoService,
-    AuthInterceptorProvider,
-    ErrorHandlerService,
-    JwtHelper,
-    AuthService,
-    StorageService,
-    UsuarioService
+    { provide: LOCALE_ID, useValue: 'pt-BR' }
   ]
 })
 export class CoreModule { }

@@ -7,9 +7,10 @@
   <div class="ui-g">
     <div class="ui-g-12">
         <p-table #dt [columns]="cols" [value]="dataSource" [responsive]="true" [resizableColumns]="true"
-          [paginator]="true" [rows]="filter.linesPerPage" [(selection)]="selectedRows" dataKey="id" [lazy]="true"
+          [paginator]="true" [rows]="filter.linesPerPage" [(selection)]="selectedRow" dataKey="id" [lazy]="true"
           (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecords" [loading]="loading"
-          (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)">
+          (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
+          (onHeaderCheckboxToggle)="onRowsSelectUnSelect($event.checked)">
           <ng-template pTemplate="caption">
             <div class="ui-helper-clearfix">
               <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Exportar todos" (click)="dt.exportCSV()" style="float:left"></button>
@@ -26,7 +27,7 @@
             </tr>
           </ng-template>
 
-          <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr [pSelectableRow]="rowData" [style.background]="rowData.ativo === false ? '#C48F8F' : null">
               <td><p-tableCheckbox [value]="rowData"></p-tableCheckbox></td>
               <td class="ui-resizable-column">{{ rowData.nome }}</td>
@@ -59,6 +60,12 @@
               <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
               <button pButton type="button" label="Desmarcar todos" icon="pi pi-warning"
                 class="ui-button-success" (click)="uncheckAll()" [disabled]="qtdSelectedRows == 0"></button>
+            </div>
+            <div class="ui-toolbar-group-right">
+              <p-fileUpload #uploader mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload"
+                accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploader)"
+                pTooltip="Importar Arquivo" tooltipPosition="left">
+              </p-fileUpload>
             </div>
         </p-toolbar>
       </div>

@@ -1,3 +1,4 @@
+import { FileUploadModule } from 'primeng/fileupload';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -27,6 +28,7 @@ import { CentrocustoRoutingModule } from './centrocusto-routing.module';
     DropdownModule,
     ToolbarModule,
     FieldsetModule,
+    FileUploadModule,
 
     CentrocustoRoutingModule
   ],

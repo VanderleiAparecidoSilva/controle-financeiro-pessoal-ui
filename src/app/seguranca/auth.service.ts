@@ -1,9 +1,7 @@
-import { StorageService } from './storage.service';
-import { LocalUserDTO } from './../../models/localuser.dto';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { JwtHelper } from 'angular2-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { API_CONFIG } from 'src/config/api.config';
 import { CredenciaisDTO } from './../../models/credenciais.dto';
@@ -13,48 +11,98 @@ import { CredenciaisDTO } from './../../models/credenciais.dto';
 })
 export class AuthService {
 
-  oauthTokenUrl = 'https://controle-financeiro-pessoal.herokuapp.com/login';
-
-  user: LocalUserDTO = {
-    token: '',
-    email: ''
-  };
+  jwtPayload: any;
+  oauthTokenUrl: string;
 
   constructor(
     private http: HttpClient,
-    private jwtHelper: JwtHelper,
-    private storage: StorageService
-    ) { }
+    private jwtHelper: JwtHelperService
+  ) {
+    this.oauthTokenUrl = `${API_CONFIG.baseUrl}/oauth/token`;
+    this.carregarToken();
+  }
 
-  login(creds: CredenciaisDTO) {
-    return this.http.post(
-      `${API_CONFIG.baseUrl}/login`,
-      creds,
-      {
-        observe: 'response',
-        responseType: 'text'
+  login(creds: CredenciaisDTO): Promise<void> {
+    const headers = new HttpHeaders()
+        .append('Content-Type', 'application/x-www-form-urlencoded')
+        .append('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==');
+
+    const body = `username=${creds.username}&password=${creds.password}&grant_type=${creds.granttype}`;
+    return this.http.post<any>(this.oauthTokenUrl, body,
+        { headers, withCredentials: true })
+      .toPromise()
+      .then(response => {
+        this.armazenarToken(response.access_token);
+      })
+      .catch(response => {
+        if (response.status === 400) {
+          if (response.error === 'invalid_grant') {
+            return Promise.reject('Usuário ou senha inválida!');
+          }
+        }
+
+        return Promise.reject(response);
       });
   }
 
-  logout() {
-    this.storage.setLocalUser(null);
-  }
+  obterNovoAccessToken(): Promise<void> {
+    const headers = new HttpHeaders()
+        .append('Content-Type', 'application/x-www-form-urlencoded')
+        .append('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==');
 
-  refreshToken() {
-    return this.http.post(
-      `${API_CONFIG.baseUrl}/api/authorization/refresh_token`,
-      {},
-      {
-        observe: 'response',
-        responseType: 'text'
+    const body = 'grant_type=refresh_token';
+
+    return this.http.post<any>(this.oauthTokenUrl, body,
+        { headers, withCredentials: true })
+      .toPromise()
+      .then(response => {
+        this.armazenarToken(response.access_token);
+
+        console.log('Novo access token criado!');
+
+        return Promise.resolve(null);
+      })
+      .catch(response => {
+        console.error('Erro ao renovar token.', response);
+        return Promise.resolve(null);
       });
   }
 
-  successfulLogin(authorizationValue: string) {
-    const tok = authorizationValue.substring(7);
-    this.user.token = tok;
-    this.user.email = this.jwtHelper.decodeToken(tok).sub;
+  limparAccessToken() {
+    localStorage.removeItem('token');
+    this.jwtPayload = null;
+  }
 
-    this.storage.setLocalUser(this.user);
+  isAccessTokenInvalido() {
+    const token = localStorage.getItem('token');
+
+    return !token || this.jwtHelper.isTokenExpired(token);
+  }
+
+  temPermissao(permissao: string) {
+    return this.jwtPayload && this.jwtPayload.authorities.includes(permissao);
+  }
+
+  temQualquerPermissao(roles) {
+    for (const role of roles) {
+      if (this.temPermissao(role)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private armazenarToken(token: string) {
+    this.jwtPayload = this.jwtHelper.decodeToken(token);
+    localStorage.setItem('token', token);
+  }
+
+  private carregarToken() {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      this.armazenarToken(token);
+    }
   }
 }

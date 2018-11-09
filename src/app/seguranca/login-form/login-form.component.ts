@@ -1,10 +1,10 @@
-import { ErrorHandlerService } from './../../core/error-handler.service';
-import { CredenciaisDTO } from './../../../models/credenciais.dto';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../auth.service';
-import { Router } from '@angular/router';
 import { UsuarioDTO } from 'src/models/domain/usuario.dto';
+import { CredenciaisDTO } from './../../../models/credenciais.dto';
+import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 
 @Component({
   selector: 'app-login-form',
@@ -14,8 +14,9 @@ import { UsuarioDTO } from 'src/models/domain/usuario.dto';
 export class LoginFormComponent implements OnInit {
 
   creds: CredenciaisDTO = {
-    email: '',
-    senha: ''
+    username: '',
+    password: '',
+    granttype: 'password'
   };
 
   usuario: UsuarioDTO;
@@ -31,12 +32,11 @@ export class LoginFormComponent implements OnInit {
 
   login() {
     this.auth.login(this.creds)
-      .subscribe(response => {
-        this.auth.successfulLogin(response.headers.get('Authorization'));
+      .then(() => {
         this.router.navigate(['/centrocustos']);
-      },
-      error => {
-        this.errorHandler.handle(error);
+      })
+      .catch(erro => {
+        this.errorHandler.handle(erro);
       });
-    }
+  }
 }

@@ -1,29 +1,28 @@
-import { TITLE_CONFIG } from './../../../config/title.config';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
+import { Table } from 'primeng/components/table/table';
 import { LazyLoadEvent, MessageService, ConfirmationService } from 'primeng/components/common/api';
 
+import { CentroCustoDTO } from './../../../models/domain/centrocusto.dto';
 import { CentrocustoService, Filter } from '../centrocusto.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
-import { CentroCustoDTO } from 'src/models/domain/centrocusto.dto';
+import { TITLE_CONFIG } from './../../../config/title.config';
+import { AuthService } from './../../seguranca/auth.service';
 
 @Component({
   selector: 'app-centrocusto-pesquisa',
-  templateUrl: './centrocusto-pesquisa.component.html',
-  providers: [
-    MessageService
-  ]
+  templateUrl: './centrocusto-pesquisa.component.html'
 })
 export class CentrocustoPesquisaComponent implements OnInit {
 
-  object = 'Centro de Custo';
+  entity = 'Centro de Custo';
+
+  cols: any[];
 
   dataSource: CentroCustoDTO[];
 
-  centroCustos: CentroCustoDTO[];
-
-  selectedRows: CentroCustoDTO;
+  selectedRow: CentroCustoDTO;
 
   qtdSelectedRows = 0;
 
@@ -38,10 +37,17 @@ export class CentrocustoPesquisaComponent implements OnInit {
     private errorHandler: ErrorHandlerService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private auth: AuthService,
     private title: Title) { }
 
   ngOnInit() {
     this.title.setTitle(`${TITLE_CONFIG.childTitle} Pesquisa de Centro de Custos`);
+
+    this.cols = [
+      { field: 'nome', header: 'Nome' },
+      { field: 'aplicarNaReceita', header: 'Aplicar na Receita' },
+      { field: 'aplicarNaDespesa', header: 'Aplicar na Despesa' }
+    ];
 
     setTimeout(() => {
       this.loading = true;
@@ -57,6 +63,7 @@ export class CentrocustoPesquisaComponent implements OnInit {
       const page = event.first / event.rows;
       this.findAll(page);
     }.bind(this, 1));
+
     setTimeout(() => {
       this.loading = false;
     });
@@ -65,13 +72,11 @@ export class CentrocustoPesquisaComponent implements OnInit {
   findAll(page = 0) {
     this.filter.page = page;
     this.service.findAll(this.filter)
-      .subscribe(response => {
-        this.dataSource = response['content'];
-        this.totalRecords = response['totalElements'];
-      },
-      error => {
-        this.errorHandler.handle(error);
-      });
+      .then(resultado => {
+        this.dataSource = resultado.obj;
+        this.totalRecords = resultado.totalElements;
+      })
+      .catch(erro => this.errorHandler.handle(erro));
   }
 
   enable(obj: any) {
@@ -102,31 +107,31 @@ export class CentrocustoPesquisaComponent implements OnInit {
 
   enableById(obj: any) {
     this.service.enableById(obj.id)
-      .subscribe(response => {
+      .then(() => {
         this.findAll(this.filter.page);
         this.messageService.add({severity: 'success', summary: 'Ativação',
-          detail: `${this.object} ativado com sucesso!`});
-      },
-      error => {
-        this.errorHandler.handle(error);
-      });
+          detail: `${this.entity} ativado com sucesso!`});
+      })
+      .catch(erro => this.errorHandler.handle(erro));
   }
 
   disableById(obj: any) {
     this.service.disableById(obj.id)
-      .subscribe(response => {
+      .then(() => {
         this.findAll(this.filter.page);
         this.messageService.add({severity: 'success', summary: 'Desativação',
-          detail: `${this.object} desativado com sucesso!`});
-      },
-      error => {
-        this.errorHandler.handle(error);
-      });
+          detail: `${this.entity} desativado com sucesso!`});
+      })
+      .catch(erro => this.errorHandler.handle(erro));
   }
 
   uncheckAll() {
-    this.selectedRows = null;
+    this.selectedRow = null;
     this.qtdSelectedRows = 0;
+  }
+
+  onRowsSelectUnSelect(event) {
+    event ? this.qtdSelectedRows++ : this.qtdSelectedRows = 0;
   }
 
   onRowSelect(event) {
@@ -135,5 +140,41 @@ export class CentrocustoPesquisaComponent implements OnInit {
 
   onRowUnselect(event) {
     this.qtdSelectedRows--;
+  }
+
+  onUploadHandler(event, uploader) {
+    for (const file of event.files) {
+      this.uploadFile(file, uploader);
+    }
+  }
+
+  uploadFile(file, uploader) {
+    const reader: FileReader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = (e) => {
+      const csv = reader.result;
+      const allTextLines = csv.toString().split(/\r|\n|\r/);
+      const headers = allTextLines[0].split(';');
+      for (let i = 0; i < allTextLines.length; i++) {
+        if (i > 0) {
+          if (allTextLines[i].split(';').length === headers.length) {
+            this.uploadData(allTextLines[i]);
+          }
+        }
+      }
+      uploader.clear();
+    };
+    this.messageService.add({severity: 'success', summary: 'Importação de Arquivo',
+      detail: `Arquivo enviado para processamento!`});
+  }
+
+  uploadData(data: string) {
+    this.service.upload(data)
+    .then(() => {
+      this.findAll(this.filter.page);
+    })
+    .catch(erro => {
+      this.errorHandler.handle(erro);
+    });
   }
 }

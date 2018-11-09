@@ -1,10 +1,11 @@
-import { AuthService } from 'src/app/seguranca/auth.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { MenuItem } from 'primeng/api';
 
-import { StorageService } from 'src/app/seguranca/storage.service';
-import { Router } from '@angular/router';
+import { ErrorHandlerService } from '../error-handler.service';
+import { AuthService } from 'src/app/seguranca/auth.service';
+import { LogoutService } from 'src/app/seguranca/logout.service';
 
 @Component({
   selector: 'app-navbar',
@@ -16,12 +17,25 @@ export class NavbarComponent implements OnInit {
   items: MenuItem[];
 
   constructor(
-    private storage: StorageService,
-    private auth: AuthService,
+    public auth: AuthService,
+    private logoutService: LogoutService,
+    private errorHandler: ErrorHandlerService,
     private router: Router
   ) { }
 
   ngOnInit() {
+    this.createMenu();
+  }
+
+  logout() {
+    this.logoutService.logout()
+      .then(() => {
+        this.router.navigate(['/login']);
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  createMenu() {
     this.items = [
       {
           label: 'Cadastros',
@@ -83,11 +97,6 @@ export class NavbarComponent implements OnInit {
           ]
       }
     ];
-  }
-
-  logout() {
-    this.auth.logout();
-    this.router.navigate(['/login']);
   }
 
 }
