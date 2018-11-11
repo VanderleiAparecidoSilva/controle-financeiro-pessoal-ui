@@ -1,10 +1,10 @@
-import { UsuarioDTO } from './usuario.dto';
+import { UsuarioDTO } from 'src/models/domain/usuario.dto';
 
-export interface CentroCustoDTO {
-  id: string;
+export class CentroCustoDTO {
+  id = null;
   nome: string;
-  aplicarNaReceita: boolean;
-  aplicarNaDespesa: boolean;
-  usuario: UsuarioDTO;
-  ativo: boolean;
+  aplicarNaReceita = false;
+  aplicarNaDespesa = false;
+  ativo = true;
+  usuario = new UsuarioDTO();
 }

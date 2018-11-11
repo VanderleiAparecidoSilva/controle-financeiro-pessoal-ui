@@ -1,7 +1,7 @@
 <div class="container">
   <div class="ui-g">
     <div class="ui-g-12">
-      <h1>Centro de Custo</h1>
+      <h1>{{ entityName }}</h1>
     </div>
 
   <div class="ui-g">
@@ -18,7 +18,7 @@
               <div style="text-align: right">
                 <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
                 <input #gf type="text" pInputText size="50" placeholder="Pesquisar" pTooltip="Digite o texto e pressione enter"
-                  tooltipPosition="top" style="width:auto" (keyup)="columnFilter($event)">
+                  tooltipPosition="top" style="width:auto; text-transform:uppercase;" (keyup)="columnFilter($event)">
               </div>
             </div>
           </ng-template>
@@ -59,20 +59,20 @@
     </div>
 
     <div class="ui-g-12">
-        <p-toolbar>
-            <div class="ui-toolbar-group-left">
-              <a pButton type="button" label="Novo" icon="pi pi-plus" routerLink="/centrocusto/novo"></a>
-              <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
-              <button pButton type="button" label="Desmarcar todos" icon="pi pi-warning"
-                class="ui-button-success" (click)="uncheckAll()" [disabled]="qtdSelectedRows == 0"></button>
-            </div>
-            <div class="ui-toolbar-group-right">
-              <p-fileUpload #uploader mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload"
-                accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploader)"
-                pTooltip="Importar Arquivo" tooltipPosition="left">
-              </p-fileUpload>
-            </div>
-        </p-toolbar>
-      </div>
+      <p-toolbar>
+        <div class="ui-toolbar-group-left">
+          <a pButton type="button" label="Novo" icon="pi pi-plus" routerLink="/centrocusto/novo"></a>
+          <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
+          <button pButton type="button" label="Desmarcar todos" icon="pi pi-warning"
+            class="ui-button-success" (click)="uncheckAll()" [disabled]="qtdSelectedRows == 0"></button>
+        </div>
+        <div class="ui-toolbar-group-right">
+          <p-fileUpload #uploader mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload"
+            accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploader)"
+            pTooltip="Importar Arquivo" tooltipPosition="left">
+          </p-fileUpload>
+        </div>
+      </p-toolbar>
+    </div>
   </div>
 </div>

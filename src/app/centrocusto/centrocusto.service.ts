@@ -63,6 +63,20 @@ export class CentrocustoService {
       });
   }
 
+  findById(id: string): Promise<CentroCustoDTO> {
+    const httpOptions = {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
+    };
+
+    return this.httpClient.get<CentroCustoDTO>(
+      `${API_CONFIG.baseUrl}/api/centrocustos/${this.auth.jwtPayload.user_name}/${id}`, httpOptions)
+      .toPromise()
+      .then( response => {
+        return response;
+      });
+  }
+
   save(obj: CentroCustoDTO): Promise<CentroCustoDTO> {
     const httpOptions = {
       headers: new HttpHeaders()
@@ -70,6 +84,19 @@ export class CentrocustoService {
         .set('Content-Type', 'application/json')
     };
     return this.httpClient.post<CentroCustoDTO>(`${API_CONFIG.baseUrl}/api/centrocustos`,
+      JSON.stringify(obj), httpOptions)
+      .toPromise()
+      .then(response => response);
+  }
+
+  update(obj: CentroCustoDTO): Promise<CentroCustoDTO> {
+    const httpOptions = {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
+        .set('Content-Type', 'application/json')
+    };
+    return this.httpClient.put<CentroCustoDTO>(
+      `${API_CONFIG.baseUrl}/api/centrocustos/${this.auth.jwtPayload.user_name}/${obj.id}`,
       JSON.stringify(obj), httpOptions)
       .toPromise()
       .then(response => response);

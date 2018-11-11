@@ -7,7 +7,6 @@ import { CentroCustoDTO } from './../../../models/domain/centrocusto.dto';
 import { CentrocustoService, Filter } from '../centrocusto.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { TITLE_CONFIG } from './../../../config/title.config';
-import { AuthService } from './../../seguranca/auth.service';
 
 @Component({
   selector: 'app-centrocusto-pesquisa',
@@ -15,7 +14,7 @@ import { AuthService } from './../../seguranca/auth.service';
 })
 export class CentrocustoPesquisaComponent implements OnInit {
 
-  entity = 'Centro de Custo';
+  entityName = 'Centro de Custo';
 
   cols: any[];
 
@@ -36,7 +35,6 @@ export class CentrocustoPesquisaComponent implements OnInit {
     private errorHandler: ErrorHandlerService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private auth: AuthService,
     private title: Title) { }
 
   ngOnInit() {
@@ -73,7 +71,7 @@ export class CentrocustoPesquisaComponent implements OnInit {
       if (event.target.value === '') {
         this.findAll(this.filter.page);
       } else {
-        this.findByName(this.filter.page, event.target.value, 'false');
+        this.findByName(0, event.target.value, 'false');
       }
     }
   }
@@ -129,7 +127,7 @@ export class CentrocustoPesquisaComponent implements OnInit {
       .then(() => {
         this.findAll(this.filter.page);
         this.messageService.add({severity: 'success', summary: 'Ativação',
-          detail: `${this.entity} ativado com sucesso!`});
+          detail: `${this.entityName} ativado com sucesso!`});
       })
       .catch(erro => this.errorHandler.handle(erro));
   }
@@ -139,7 +137,7 @@ export class CentrocustoPesquisaComponent implements OnInit {
       .then(() => {
         this.findAll(this.filter.page);
         this.messageService.add({severity: 'success', summary: 'Desativação',
-          detail: `${this.entity} desativado com sucesso!`});
+          detail: `${this.entityName} desativado com sucesso!`});
       })
       .catch(erro => this.errorHandler.handle(erro));
   }

@@ -1,5 +1,5 @@
-export interface UsuarioDTO {
-  id: string;
+export class UsuarioDTO {
+  id = null;
   nome: string;
   email: string;
   senha: string;

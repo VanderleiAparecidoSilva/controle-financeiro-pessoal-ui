@@ -1,3 +1,39 @@
-<p>
-  centrocusto-cadastro works!
-</p>
+<div class="container">
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="save(f)">
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <h1>{{onEdit ? 'Editar' : 'Novo'}} {{ entityName }}</h1>
+      </div>
+      <div class="ui-g-12 ui-fluid">
+        <label>Nome</label>
+        <input pInputText type="text" name="nome" style="text-transform:uppercase;"
+          required minlength="5" [(ngModel)]="entity.nome" #nome="ngModel" autofocus>
+      </div>
+      <div class="ui-g-12">
+        <app-message [control]="nome" error="required" text="Nome é obrigatório" severity="error"></app-message>
+        <app-message [control]="nome" error="minlength" text="Mínimo de {{ nome.errors?.minlength?.requiredLength }} caracteres" severity="warn"></app-message>
+      </div>
+      <div class="ui-g-6 ui-md-3 ui-fluid">
+        <h3>Aplicar na receita</h3>
+        <p-inputSwitch name="revenue" [(ngModel)]="entity.aplicarNaReceita"></p-inputSwitch>
+      </div>
+      <div class="ui-g-6 ui-md-3 ui-fluid">
+        <h3>Aplicar na despesa</h3>
+        <p-inputSwitch name="expenditure" [(ngModel)]="entity.aplicarNaDespesa"></p-inputSwitch>
+      </div>
+      <div class="ui-g-12">
+        <p-toolbar>
+          <div class="ui-toolbar-group-left">
+            <button pButton type="submit" label="Salvar" icon="fa fa-check" [disabled]="f.invalid"></button>
+            <button pButton type="button" label="Novo" icon="pi pi-plus" class="ui-button-success"
+              (click)="newEntity(f)"></button>
+          </div>
+          <div class="ui-toolbar-group-right">
+            <a pButton type="button" label="Voltar" icon="fa fa-reply" class="ui-button-warning"
+              [routerLink]="['/centrocusto']" pTooltip="Voltar para pesquisa" tooltipPosition="left"></a>
+          </div>
+        </p-toolbar>
+        </div>
+    </div>
+  </form>
+</div>
