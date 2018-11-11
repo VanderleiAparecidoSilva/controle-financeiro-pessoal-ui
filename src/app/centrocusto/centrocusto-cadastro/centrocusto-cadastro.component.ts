@@ -44,8 +44,13 @@ export class CentrocustoCadastroComponent implements OnInit {
     this.service.findById(id)
       .then(response => {
         this.entity = response;
+        this.updateEditTitle();
       })
       .catch(error => this.errorHandle.handle(error));
+  }
+
+  updateEditTitle() {
+    this.title.setTitle(`${TITLE_CONFIG.childTitle} Alteração do ${this.entityName}: ${this.entity.nome}`);
   }
 
   get onEdit() {
@@ -78,6 +83,7 @@ export class CentrocustoCadastroComponent implements OnInit {
     this.service.update(this.entity)
     .then((response) => {
       this.entity = response;
+      this.updateEditTitle();
       this.messageService.add({severity: 'success', summary: this.entityName,
         detail: `${this.entityName} atualizado com sucesso!`});
     })
