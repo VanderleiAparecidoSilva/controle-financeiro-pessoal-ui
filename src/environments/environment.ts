@@ -3,7 +3,14 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiUrl: 'http://localhost:8080',
+  bucketApiUrl: 'https://s3-sa-east-1.amazonaws.com/controle-financeiro-pessoal/',
+  photoPrefix: 'up_',
+  defaultTitle: 'Controle Financeiro - By Vanderlei',
+  childTitle: 'CF - ',
+  tokenWhitelistedDomains: [ new RegExp('localhost:8080') ],
+  tokenBlacklistedRoutes: [ new RegExp('\/oauth\/token') ]
 };
 
 /*

@@ -19,6 +19,7 @@ import { ErrorHandlerService } from './error-handler.service';
 import { AuthService } from './../seguranca/auth.service';
 import { UsuarioService } from '../seguranca/usuario.service';
 import { MoneyHttp } from '../seguranca/money-http';
+import { NaoAutorizadoComponent } from './nao-autorizado.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { MoneyHttp } from '../seguranca/money-http';
   ],
   declarations: [
     NavbarComponent,
-    PaginaNaoEncontradaComponent
+    PaginaNaoEncontradaComponent,
+    NaoAutorizadoComponent
   ],
   exports: [
     NavbarComponent,

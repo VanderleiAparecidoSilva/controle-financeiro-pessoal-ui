@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpParams, HttpHeaders } from '@angular/common/http';
 
-import { API_CONFIG } from './../../config/api.config';
 import { CentroCustoDTO } from 'src/models/domain/centrocusto.dto';
 import { MoneyHttp } from '../seguranca/money-http';
 import { AuthService } from './../seguranca/auth.service';
+import { environment } from 'src/environments/environment';
 
 export class Filter {
   page = 0;
@@ -27,7 +27,7 @@ export class CentrocustoService {
         .set('email', this.auth.jwtPayload.user_name)
         .set('page', filter.page.toString())
         .set('linesPerPage', filter.linesPerPage.toString())};
-    return this.httpClient.get<any>(`${API_CONFIG.baseUrl}/api/centrocustos`, httpOptions)
+    return this.httpClient.get<any>(`${environment.apiUrl}/api/centrocustos`, httpOptions)
       .toPromise()
       .then( response => {
         const obj = response.content;
@@ -49,7 +49,7 @@ export class CentrocustoService {
         .set('linesPerPage', filter.linesPerPage.toString())
         .set('nome', nome)
         .set('ativo', ativo)};
-    return this.httpClient.get<any>(`${API_CONFIG.baseUrl}/api/centrocustos/email/nome`, httpOptions)
+    return this.httpClient.get<any>(`${environment.apiUrl}/api/centrocustos/email/nome`, httpOptions)
       .toPromise()
       .then( response => {
         const obj = response.content;
@@ -70,7 +70,7 @@ export class CentrocustoService {
     };
 
     return this.httpClient.get<CentroCustoDTO>(
-      `${API_CONFIG.baseUrl}/api/centrocustos/${this.auth.jwtPayload.user_name}/${id}`, httpOptions)
+      `${environment.apiUrl}/api/centrocustos/${this.auth.jwtPayload.user_name}/${id}`, httpOptions)
       .toPromise()
       .then( response => {
         return response;
@@ -83,7 +83,7 @@ export class CentrocustoService {
         .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
         .set('Content-Type', 'application/json')
     };
-    return this.httpClient.post<CentroCustoDTO>(`${API_CONFIG.baseUrl}/api/centrocustos`,
+    return this.httpClient.post<CentroCustoDTO>(`${environment.apiUrl}/api/centrocustos`,
       JSON.stringify(obj), httpOptions)
       .toPromise()
       .then(response => response);
@@ -96,7 +96,7 @@ export class CentrocustoService {
         .set('Content-Type', 'application/json')
     };
     return this.httpClient.put<CentroCustoDTO>(
-      `${API_CONFIG.baseUrl}/api/centrocustos/${this.auth.jwtPayload.user_name}/${obj.id}`,
+      `${environment.apiUrl}/api/centrocustos/${this.auth.jwtPayload.user_name}/${obj.id}`,
       JSON.stringify(obj), httpOptions)
       .toPromise()
       .then(response => response);
@@ -110,7 +110,7 @@ export class CentrocustoService {
         .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
         .set('Content-Type', 'application/json')
     };
-    return this.httpClient.post<void>(`${API_CONFIG.baseUrl}/api/centrocustos/upload`,
+    return this.httpClient.post<void>(`${environment.apiUrl}/api/centrocustos/upload`,
       obj, httpOptions)
       .toPromise()
       .then(() => null);
@@ -118,13 +118,13 @@ export class CentrocustoService {
 
   enableById(id: string): Promise<void> {
     return this.httpClient.put<void>(
-      `${API_CONFIG.baseUrl}/api/centrocustos/ativar/${id}/${this.auth.jwtPayload.user_name}`, null)
+      `${environment.apiUrl}/api/centrocustos/ativar/${id}/${this.auth.jwtPayload.user_name}`, null)
       .toPromise();
   }
 
   disableById(id: string): Promise<void> {
     return this.httpClient.put<void>(
-      `${API_CONFIG.baseUrl}/api/centrocustos/desativar/${id}/${this.auth.jwtPayload.user_name}`, null)
+      `${environment.apiUrl}/api/centrocustos/desativar/${id}/${this.auth.jwtPayload.user_name}`, null)
       .toPromise();
   }
 }

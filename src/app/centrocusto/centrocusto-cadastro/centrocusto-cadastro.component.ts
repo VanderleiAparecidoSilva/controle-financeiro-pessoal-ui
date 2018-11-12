@@ -7,10 +7,10 @@ import { MessageService } from 'primeng/api';
 
 import { UsuarioDTO } from './../../../models/domain/usuario.dto';
 import { CentrocustoService } from './../centrocusto.service';
-import { TITLE_CONFIG } from 'src/config/title.config';
 import { CentroCustoDTO } from 'src/models/domain/centrocusto.dto';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { AuthService } from 'src/app/seguranca/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-centrocusto-cadastro',
@@ -32,7 +32,7 @@ export class CentrocustoCadastroComponent implements OnInit {
     private title: Title) { }
 
   ngOnInit() {
-    this.title.setTitle(`${TITLE_CONFIG.childTitle} Cadastro de ${this.entityName}`);
+    this.title.setTitle(`${environment.childTitle} Cadastro de ${this.entityName}`);
     const idEntity = this.route.snapshot.params['id'];
 
     if (idEntity) {
@@ -50,7 +50,7 @@ export class CentrocustoCadastroComponent implements OnInit {
   }
 
   updateEditTitle() {
-    this.title.setTitle(`${TITLE_CONFIG.childTitle} Alteração do ${this.entityName}: ${this.entity.nome}`);
+    this.title.setTitle(`${environment.childTitle} Alteração do ${this.entityName}: ${this.entity.nome}`);
   }
 
   get onEdit() {

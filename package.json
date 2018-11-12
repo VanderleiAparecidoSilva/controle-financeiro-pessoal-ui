@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.config.js",
+    "start": "node server.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "ng build --prod"
   },
   "private": true,
   "dependencies": {
@@ -31,9 +32,7 @@
     "primeng": "^6.1.5",
     "rxjs": "~6.2.0",
     "rxjs-compat": "^6.3.3",
-    "zone.js": "~0.8.26"
-  },
-  "devDependencies": {
+    "zone.js": "~0.8.26",
     "@angular-devkit/build-angular": "~0.8.0",
     "@angular/cli": "~6.2.5",
     "@angular/compiler-cli": "^6.1.0",
@@ -53,5 +52,11 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
     "typescript": "~2.9.2"
+  },
+  "devDependencies": {
+  },
+  "engines": {
+    "node": "10.12.0",
+    "npm": "6.4.1"
   }
 }

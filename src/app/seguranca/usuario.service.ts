@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { API_CONFIG } from './../../config/api.config';
 import { UsuarioDTO } from 'src/models/domain/usuario.dto';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +15,11 @@ export class UsuarioService {
     private http: MoneyHttp) {}
 
   findByEmail(email: string): Observable<UsuarioDTO> {
-    return this.http.get<UsuarioDTO>(`${API_CONFIG.baseUrl}/api/usuarios/email?value=${email}`);
+    return this.http.get<UsuarioDTO>(`${environment.apiUrl}/api/usuarios/email?value=${email}`);
   }
 
   getImageFromBucket(id: string): Observable<any> {
-    const url = `${API_CONFIG.bucketBaseUrl}${API_CONFIG.photoPrefix + id}.jpg`;
+    const url = `${environment.bucketApiUrl}${environment.photoPrefix + id}.jpg`;
     return this.http.get(url, {responseType : 'blob'});
   }
 }

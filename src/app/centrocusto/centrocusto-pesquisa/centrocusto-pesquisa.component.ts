@@ -1,3 +1,4 @@
+import { environment } from './../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
@@ -6,7 +7,6 @@ import { LazyLoadEvent, MessageService, ConfirmationService } from 'primeng/comp
 import { CentroCustoDTO } from './../../../models/domain/centrocusto.dto';
 import { CentrocustoService, Filter } from '../centrocusto.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
-import { TITLE_CONFIG } from './../../../config/title.config';
 
 @Component({
   selector: 'app-centrocusto-pesquisa',
@@ -38,7 +38,7 @@ export class CentrocustoPesquisaComponent implements OnInit {
     private title: Title) { }
 
   ngOnInit() {
-    this.title.setTitle(`${TITLE_CONFIG.childTitle} Pesquisa de Centro de Custos`);
+    this.title.setTitle(`${environment.childTitle} Pesquisa de Centro de Custos`);
 
     this.cols = [
       { field: 'nome', header: 'Nome' },

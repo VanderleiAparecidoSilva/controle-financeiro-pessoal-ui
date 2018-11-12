@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-import { API_CONFIG } from 'src/config/api.config';
 import { CredenciaisDTO } from './../../models/credenciais.dto';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class AuthService {
     private http: HttpClient,
     private jwtHelper: JwtHelperService
   ) {
-    this.oauthTokenUrl = `${API_CONFIG.baseUrl}/oauth/token`;
+    this.oauthTokenUrl = `${environment.apiUrl}/oauth/token`;
     this.carregarToken();
   }
 
