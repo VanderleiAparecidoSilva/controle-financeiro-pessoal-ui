@@ -35,6 +35,7 @@ export class ErrorHandlerService {
         messageDetail = 'Você não tem permissão para executar esta ação';
       }
       try {
+        console.log(errorResponse.error[0]);
         messageDetail = errorResponse.error[0].message;
       } catch (e) { }
       console.error('Ocorreu um erro', errorResponse);

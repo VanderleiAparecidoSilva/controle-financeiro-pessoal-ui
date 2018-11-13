@@ -1,4 +1,3 @@
-import { AuthGuard } from './auth.guard';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -10,6 +9,8 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { SegurancaRoutingModule } from './seguranca-routing.module';
 import { environment } from './../../environments/environment';
+import { AuthGuard } from './auth.guard';
+import { LogoutService } from './logout.service';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -35,7 +36,8 @@ export function tokenGetter() {
   ],
   declarations: [LoginFormComponent],
   providers: [
-    AuthGuard
+    AuthGuard,
+    LogoutService
   ]
 })
 export class SegurancaModule { }
