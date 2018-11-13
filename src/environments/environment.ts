@@ -9,8 +9,8 @@ export const environment = {
   photoPrefix: 'up_',
   defaultTitle: 'Controle Financeiro - By Vanderlei',
   childTitle: 'CF - ',
-  tokenWhitelistedDomains: [ new RegExp('localhost:8080') ],
-  tokenBlacklistedRoutes: [ new RegExp('\/oauth\/token') ]
+  tokenWhitelistedDomains: ['localhost:8080'],
+  tokenBlacklistedRoutes: [new RegExp('\/oauth\/token')]
 };
 
 /*

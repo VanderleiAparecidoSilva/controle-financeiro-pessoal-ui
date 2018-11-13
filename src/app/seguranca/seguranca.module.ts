@@ -16,22 +16,23 @@ export function tokenGetter() {
   return localStorage.getItem('token');
 }
 
+const jwtConf: JwtModule = {
+  config: {
+    tokenGetter: tokenGetter,
+    whitelistedDomains: environment.tokenWhitelistedDomains,
+    blacklistedRoutes: environment.tokenBlacklistedRoutes
+  }
+};
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
 
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: tokenGetter,
-        whitelistedDomains: environment.tokenWhitelistedDomains,
-        blacklistedRoutes: environment.tokenBlacklistedRoutes
-      }
-    }),
-
     InputTextModule,
     ButtonModule,
 
+    JwtModule.forRoot(jwtConf),
     SegurancaRoutingModule
   ],
   declarations: [LoginFormComponent],
