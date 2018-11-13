@@ -1,4 +1,3 @@
-import { JwtInterceptor } from './seguranca/interceptor-http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -10,6 +9,7 @@ import { AppComponent } from './app.component';
 import { CentrocustoModule } from './centrocusto/centrocusto.module';
 import { CoreModule } from './core/core.module';
 import { AppRoutingModule } from './app-routing.module';
+import { AuthInterceptor } from './seguranca/auth-interceptor';
 import { SegurancaModule } from './seguranca/seguranca.module';
 
 
@@ -31,7 +31,7 @@ import { SegurancaModule } from './seguranca/seguranca.module';
     AppRoutingModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }],
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
