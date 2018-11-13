@@ -34,7 +34,6 @@ export class MoneyHttp extends HttpClient {
   }
 
   public get<T>(url: string, options?: any): Observable<T> {
-    console.log('go');
     return this.fazerRequisicao<T>(() => super.get<T>(url, options));
   }
 
@@ -61,7 +60,6 @@ export class MoneyHttp extends HttpClient {
 
       return observableFromPromise(newAccessToken);
     } else {
-      console.log('go go: ' + fn);
       return fn();
     }
   }
