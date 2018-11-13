@@ -75,8 +75,7 @@ export class AuthService {
 
   isAccessTokenInvalido() {
     const token = localStorage.getItem('token');
-    console.log('Token: ' + token);
-    console.log('Token expired: ' + this.jwtHelper.isTokenExpired);
+    console.log('Token expired: ' + this.jwtHelper.isTokenExpired(token));
     return !token || this.jwtHelper.isTokenExpired(token);
   }
 
@@ -96,13 +95,11 @@ export class AuthService {
 
   private armazenarToken(token: string) {
     this.jwtPayload = this.jwtHelper.decodeToken(token);
-    console.log('Set token: ' + token);
     localStorage.setItem('token', token);
   }
 
   private carregarToken() {
     const token = localStorage.getItem('token');
-    console.log('Carrega token: ' + token);
     if (token) {
       this.armazenarToken(token);
     }
