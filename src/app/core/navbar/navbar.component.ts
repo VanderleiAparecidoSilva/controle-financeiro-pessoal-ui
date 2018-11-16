@@ -42,7 +42,7 @@ export class NavbarComponent implements OnInit {
           icon: 'fa fa-keyboard-o',
           items: [
               {label: 'Centro de Custo', icon: 'fa fa-sitemap', routerLink: '/centrocusto'},
-              {label: 'Conta Bancária', icon: 'fa fa-address-card-o'}
+              {label: 'Conta Bancária', icon: 'fa fa-address-card-o', routerLink: '/contabancaria'}
           ]
       },
       {

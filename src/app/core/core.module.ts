@@ -1,8 +1,10 @@
+import { ContabancariaService } from './../contabancaria/contabancaria.service';
 import { NgModule, LOCALE_ID } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import localePt from '@angular/common/locales/pt';
 
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
@@ -21,6 +23,8 @@ import { AuthService } from './../seguranca/auth.service';
 import { UsuarioService } from '../seguranca/usuario.service';
 import { MoneyHttp } from '../seguranca/money-http';
 import { NaoAutorizadoComponent } from './nao-autorizado.component';
+
+registerLocaleData(localePt);
 
 @NgModule({
   imports: [
@@ -47,6 +51,7 @@ import { NaoAutorizadoComponent } from './nao-autorizado.component';
   providers: [
     MoneyHttp,
     CentrocustoService,
+    ContabancariaService,
     ErrorHandlerService,
     JwtHelperService,
     AuthService,
@@ -55,6 +60,7 @@ import { NaoAutorizadoComponent } from './nao-autorizado.component';
     ConfirmationService,
     MessageService,
     Title,
+
     { provide: LOCALE_ID, useValue: 'pt-BR' }
   ]
 })

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpParams, HttpHeaders } from '@angular/common/http';
 
-import { CentroCustoDTO } from 'src/models/domain/centrocusto.dto';
 import { MoneyHttp } from '../seguranca/money-http';
-import { AuthService } from './../seguranca/auth.service';
+import { AuthService } from '../seguranca/auth.service';
 import { environment } from 'src/environments/environment';
+import { ContaBancariaDTO } from './../../models/domain/contabancaria.dto';
 import { api_dominio } from 'src/environments/api.dominio';
 
 export class Filter {
@@ -15,7 +15,7 @@ export class Filter {
 @Injectable({
   providedIn: 'root'
 })
-export class CentrocustoService {
+export class ContabancariaService {
 
   constructor(
     private httpClient: MoneyHttp,
@@ -28,7 +28,7 @@ export class CentrocustoService {
         .set('email', this.auth.jwtPayload.user_name)
         .set('page', filter.page.toString())
         .set('linesPerPage', filter.linesPerPage.toString())};
-    return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.centroCusto}`, httpOptions)
+    return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.contaBancaria}`, httpOptions)
       .toPromise()
       .then( response => {
         const obj = response.content;
@@ -50,7 +50,7 @@ export class CentrocustoService {
         .set('linesPerPage', filter.linesPerPage.toString())
         .set('nome', nome)
         .set('ativo', ativo)};
-    return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.centroCusto}/email/nome`, httpOptions)
+    return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.contaBancaria}/email/nome`, httpOptions)
       .toPromise()
       .then( response => {
         const obj = response.content;
@@ -64,40 +64,40 @@ export class CentrocustoService {
       });
   }
 
-  findById(id: string): Promise<CentroCustoDTO> {
+  findById(id: string): Promise<ContaBancariaDTO> {
     const httpOptions = {
       headers: new HttpHeaders()
         .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
     };
 
-    return this.httpClient.get<CentroCustoDTO>(
-      `${environment.apiUrl}${api_dominio.centroCusto}/${this.auth.jwtPayload.user_name}/${id}`, httpOptions)
+    return this.httpClient.get<ContaBancariaDTO>(
+      `${environment.apiUrl}${api_dominio.contaBancaria}/${this.auth.jwtPayload.user_name}/${id}`, httpOptions)
       .toPromise()
       .then( response => {
         return response;
       });
   }
 
-  save(obj: CentroCustoDTO): Promise<CentroCustoDTO> {
+  save(obj: ContaBancariaDTO): Promise<ContaBancariaDTO> {
     const httpOptions = {
       headers: new HttpHeaders()
         .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
         .set('Content-Type', 'application/json')
     };
-    return this.httpClient.post<CentroCustoDTO>(`${environment.apiUrl}${api_dominio.centroCusto}`,
+    return this.httpClient.post<ContaBancariaDTO>(`${environment.apiUrl}${api_dominio.contaBancaria}`,
       JSON.stringify(obj), httpOptions)
       .toPromise()
       .then(response => response);
   }
 
-  update(obj: CentroCustoDTO): Promise<CentroCustoDTO> {
+  update(obj: ContaBancariaDTO): Promise<ContaBancariaDTO> {
     const httpOptions = {
       headers: new HttpHeaders()
         .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
         .set('Content-Type', 'application/json')
     };
-    return this.httpClient.put<CentroCustoDTO>(
-      `${environment.apiUrl}${api_dominio.centroCusto}/${this.auth.jwtPayload.user_name}/${obj.id}`,
+    return this.httpClient.put<ContaBancariaDTO>(
+      `${environment.apiUrl}${api_dominio.contaBancaria}/${this.auth.jwtPayload.user_name}/${obj.id}`,
       JSON.stringify(obj), httpOptions)
       .toPromise()
       .then(response => response);
@@ -111,7 +111,7 @@ export class CentrocustoService {
         .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
         .set('Content-Type', 'application/json')
     };
-    return this.httpClient.post<void>(`${environment.apiUrl}${api_dominio.centroCusto}/upload`,
+    return this.httpClient.post<void>(`${environment.apiUrl}${api_dominio.contaBancaria}/upload`,
       obj, httpOptions)
       .toPromise()
       .then(() => null);
@@ -119,13 +119,13 @@ export class CentrocustoService {
 
   enableById(id: string): Promise<void> {
     return this.httpClient.put<void>(
-      `${environment.apiUrl}${api_dominio.centroCusto}/ativar/${id}/${this.auth.jwtPayload.user_name}`, null)
+      `${environment.apiUrl}${api_dominio.contaBancaria}/ativar/${id}/${this.auth.jwtPayload.user_name}`, null)
       .toPromise();
   }
 
   disableById(id: string): Promise<void> {
     return this.httpClient.put<void>(
-      `${environment.apiUrl}${api_dominio.centroCusto}/desativar/${id}/${this.auth.jwtPayload.user_name}`, null)
+      `${environment.apiUrl}${api_dominio.contaBancaria}/desativar/${id}/${this.auth.jwtPayload.user_name}`, null)
       .toPromise();
   }
 }

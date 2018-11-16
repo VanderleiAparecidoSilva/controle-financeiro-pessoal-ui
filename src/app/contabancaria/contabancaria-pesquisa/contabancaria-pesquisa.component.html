@@ -26,8 +26,9 @@
             <tr>
               <th style="width: 3em"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
               <th>Nome</th>
-              <th class="col-receita-header">Aplicar na Receita</th>
-              <th class="col-despesa-header">Aplicar na Despesa</th>
+              <th class="col-receita-header">Número</th>
+              <th class="col-despesa-header">Limite</th>
+              <th class="col-despesa-header">Saldo</th>
               <th class="col-acoes-header"></th>
             </tr>
           </ng-template>
@@ -36,11 +37,12 @@
             <tr [pSelectableRow]="rowData" [style.background]="rowData.ativo === false ? '#C48F8F' : null">
               <td><p-tableCheckbox [value]="rowData"></p-tableCheckbox></td>
               <td class="ui-resizable-column">{{ rowData.nome }}</td>
-              <td class="ui-resizable-column, col-receita">{{ rowData.aplicarNaReceita ? 'Sim' : 'Não' }}</td>
-              <td class="ui-resizable-column, col-despesa">{{ rowData.aplicarNaDespesa ? 'Sim' : 'Não' }}</td>
+              <td class="ui-resizable-column, col-receita">{{ rowData.numeroContaBancaria }}</td>
+              <td class="ui-resizable-column, col-despesa">{{ rowData.limiteContaBancaria | currency:'BRL':true:'1.2-2' }}</td>
+              <td class="ui-resizable-column, col-despesa">{{ rowData.saldoContaBancaria | currency:'BRL':true:'1.2-2' }}</td>
               <td class="ui-resizable-column, col-acoes">
                 <a pButton icon="fa fa-pencil" pTooltip="Editar" tooltipPosition="top" style="margin-right:5px"
-                  [routerLink]="['/centrocusto', rowData.id]"></a>
+                  [routerLink]="['/contabancaria', rowData.id]"></a>
                 <button pButton icon="fa fa-eye" pTooltip="Ativar" tooltipPosition="top"
                   style="margin-right:5px" (click)="enable(rowData)" [disabled]="rowData.ativo === true"></button>
                 <button pButton icon="fa fa-eye-slash" pTooltip="Desativar" tooltipPosition="top"
@@ -61,7 +63,7 @@
       <div class="ui-g-12">
         <p-toolbar>
           <div class="ui-toolbar-group-left">
-            <a pButton type="button" label="Novo" icon="pi pi-plus" routerLink="/centrocusto/novo"></a>
+            <a pButton type="button" label="Novo" icon="pi pi-plus" routerLink="/contabancaria/novo"></a>
             <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
             <button pButton type="button" label="Desmarcar todos" icon="pi pi-warning"
               class="ui-button-success" (click)="uncheckAll()" [disabled]="qtdSelectedRows == 0"></button>

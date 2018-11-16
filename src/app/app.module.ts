@@ -1,3 +1,4 @@
+import { ContabancariaModule } from './contabancaria/contabancaria.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -26,6 +27,7 @@ import { SegurancaModule } from './seguranca/seguranca.module';
 
     CoreModule,
     CentrocustoModule,
+    ContabancariaModule,
     SegurancaModule,
 
     AppRoutingModule

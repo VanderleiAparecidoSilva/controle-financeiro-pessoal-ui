@@ -10,7 +10,8 @@ import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 
 @Component({
   selector: 'app-centrocusto-pesquisa',
-  templateUrl: './centrocusto-pesquisa.component.html'
+  templateUrl: './centrocusto-pesquisa.component.html',
+  styleUrls: ['./centrocusto-pesquisa.component.css']
 })
 export class CentrocustoPesquisaComponent implements OnInit {
 
@@ -38,7 +39,7 @@ export class CentrocustoPesquisaComponent implements OnInit {
     private title: Title) { }
 
   ngOnInit() {
-    this.title.setTitle(`${environment.childTitle} Pesquisa de Centro de Custos`);
+    this.title.setTitle(`${environment.childTitle} Pesquisa de ${this.entityName}`);
 
     this.cols = [
       { field: 'nome', header: 'Nome' },
