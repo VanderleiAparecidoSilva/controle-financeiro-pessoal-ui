@@ -96,9 +96,6 @@ export class CentrocustoService {
         .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
         .set('Content-Type', 'application/json')
     };
-    console.log('Editando');
-    console.log(`${environment.apiUrl}${api_dominio.centroCusto}/${this.auth.jwtPayload.user_name}/${obj.id}`);
-    console.log(JSON.stringify(obj));
     return this.httpClient.put<CentroCustoDTO>(
       `${environment.apiUrl}${api_dominio.centroCusto}/${this.auth.jwtPayload.user_name}/${obj.id}`,
       JSON.stringify(obj), httpOptions)
