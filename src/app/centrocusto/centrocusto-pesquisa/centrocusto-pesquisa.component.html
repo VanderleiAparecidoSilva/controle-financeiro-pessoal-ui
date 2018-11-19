@@ -63,14 +63,20 @@
           <div class="ui-toolbar-group-left">
             <a pButton type="button" label="Novo" icon="pi pi-plus" routerLink="/centrocusto/novo"></a>
             <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
-            <button pButton type="button" label="Desmarcar todos" icon="pi pi-warning"
+            <button pButton type="button" label="Desmarcar todos" icon="fa fa-square-o"
               class="ui-button-success" (click)="uncheckAll()" [disabled]="qtdSelectedRows == 0"></button>
           </div>
           <div class="ui-toolbar-group-right">
             <p-fileUpload #uploader mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload"
               accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploader)"
-              pTooltip="Importar Arquivo" tooltipPosition="left">
+              pTooltip="Importar Arquivo" tooltipPosition="right">
             </p-fileUpload>
+          </div>
+          <div class="ui-toolbar-group-right">
+            <button pButton type="button" label="Download de Exemplo" icon="fa fa-file-text"
+              class="ui-button-raised" (click)="downloadExampleCSV({type: 'CC', filename: 'centro_custo.csv'})"
+              pTooltip="Fazer download de arquivo de exemplo" tooltipPosition="left">
+            </button>
           </div>
         </p-toolbar>
       </div>

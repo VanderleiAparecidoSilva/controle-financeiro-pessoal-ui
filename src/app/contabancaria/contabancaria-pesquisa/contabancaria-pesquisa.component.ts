@@ -168,6 +168,16 @@ export class ContabancariaPesquisaComponent implements OnInit {
       }
     }
 
+    downloadExampleCSV(args) {
+      let csv = 'Tipo;Nome;Numero;Limite;Saldo;Vincular Saldo no Total;Atualizar Saldo na Baixa de Titulos\n';
+      csv += args.type + ';;;;;;';
+      const hiddenElement = document.createElement('a');
+      hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+      hiddenElement.target = '_blank';
+      hiddenElement.download = args.filename;
+      hiddenElement.click();
+    }
+
     uploadFile(file, uploader) {
       const reader: FileReader = new FileReader();
       reader.readAsText(file);

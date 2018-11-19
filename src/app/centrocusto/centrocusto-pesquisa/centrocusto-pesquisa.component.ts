@@ -166,6 +166,16 @@ export class CentrocustoPesquisaComponent implements OnInit {
     }
   }
 
+  downloadExampleCSV(args) {
+    let csv = 'Tipo;Nome;Aplica na Receita;Aplica na Despesa\n';
+    csv += args.type + ';;;';
+    const hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = args.filename;
+    hiddenElement.click();
+  }
+
   uploadFile(file, uploader) {
     const reader: FileReader = new FileReader();
     reader.readAsText(file);
