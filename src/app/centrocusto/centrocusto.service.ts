@@ -53,6 +53,18 @@ export class CentrocustoService {
       });
   }
 
+  findAllActiveByType(tipo: any): Promise<any> {
+    const httpOptions = {
+      params: new HttpParams()
+        .set('email', this.auth.jwtPayload.user_name)
+        .set('tipo', tipo)};
+    return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.centroCusto}/ativos/tipo`, httpOptions)
+      .toPromise()
+      .then( response => {
+        return response;
+      });
+  }
+
   findByName(filter: Filter, nome: string, ativo: string): Promise<any> {
     const httpOptions = {
       params: new HttpParams()

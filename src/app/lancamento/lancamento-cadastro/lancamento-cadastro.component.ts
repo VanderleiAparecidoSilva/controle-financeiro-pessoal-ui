@@ -28,8 +28,8 @@ export class LancamentoCadastroComponent implements OnInit {
   contaBancariaSelecionadas: any[];
 
   tipos = [
-    { label: 'Receita', value: 'RECEITA' },
-    { label: 'Despesa', value: 'DESPESA' }
+    { label: 'Receita', value: '2' },
+    { label: 'Despesa', value: '1' }
   ];
 
   constructor(
@@ -46,11 +46,19 @@ export class LancamentoCadastroComponent implements OnInit {
 
   ngOnInit() {
     this.title.setTitle(`${environment.childTitle} Cadastro de ${this.entityName}`);
-      const idEntity = this.route.snapshot.params['id'];
+    const idEntity = this.route.snapshot.params['id'];
 
-      if (idEntity) {
-        this.loadEntity(idEntity);
+    if (idEntity) {
+      this.loadEntity(idEntity);
+    } else {
+      if (this.router.url === '/lancamento/nova/receita') {
+        this.entity.tipo.codigo = 2;
+        this.entity.tipo.descricao = 'RECEITA';
+      } else if (this.router.url === '/lancamento/nova/despesa') {
+        this.entity.tipo.codigo = 1;
+        this.entity.tipo.descricao = 'DESPESA';
       }
+    }
   }
 
   loadEntity(id: string) {
@@ -70,9 +78,9 @@ export class LancamentoCadastroComponent implements OnInit {
     return Boolean(this.entity.id);
   }
 
-  filtrarListaCentroCusto(event) {
+  filtrarListaCentroCustoPorTipo(event) {
     const query = event.query;
-    this.centroCustoService.findAllActive().then(data => {
+    this.centroCustoService.findAllActiveByType(this.entity.tipo.codigo).then(data => {
         this.centroCustoSelecionados = this.filtrarRegistro(query, data);
     });
   }

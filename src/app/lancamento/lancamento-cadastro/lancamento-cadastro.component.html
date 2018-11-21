@@ -5,17 +5,17 @@
         <h1>{{onEdit ? 'Editar' : 'Novo'}} {{ entityName }}</h1>
       </div>
       <div class="ui-g-12">
-        <p-selectButton [options]="tipos" #tipo name="tipo" #tipo="ngModel" required [(ngModel)]="entity.tipo.descricao"></p-selectButton>
+        <p-selectButton [options]="tipos" #tipo name="tipo" #tipo="ngModel" required [(ngModel)]="entity.tipo.codigo"></p-selectButton>
       </div>
       <div class="ui-g-12 ui-md-6 ui-fluid">
-        <label>Nome</label>
-        <input pInputText type="text" name="nome" style="text-transform:uppercase;"
-          required minlength="5" [(ngModel)]="entity.nome.nome" #nome="ngModel" autofocus>
+        <label>Descrição</label>
+        <input pInputText type="text" name="descricao" style="text-transform:uppercase;"
+          required minlength="5" [(ngModel)]="entity.nome.nome" #descricao="ngModel" autofocus>
       </div>
       <div class="ui-g-12 ui-md-6 ui-fluid">
         <label>Centro de Custo</label>
         <p-autoComplete name="centroCusto" [(ngModel)]="entity.centroCusto.nome" [suggestions]="centroCustoSelecionados"
-          (completeMethod)="filtrarListaCentroCusto($event)" field="nome" [size]="30" [minLength]="1"
+          (completeMethod)="filtrarListaCentroCustoPorTipo($event)" field="nome" [size]="30" [minLength]="1"
           #centroCusto="ngModel" required placeholder="Digite o nome do centro de custo" ></p-autoComplete>
       </div>
       <div class="ui-g-3 ui-fluid">
