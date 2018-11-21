@@ -41,34 +41,21 @@ export class NavbarComponent implements OnInit {
           label: 'Cadastros',
           icon: 'fa fa-keyboard-o',
           items: [
-              {label: 'Centro de Custo', icon: 'fa fa-sitemap', routerLink: '/centrocusto'},
-              {label: 'Conta Bancária', icon: 'fa fa-address-card-o', routerLink: '/contabancaria'}
+            {label: 'Centro de Custo', icon: 'fa fa-sitemap', routerLink: '/centrocusto'},
+            {label: 'Conta Bancária', icon: 'fa fa-address-card-o', routerLink: '/contabancaria'}
           ]
       },
       {
           label: 'Lançamentos',
           icon: 'fa fa-wpforms',
           items: [
+              {label: 'Contas à Receber', icon: 'fa fa-plus-circle', routerLink: '/lancamento'},
+              {label: 'Contas à Pagar', icon: 'fa fa-minus-circle', routerLink: '/lancamento'},
               {
-                  label: 'Contas à Receber',
-                  icon: 'fa fa-plus-circle'
-              },
-              {
-                label: 'Contas à Pagar',
-                icon: 'fa fa-minus-circle'
-              },
-              {
-                  label: 'Múltiplo',
-                  icon: 'fa fa-object-group',
+                  label: 'Múltiplo', icon: 'fa fa-object-group',
                   items: [
-                    {
-                        label: 'Contas à Receber',
-                        icon: 'fa fa-plus-circle'
-                    },
-                    {
-                      label: 'Contas à Pagar',
-                      icon: 'fa fa-minus-circle'
-                    }
+                    {label: 'Contas à Receber', icon: 'fa fa-plus-circle', routerLink: '/lancamento'},
+                    {label: 'Contas à Pagar', icon: 'fa fa-minus-circle', routerLink: '/lancamento'}
               ]}
           ]
       },
