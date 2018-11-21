@@ -16,7 +16,7 @@
         <label>Centro de Custo</label>
         <p-autoComplete name="centroCusto" [(ngModel)]="entity.centroCusto.nome" [suggestions]="centroCustoSelecionados"
           (completeMethod)="filtrarListaCentroCusto($event)" field="nome" [size]="30" [minLength]="1"
-          #centroCusto="ngModel" required></p-autoComplete>
+          #centroCusto="ngModel" required placeholder="Digite o nome do centro de custo" ></p-autoComplete>
       </div>
       <div class="ui-g-3 ui-fluid">
         <label>Vencimento</label>
@@ -41,7 +41,8 @@
       <div class="ui-g-12 ui-fluid">
         <label>Conta Bancária</label>
         <p-autoComplete name="contaBancaria" [(ngModel)]="entity.contaBancaria.nome" [suggestions]="contaBancariaSelecionadas"
-          (completeMethod)="filtrarListaContaBancaria($event)" field="nome" [size]="30" [minLength]="1"></p-autoComplete>
+          (completeMethod)="filtrarListaContaBancaria($event)" field="nome" [size]="30" [minLength]="1"
+          placeholder="Digite o nome da conta bancária"></p-autoComplete>
       </div>
       <div class="ui-g-12 ui-fluid">
         <label>Observação</label>
