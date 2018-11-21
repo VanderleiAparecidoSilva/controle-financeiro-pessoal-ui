@@ -99,7 +99,7 @@ export class ContabancariaCadastroComponent implements OnInit {
         this.entity = new ContaBancariaDTO();
       }.bind(this), 1);
 
-      this.router.navigate(['/contabancaria/novo']);
+      this.router.navigate(['/contabancaria/nova']);
     }
 
     getUser(): UsuarioDTO {

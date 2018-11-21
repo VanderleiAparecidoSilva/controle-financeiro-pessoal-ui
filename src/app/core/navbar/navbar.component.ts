@@ -49,14 +49,14 @@ export class NavbarComponent implements OnInit {
           label: 'Lançamentos',
           icon: 'fa fa-wpforms',
           items: [
-              {label: 'Contas à Receber', icon: 'fa fa-plus-circle', routerLink: '/lancamento'},
-              {label: 'Contas à Pagar', icon: 'fa fa-minus-circle', routerLink: '/lancamento'},
-              {
-                  label: 'Múltiplo', icon: 'fa fa-object-group',
-                  items: [
-                    {label: 'Contas à Receber', icon: 'fa fa-plus-circle', routerLink: '/lancamento'},
-                    {label: 'Contas à Pagar', icon: 'fa fa-minus-circle', routerLink: '/lancamento'}
-              ]}
+              {label: 'Contas à Receber', icon: 'fa fa-plus-circle', routerLink: '/lancamento/nova/receita'},
+              {label: 'Contas à Pagar', icon: 'fa fa-minus-circle', routerLink: '/lancamento/nova/despesa'},
+              // {
+              //     label: 'Múltiplo', icon: 'fa fa-object-group',
+              //     items: [
+              //       {label: 'Contas à Receber', icon: 'fa fa-plus-circle', routerLink: '/lancamento/novo'},
+              //       {label: 'Contas à Pagar', icon: 'fa fa-minus-circle', routerLink: '/lancamento/novo'}
+              // ]}
           ]
       },
       {

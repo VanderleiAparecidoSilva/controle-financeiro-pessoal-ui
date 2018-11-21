@@ -1,3 +1,66 @@
-<p>
-  lancamento-cadastro works!
-</p>
+<div class="container">
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="save(f)">
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <h1>{{onEdit ? 'Editar' : 'Novo'}} {{ entityName }}</h1>
+      </div>
+      <div class="ui-g-12">
+        <p-selectButton [options]="tipos" #tipo name="tipo" #tipo="ngModel" required [(ngModel)]="entity.tipo.descricao"></p-selectButton>
+      </div>
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Nome</label>
+        <input pInputText type="text" name="nome" style="text-transform:uppercase;"
+          required minlength="5" [(ngModel)]="entity.nome.nome" #nome="ngModel" autofocus>
+      </div>
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Centro de Custo</label>
+        <p-autoComplete name="centroCusto" [(ngModel)]="entity.centroCusto.nome" [suggestions]="centroCustoSelecionados"
+          (completeMethod)="filtrarListaCentroCusto($event)" field="nome" [size]="30" [minLength]="1"
+          #centroCusto="ngModel" required></p-autoComplete>
+      </div>
+      <div class="ui-g-3 ui-fluid">
+        <label>Vencimento</label>
+        <p-calendar required #vencimento="ngModel" name="vencimento" [(ngModel)]="entity.vencimento" dateFormat="dd/mm/yy" showIcon="true"></p-calendar>
+      </div>
+      <div class="ui-g-3 ui-fluid">
+        <label>Valor da Parcela</label>
+        <input pInputText type="text" name="valorParcela" style="text-transform:uppercase;" required #valorParcela="ngModel"
+          [(ngModel)]="entity.valorParcela" placeholder="0,00"
+          currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }">
+      </div>
+      <div class="ui-g-3 ui-fluid">
+        <label>Quantidade de Parcelas</label>
+        <p-spinner [(ngModel)]="entity.quantidadeTotalParcelas" [min]="1" [max]="1000"
+          name="quantidadeParcelas" required #qtdParcela="ngModel"></p-spinner>
+      </div>
+      <div class="ui-g-3 ui-fluid">
+        <label>Total</label>
+        <input pInputText type="text" name="total" style="text-transform:uppercase;" disabled="true"
+          placeholder="0,00" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }">
+      </div>
+      <div class="ui-g-12 ui-fluid">
+        <label>Conta Bancária</label>
+        <p-autoComplete name="contaBancaria" [(ngModel)]="entity.contaBancaria.nome" [suggestions]="contaBancariaSelecionadas"
+          (completeMethod)="filtrarListaContaBancaria($event)" field="nome" [size]="30" [minLength]="1"></p-autoComplete>
+      </div>
+      <div class="ui-g-12 ui-fluid">
+        <label>Observação</label>
+        <textarea pInputTextarea rows="10" type="text" name="observacao" style="text-transform:uppercase;"
+         [(ngModel)]="entity.observacao"></textarea>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <p-toolbar>
+        <div class="ui-toolbar-group-left">
+          <button pButton type="submit" label="Salvar" icon="fa fa-check" [disabled]="f.invalid"></button>
+          <button pButton type="button" label="Novo" icon="pi pi-plus" class="ui-button-success"
+            (click)="newEntity(f)"></button>
+        </div>
+        <div class="ui-toolbar-group-right">
+          <a pButton type="button" label="Voltar" icon="fa fa-reply" class="ui-button-warning"
+            [routerLink]="['/lancamentos']" pTooltip="Voltar para pesquisa" tooltipPosition="left"></a>
+        </div>
+      </p-toolbar>
+      </div>
+  </form>
+</div>

@@ -42,6 +42,17 @@ export class ContabancariaService {
       });
   }
 
+  findAllActive(): Promise<any> {
+    const httpOptions = {
+      params: new HttpParams()
+        .set('email', this.auth.jwtPayload.user_name)};
+    return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.contaBancaria}/ativos`, httpOptions)
+      .toPromise()
+      .then( response => {
+        return response;
+      });
+  }
+
   findByName(filter: Filter, nome: string, ativo: string): Promise<any> {
     const httpOptions = {
       params: new HttpParams()

@@ -6,7 +6,13 @@ import { AuthGuard } from '../seguranca/auth.guard';
 
 const routes: Routes = [
   {
-    path: 'lancamento',
+    path: 'lancamento/nova/receita',
+    component: LancamentoCadastroComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['ROLE_CADASTRAR_LANCAMENTO'] }
+  },
+  {
+    path: 'lancamento/nova/despesa',
     component: LancamentoCadastroComponent,
     canActivate: [AuthGuard],
     data: { roles: ['ROLE_CADASTRAR_LANCAMENTO'] }

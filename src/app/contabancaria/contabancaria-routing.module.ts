@@ -13,7 +13,7 @@ const routes: Routes = [
     data: { roles: ['ROLE_PESQUISAR_CONTABANCARIA'] }
   },
   {
-    path: 'contabancaria/novo',
+    path: 'contabancaria/nova',
     component: ContabancariaCadastroComponent,
     canActivate: [AuthGuard],
     data: { roles: ['ROLE_CADASTRAR_CONTABANCARIA'] }
