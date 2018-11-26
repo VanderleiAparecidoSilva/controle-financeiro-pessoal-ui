@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 
-import { MessageService } from 'primeng/api';
+import { MessageService, SelectItem } from 'primeng/api';
 
 import { environment } from 'src/environments/environment';
 import { LancamentoDTO } from './../../../models/domain/lancamento.dto';
@@ -24,13 +24,13 @@ export class LancamentoCadastroComponent implements OnInit {
   entityName = 'Lançamento';
   entity = new LancamentoDTO();
 
+  calendarPortuguese: any;
   centroCustoSelecionados: any[];
   contaBancariaSelecionadas: any[];
+  types: SelectItem[];
 
-  tipos = [
-    { label: 'Receita', value: '2' },
-    { label: 'Despesa', value: '1' }
-  ];
+  typeChecked: boolean;
+  totalValue = 0;
 
   constructor(
     private service: LancamentoService,
@@ -47,18 +47,21 @@ export class LancamentoCadastroComponent implements OnInit {
   ngOnInit() {
     this.title.setTitle(`${environment.childTitle} Cadastro de ${this.entityName}`);
     const idEntity = this.route.snapshot.params['id'];
-
     if (idEntity) {
       this.loadEntity(idEntity);
     } else {
       if (this.router.url === '/lancamento/nova/receita') {
-        this.entity.tipo.codigo = 2;
-        this.entity.tipo.descricao = 'RECEITA';
+        this.entity.tipo = 'RECEITA';
       } else if (this.router.url === '/lancamento/nova/despesa') {
-        this.entity.tipo.codigo = 1;
-        this.entity.tipo.descricao = 'DESPESA';
+        this.entity.tipo = 'DESPESA';
       }
     }
+
+    this.types = [];
+    this.types.push({label: 'Receita', value: 'RECEITA', icon: 'fa fa-plus-circle'});
+    this.types.push({label: 'Despesa', value: 'DESPESA', icon: 'fa fa-minus-circle'});
+
+    this.defineCalendarPortuguese();
   }
 
   loadEntity(id: string) {
@@ -71,7 +74,7 @@ export class LancamentoCadastroComponent implements OnInit {
   }
 
   updateEditTitle() {
-    this.title.setTitle(`${environment.childTitle} Alteração de ${this.entityName}: ${this.entity.nome}`);
+    this.title.setTitle(`${environment.childTitle} Alteração de ${this.entityName}: ${this.entity.descricao}`);
   }
 
   get onEdit() {
@@ -80,7 +83,7 @@ export class LancamentoCadastroComponent implements OnInit {
 
   filtrarListaCentroCustoPorTipo(event) {
     const query = event.query;
-    this.centroCustoService.findAllActiveByType(this.entity.tipo.codigo).then(data => {
+    this.centroCustoService.findAllActiveByType(this.entity.tipo).then(data => {
         this.centroCustoSelecionados = this.filtrarRegistro(query, data);
     });
   }
@@ -140,11 +143,9 @@ export class LancamentoCadastroComponent implements OnInit {
 
   newEntity(form: FormControl) {
     form.reset();
-
     setTimeout(function() {
       this.entity = new LancamentoDTO();
     }.bind(this), 1);
-
     this.router.navigate(['/lancamento/nova/receita']);
   }
 
@@ -155,5 +156,49 @@ export class LancamentoCadastroComponent implements OnInit {
     user.senha = this.auth.jwtPayload.password;
 
     return user;
+  }
+
+  optionClick(event) {
+    this.defineTipo(event.option.value);
+    if (event.option.value !== this.entity.tipo) {
+      this.typeChecked = false;
+      const handleEvent: any = { 'checked' : 'false' };
+      handleEvent.checked = false;
+      this.handleChange(handleEvent);
+    }
+  }
+
+  defineTipo(description) {
+    this.entity.tipo = description;
+  }
+
+  handleChange(event) {
+    if (event.checked) {
+      if (this.entity.tipo === 'RECEITA') {
+        this.entity.status = 'RECEBIDO';
+      } else if (this.entity.tipo === 'DESPESA') {
+        this.entity.status = 'PAGO';
+      }
+    } else {
+      this.entity.status = 'ABERTO';
+    }
+  }
+
+  onSpinnerChangeEvent(event) {
+    this.totalValue = this.entity.valorParcela * this.entity.quantidadeTotalParcelas;
+  }
+
+  defineCalendarPortuguese() {
+    this.calendarPortuguese = {
+      firstDayOfWeek: 0,
+      dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+      dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+      dayNamesMin: ['Do', 'Se', 'Te', 'Qa', 'Qi', 'Se', 'Sa'],
+      monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro',
+        'Outubro', 'Novembro', 'Dezembro'],
+      monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+      today: 'Hoje',
+      clear: 'Limpar'
+    };
   }
 }

@@ -7,6 +7,11 @@ import { LancamentoDTO } from './../../models/domain/lancamento.dto';
 import { environment } from 'src/environments/environment';
 import { api_dominio } from 'src/environments/api.dominio';
 
+export class Filter {
+  page = 0;
+  linesPerPage = 20;
+}
+
 @Injectable({
   providedIn: 'root'
 })

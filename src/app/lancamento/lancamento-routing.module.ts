@@ -1,3 +1,4 @@
+import { LancamentoPesquisaComponent } from './lancamento-pesquisa/lancamento-pesquisa.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -5,6 +6,12 @@ import { LancamentoCadastroComponent } from './lancamento-cadastro/lancamento-ca
 import { AuthGuard } from '../seguranca/auth.guard';
 
 const routes: Routes = [
+  {
+    path: 'lancamento',
+    component: LancamentoPesquisaComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['ROLE_PESQUISAR_LANCAMENTO'] }
+  },
   {
     path: 'lancamento/nova/receita',
     component: LancamentoCadastroComponent,
