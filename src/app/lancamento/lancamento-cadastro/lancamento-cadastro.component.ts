@@ -120,7 +120,7 @@ export class LancamentoCadastroComponent implements OnInit {
       .then((response) => {
         this.messageService.add({severity: 'success', summary: this.entityName,
           detail: `${this.entityName} cadastrado com sucesso!`});
-        this.router.navigate(['/lancamento', response.id]);
+        this.router.navigate(['/lancamentos', response.id]);
       })
       .catch(error => {
         this.errorHandle.handle(error);

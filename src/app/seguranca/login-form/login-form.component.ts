@@ -33,7 +33,7 @@ export class LoginFormComponent implements OnInit {
   login() {
     this.auth.login(this.creds)
       .then(() => {
-        this.router.navigate(['/lancamento']);
+        this.router.navigate(['/lancamentos']);
       })
       .catch(erro => {
         this.errorHandler.handle(erro);
