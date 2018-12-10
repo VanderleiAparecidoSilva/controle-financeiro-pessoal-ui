@@ -8,9 +8,7 @@ export const environment = {
   bucketApiUrl: 'https://s3-sa-east-1.amazonaws.com/controle-financeiro-pessoal/',
   photoPrefix: 'up_',
   defaultTitle: 'Controle Financeiro - By Vanderlei',
-  childTitle: 'CF - ',
-  tokenWhitelistedDomains: ['localhost:8080'],
-  tokenBlacklistedRoutes: [new RegExp('\/oauth\/token')]
+  childTitle: 'CF - '
 };
 
 /*

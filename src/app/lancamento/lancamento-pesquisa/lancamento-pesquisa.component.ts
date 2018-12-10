@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { LazyLoadEvent } from 'primeng/api';
+import { LazyLoadEvent, SelectItem } from 'primeng/api';
 
 import { LancamentoDTO } from './../../../models/domain/lancamento.dto';
 import { environment } from 'src/environments/environment';
@@ -30,6 +30,10 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   filter = new Filter();
 
+  calendarPortuguese: any;
+
+  types: SelectItem[];
+
   constructor(
     private title: Title
   ) { }
@@ -46,6 +50,12 @@ export class LancamentoPesquisaComponent implements OnInit {
     setTimeout(() => {
       this.loading = true;
     });
+
+    this.types = [];
+    this.types.push({label: 'Sim', value: 'true', icon: 'fa fa-check'});
+    this.types.push({label: 'Não', value: 'false', icon: 'fa fa-times'});
+
+    this.defineCalendarPortuguese();
   }
 
   loadTransactionsLazy(event: LazyLoadEvent) {
@@ -88,6 +98,20 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   onRowUnselect(event) {
     this.qtdSelectedRows--;
+  }
+
+  defineCalendarPortuguese() {
+    this.calendarPortuguese = {
+      firstDayOfWeek: 0,
+      dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+      dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+      dayNamesMin: ['Do', 'Se', 'Te', 'Qa', 'Qi', 'Se', 'Sa'],
+      monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro',
+        'Outubro', 'Novembro', 'Dezembro'],
+      monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+      today: 'Hoje',
+      clear: 'Limpar'
+    };
   }
 
 }

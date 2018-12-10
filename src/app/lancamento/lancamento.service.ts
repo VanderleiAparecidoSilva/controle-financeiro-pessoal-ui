@@ -10,6 +10,10 @@ import { api_dominio } from 'src/environments/api.dominio';
 export class Filter {
   page = 0;
   linesPerPage = 20;
+  dtInicial = null;
+  dtFinal = null;
+  descricaoLancamento: string;
+  somenteTitulosAbertos = true;
 }
 
 @Injectable({

@@ -12,6 +12,8 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import { TableModule } from 'primeng/table';
+import {FieldsetModule} from 'primeng/fieldset';
+import {CheckboxModule} from 'primeng/checkbox';
 
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
@@ -37,6 +39,8 @@ import { LancamentoPesquisaComponent } from './lancamento-pesquisa/lancamento-pe
     AutoCompleteModule,
     InputSwitchModule,
     TableModule,
+    FieldsetModule,
+    CheckboxModule,
 
     LancamentoRoutingModule
   ],
