@@ -32,7 +32,9 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   calendarPortuguese: any;
 
-  types: SelectItem[];
+  typesTitleView: SelectItem[];
+
+  selectedTypeTitleView: String = 'Sim';
 
   constructor(
     private title: Title
@@ -51,9 +53,9 @@ export class LancamentoPesquisaComponent implements OnInit {
       this.loading = true;
     });
 
-    this.types = [];
-    this.types.push({label: 'Sim', value: 'true', icon: 'fa fa-check'});
-    this.types.push({label: 'Não', value: 'false', icon: 'fa fa-times'});
+    this.typesTitleView = [];
+    this.typesTitleView.push({label: 'Sim', value: 'Sim', icon: 'fa fa-check'});
+    this.typesTitleView.push({label: 'Não', value: 'Nao', icon: 'fa fa-times'});
 
     this.defineCalendarPortuguese();
   }

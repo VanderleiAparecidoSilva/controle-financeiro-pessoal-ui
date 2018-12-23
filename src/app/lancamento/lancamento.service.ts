@@ -13,7 +13,7 @@ export class Filter {
   dtInicial = null;
   dtFinal = null;
   descricaoLancamento: string;
-  somenteTitulosAbertos = true;
+  somenteTitulosAbertos = 'Sim';
 }
 
 @Injectable({

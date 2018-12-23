@@ -22,8 +22,8 @@
           </div>
           <div class="ui-g-3 ui-fluid">
             <label>Apenas títulos em aberto</label>
-            <p-selectButton [options]="types" #somenteTituloEmAberto name="somenteTituloEmAberto"
-              #somenteTituloEmAberto="ngModel" [(ngModel)]="filter.somenteTitulosAbertos"></p-selectButton>
+            <p-selectButton [options]="typesTitleView" #somenteTituloEmAberto name="somenteTituloEmAberto"
+              #somenteTituloEmAberto="ngModel" [(ngModel)]="selectedTypeTitleView"></p-selectButton>
           </div>
       </p-fieldset>
     </div>
