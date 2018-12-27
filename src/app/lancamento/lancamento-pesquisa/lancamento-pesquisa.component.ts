@@ -19,13 +19,21 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   cols: any[];
 
-  dataSource: LancamentoDTO[];
+  dataSourceCredit: LancamentoDTO[];
 
-  selectedRow: LancamentoDTO;
+  dataSourceDebit: LancamentoDTO[];
 
-  qtdSelectedRows = 0;
+  selectedRowCredit: LancamentoDTO;
 
-  totalRecords = 0;
+  selectedRowDebit: LancamentoDTO;
+
+  qtdSelectedRowsCredit = 0;
+
+  qtdSelectedRowsDebit = 0;
+
+  totalRecordsCredit = 0;
+
+  totalRecordsDebit = 0;
 
   loading: boolean;
 
@@ -72,7 +80,8 @@ export class LancamentoPesquisaComponent implements OnInit {
 
     setTimeout(function() {
       const page = event.first / event.rows;
-      this.findAll(page);
+      this.findAllReceita(page);
+      this.findAllDespesa(page);
     }.bind(this, 1));
 
     setTimeout(() => {
@@ -82,49 +91,66 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   columnFilter(event: any) {
     if (event.key === 'Enter') {
-      if (event.target.value === '') {
-        this.findAll(this.filter.page);
-      } else {
-        this.findByName(0, event.target.value, 'false');
-      }
+      // if (event.target.value === '') {
+      //   this.findAll(this.filter.page);
+      // } else {
+      //   this.findByName(0, event.target.value, 'false');
+      // }
     }
   }
 
-  findAll(page = 0) {
+  findAllReceita(page = 0) {
     this.filter.page = page;
-    this.service.findAll(this.filter)
+    this.service.findAllCredit(this.filter)
       .then(resultado => {
-        this.dataSource = resultado.obj;
-        this.totalRecords = resultado.totalElements;
+        this.dataSourceCredit = resultado.obj;
+        this.totalRecordsCredit = resultado.totalElements;
       })
       .catch(erro => this.errorHandler.handle(erro));
   }
 
-  findByName(page = 0, nome = '', ativo = 'true') {
+  findAllDespesa(page = 0) {
     this.filter.page = page;
-    // this.service.findByName(this.filter, nome, ativo)
-    //   .then(resultado => {
-    //     this.dataSource = resultado.obj;
-    //     this.totalRecords = resultado.totalElements;
-    //   })
-    //   .catch(erro => this.errorHandler.handle(erro));
+    this.service.findAllDebit(this.filter)
+      .then(resultado => {
+        this.dataSourceDebit = resultado.obj;
+        this.totalRecordsDebit = resultado.totalElements;
+      })
+      .catch(erro => this.errorHandler.handle(erro));
   }
 
-  uncheckAll() {
-    this.selectedRow = null;
-    this.qtdSelectedRows = 0;
+  uncheckAllCredit() {
+    this.selectedRowCredit = null;
+    this.qtdSelectedRowsCredit = 0;
   }
 
-  onRowsSelectUnSelect(event) {
-    event ? this.qtdSelectedRows++ : this.qtdSelectedRows = 0;
+  uncheckAllDebit() {
+    this.selectedRowDebit = null;
+    this.qtdSelectedRowsDebit = 0;
   }
 
-  onRowSelect(event) {
-    this.qtdSelectedRows++;
+  onRowsSelectUnSelectCredit(event) {
+    event ? this.qtdSelectedRowsCredit++ : this.qtdSelectedRowsCredit = 0;
   }
 
-  onRowUnselect(event) {
-    this.qtdSelectedRows--;
+  onRowsSelectUnSelectDebit(event) {
+    event ? this.qtdSelectedRowsDebit++ : this.qtdSelectedRowsDebit = 0;
+  }
+
+  onRowSelectCredit(event) {
+    this.qtdSelectedRowsCredit++;
+  }
+
+  onRowSelectDebit(event) {
+    this.qtdSelectedRowsDebit++;
+  }
+
+  onRowUnselectCredit(event) {
+    this.qtdSelectedRowsCredit--;
+  }
+
+  onRowUnselectDebit(event) {
+    this.qtdSelectedRowsDebit--;
   }
 
   defineCalendarPortuguese() {

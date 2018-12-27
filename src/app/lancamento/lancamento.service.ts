@@ -9,7 +9,7 @@ import { api_dominio } from 'src/environments/api.dominio';
 
 export class Filter {
   page = 0;
-  linesPerPage = 20;
+  linesPerPage = 24;
   dtInicial = null;
   dtFinal = null;
   descricaoLancamento: string;
@@ -40,13 +40,77 @@ export class LancamentoService {
       });
   }
 
-  findAll(filter: Filter): Promise<any> {
+  findAllCredit(filter: Filter): Promise<any> {
     const httpOptions = {
       params: new HttpParams()
         .set('email', this.auth.jwtPayload.user_name)
         .set('page', filter.page.toString())
         .set('linesPerPage', filter.linesPerPage.toString())};
     return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.lancamento}/credito`, httpOptions)
+      .toPromise()
+      .then( response => {
+        const obj = response.content;
+
+        const result = {
+          obj,
+          totalElements: response.totalElements
+        };
+
+        return result;
+      });
+  }
+
+  findAllCreditByPeriod(filter: Filter, dateFrom: Date, dateTo: Date): Promise<any> {
+    const httpOptions = {
+      params: new HttpParams()
+        .set('email', this.auth.jwtPayload.user_name)
+        .set('page', filter.page.toString())
+        .set('linesPerPage', filter.linesPerPage.toString())
+        .set('from', dateFrom.toString())
+        .set('to', dateTo.toString())};
+    return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.lancamento}/credito/periodo`, httpOptions)
+      .toPromise()
+      .then( response => {
+        const obj = response.content;
+
+        const result = {
+          obj,
+          totalElements: response.totalElements
+        };
+
+        return result;
+      });
+  }
+
+  findAllDebit(filter: Filter): Promise<any> {
+    const httpOptions = {
+      params: new HttpParams()
+        .set('email', this.auth.jwtPayload.user_name)
+        .set('page', filter.page.toString())
+        .set('linesPerPage', filter.linesPerPage.toString())};
+    return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.lancamento}/debito`, httpOptions)
+      .toPromise()
+      .then( response => {
+        const obj = response.content;
+
+        const result = {
+          obj,
+          totalElements: response.totalElements
+        };
+
+        return result;
+      });
+  }
+
+  findAllDebitByPeriod(filter: Filter, dateFrom: Date, dateTo: Date): Promise<any> {
+    const httpOptions = {
+      params: new HttpParams()
+        .set('email', this.auth.jwtPayload.user_name)
+        .set('page', filter.page.toString())
+        .set('linesPerPage', filter.linesPerPage.toString())
+        .set('from', dateFrom.toString())
+        .set('to', dateTo.toString())};
+    return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.lancamento}/debito/periodo`, httpOptions)
       .toPromise()
       .then( response => {
         const obj = response.content;

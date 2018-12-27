@@ -16,4 +16,6 @@ export class LancamentoDTO {
   tipo = 'RECEITA';
   usuario = new UsuarioDTO();
   baixa = null;
+  parcelaComTotalParcelas: string;
+  parcelaAtrasada = false;
 }

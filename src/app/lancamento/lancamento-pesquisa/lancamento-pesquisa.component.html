@@ -25,32 +25,35 @@
         </div>
 
         <div class="ui-g">
-            <div class="ui-g-12">
-                <p-table #dt [columns]="cols" [value]="dataSource" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" [(selection)]="selectedRow" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecords"
-                    [loading]="loading" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" (onHeaderCheckboxToggle)="onRowsSelectUnSelect($event.checked)">
+            <div class="ui-g-6">
+                <p-table #dt [columns]="cols" [value]="dataSourceCredit" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" [(selection)]="selectedRowCredit" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecordsCredit"
+                    [loading]="loading" (onRowSelect)="onRowSelectCredit($event)" (onRowUnselect)="onRowUnselectCredit($event)" (onHeaderCheckboxToggle)="onRowsSelectUnSelectCredit($event.checked)">
                     <ng-template pTemplate="caption">
+                        <label class="header-receita-color">RECEITAS</label>
                     </ng-template>
                     <ng-template pTemplate="header" let-columns>
                         <tr>
-                            <th style="width: 3em">
+                            <th class="col-data-header" style="width: 3em">
                                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                             </th>
-                            <th class="col-receita-header">Vencimento</th>
-                            <th class="col-receita-header">Descrição</th>
-                            <th class="col-despesa-header">Valor R$</th>
-                            <th class="col-despesa-header">Parcela</th>
-                            <th class="col-despesa-header">Status</th>
+                            <th class="col-data-header">Vencimento</th>
+                            <th class="col-descricao-header">Descrição</th>
+                            <th class="col-valor-header">Valor</th>
+                            <th class="col-parcela-header">Parcela</th>
+                            <th class="col-status-header">Status</th>
                         </tr>
                     </ng-template>
 
                     <ng-template pTemplate="body" let-rowData let-columns="columns">
-                        <tr [pSelectableRow]="rowData">
-                            <td>
-                                <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                        <tr [pSelectableRow]="rowData" [style.color]="rowData.parcelaAtrasada ? 'red' : 'blue'">
+                            <td class="col-data">
+                              <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                             </td>
-                            <td class="ui-resizable-column">{{ rowData.nome }}</td>
-                            <td class="ui-resizable-column, col-receita">{{ rowData.aplicarNaReceita ? 'Sim' : 'Não' }}</td>
-                            <td class="ui-resizable-column, col-despesa">{{ rowData.aplicarNaDespesa ? 'Sim' : 'Não' }}</td>
+                            <td class="ui-resizable-column, col-data">{{ rowData.vencimento | date: 'dd/MM/yyyy' }}</td>
+                            <td class="ui-resizable-column, col-descricao">{{ rowData.descricao }}</td>
+                            <td class="ui-resizable-column, col-valor">{{ rowData.valorParcela | number:'1.2-2'}}</td>
+                            <td class="ui-resizable-column, col-parcela">{{ rowData.parcelaComTotalParcelas }}</td>
+                            <td class="ui-resizable-column, col-status">{{ rowData.status }}</td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
@@ -62,46 +65,70 @@
                     </ng-template>
                 </p-table>
             </div>
-            <!-- <div class="ui-g-6">
-        <p-table #dt [columns]="cols" [value]="dataSource" [responsive]="true" [resizableColumns]="true" [paginator]="false"
-          [rows]="filter.linesPerPage" [(selection)]="selectedRow" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)"
-          [totalRecords]="totalRecords" [loading]="loading" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
-          (onHeaderCheckboxToggle)="onRowsSelectUnSelect($event.checked)" [globalFilterFields]="['nome']">
-          <ng-template pTemplate="caption">
-          </ng-template>
-          <ng-template pTemplate="header" let-columns>
-            <tr>
-              <th style="width: 3em">
-                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-              </th>
-              <th>Vencimento</th>
-              <th class="col-receita-header">Descrição</th>
-              <th class="col-despesa-header">Valor R$</th>
-              <th class="col-despesa-header">Parcela</th>
-              <th class="col-despesa-header">Status</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr [pSelectableRow]="rowData">
-              <td>
-                <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-              </td>
-              <td class="ui-resizable-column">{{ rowData.nome }}</td>
-              <td class="ui-resizable-column, col-receita">{{ rowData.aplicarNaReceita ? 'Sim' : 'Não' }}</td>
-              <td class="ui-resizable-column, col-despesa">{{ rowData.aplicarNaDespesa ? 'Sim' : 'Não' }}</td>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="emptymessage" let-columns>
-            <tr>
-              <td [attr.colspan]="7">
-                Nenhum registro encontrado
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </div> -->
+            <div class="ui-g-6">
+                <p-table #dt [columns]="cols" [value]="dataSourceDebit" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" [(selection)]="selectedRowDebit" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecordsDebit"
+                    [loading]="loading" (onRowSelect)="onRowSelectDebit($event)" (onRowUnselect)="onRowUnselectDebit($event)" (onHeaderCheckboxToggle)="onRowsSelectUnSelectDebit($event.checked)">
+                    <ng-template pTemplate="caption">
+                      <label class="header-despesa-color">DESPESAS</label>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th class="col-data-header" style="width: 3em">
+                                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                            </th>
+                            <th class="col-data-header">Vencimento</th>
+                            <th class="col-descricao-header">Descrição</th>
+                            <th class="col-valor-header">Valor</th>
+                            <th class="col-parcela-header">Parcela</th>
+                            <th class="col-status-header">Status</th>
+                        </tr>
+                    </ng-template>
 
-            <div class="ui-g-12">
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr [pSelectableRow]="rowData" [style.color]="rowData.parcelaAtrasada ? 'red' : 'blue'">
+                            <td class="col-data">
+                                <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                            </td>
+                            <td class="ui-resizable-column, col-data">{{ rowData.vencimento | date: 'dd/MM/yyyy' }}</td>
+                            <td class="ui-resizable-column, col-descricao">{{ rowData.descricao }}</td>
+                            <td class="ui-resizable-column, col-valor">{{ rowData.valorParcela | number:'1.2-2'}}</td>
+                            <td class="ui-resizable-column, col-parcela">{{ rowData.parcelaComTotalParcelas }}</td>
+                            <td class="ui-resizable-column, col-status">{{ rowData.status }}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                        <tr>
+                            <td [attr.colspan]="6">
+                                Nenhum registro encontrado
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+
+            <div class="ui-g-6">
+                <p-toolbar>
+                    <!-- <div class="ui-toolbar-group-left">
+            <a pButton type="button" label="Novo" icon="pi pi-plus" routerLink="/centrocusto/novo"></a>
+            <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
+            <button pButton type="button" label="Desmarcar todos" icon="fa fa-square-o"
+              class="ui-button-success" (click)="uncheckAll()" [disabled]="qtdSelectedRows == 0"></button>
+          </div> -->
+                    <!-- <div class="ui-toolbar-group-right">
+            <p-fileUpload #uploader mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload"
+              accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploader)"
+              pTooltip="Importar Arquivo" tooltipPosition="right">
+            </p-fileUpload>
+          </div> -->
+                    <!-- <div class="ui-toolbar-group-right">
+            <button pButton type="button" label="Download de Exemplo" icon="fa fa-file-text"
+              class="ui-button-raised" (click)="downloadExampleCSV({type: 'CC', filename: 'centro_custo.csv'})"
+              pTooltip="Fazer download de arquivo de exemplo" tooltipPosition="left">
+            </button>
+          </div> -->
+                </p-toolbar>
+            </div>
+            <div class="ui-g-6">
                 <p-toolbar>
                     <!-- <div class="ui-toolbar-group-left">
             <a pButton type="button" label="Novo" icon="pi pi-plus" routerLink="/centrocusto/novo"></a>
