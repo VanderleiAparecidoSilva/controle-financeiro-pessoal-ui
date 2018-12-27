@@ -5,7 +5,8 @@ import { LazyLoadEvent, SelectItem } from 'primeng/api';
 
 import { LancamentoDTO } from './../../../models/domain/lancamento.dto';
 import { environment } from 'src/environments/environment';
-import { Filter } from '../lancamento.service';
+import { Filter, LancamentoService } from '../lancamento.service';
+import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 
 @Component({
   selector: 'app-lancamento-pesquisa',
@@ -37,16 +38,20 @@ export class LancamentoPesquisaComponent implements OnInit {
   selectedTypeTitleView: String = 'Sim';
 
   constructor(
-    private title: Title
+    private title: Title,
+    private service: LancamentoService,
+    private errorHandler: ErrorHandlerService,
   ) { }
 
   ngOnInit() {
     this.title.setTitle(`${environment.childTitle} Pesquisa de ${this.entityName}`);
 
     this.cols = [
-      { field: 'nome', header: 'Nome' },
-      { field: 'aplicarNaReceita', header: 'Aplicar na Receita' },
-      { field: 'aplicarNaDespesa', header: 'Aplicar na Despesa' }
+      { field: 'vencimento', header: 'Vencimento' },
+      { field: 'descricao', header: 'Descrição' },
+      { field: 'valor', header: 'Valor R$' },
+      { field: 'parcela', header: 'Parcela' },
+      { field: 'status', header: 'Status' }
     ];
 
     setTimeout(() => {
@@ -67,7 +72,7 @@ export class LancamentoPesquisaComponent implements OnInit {
 
     setTimeout(function() {
       const page = event.first / event.rows;
-      // this.findAll(page);
+      this.findAll(page);
     }.bind(this, 1));
 
     setTimeout(() => {
@@ -78,11 +83,31 @@ export class LancamentoPesquisaComponent implements OnInit {
   columnFilter(event: any) {
     if (event.key === 'Enter') {
       if (event.target.value === '') {
-        // this.findAll(this.filter.page);
+        this.findAll(this.filter.page);
       } else {
-        // this.findByName(0, event.target.value, 'false');
+        this.findByName(0, event.target.value, 'false');
       }
     }
+  }
+
+  findAll(page = 0) {
+    this.filter.page = page;
+    this.service.findAll(this.filter)
+      .then(resultado => {
+        this.dataSource = resultado.obj;
+        this.totalRecords = resultado.totalElements;
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  findByName(page = 0, nome = '', ativo = 'true') {
+    this.filter.page = page;
+    // this.service.findByName(this.filter, nome, ativo)
+    //   .then(resultado => {
+    //     this.dataSource = resultado.obj;
+    //     this.totalRecords = resultado.totalElements;
+    //   })
+    //   .catch(erro => this.errorHandler.handle(erro));
   }
 
   uncheckAll() {

@@ -1,156 +1,128 @@
 <div class="container">
-  <div class="ui-g">
-    <div class="ui-g-12">
-      <p-fieldset legend="Filtro" [toggleable]="true">
-          <div class="ui-g-2 ui-fluid">
-            <label>Data Inicial</label>
-            <p-calendar required #dataInicial="ngModel" name="dataInicial" [(ngModel)]="filter.dtInicial"
-              dateFormat="dd/mm/yy" showIcon="true" [locale]="calendarPortuguese" showButtonBar="true"></p-calendar>
-            <app-message [control]="dataInicial" error="required" text="Data inicial é obrigatória" severity="error"></app-message>
-          </div>
-          <div class="ui-g-2 ui-fluid">
-            <label>Data Final</label>
-            <p-calendar required #dataFinal="ngModel" name="dataFinal" [(ngModel)]="filter.dtFinal"
-              dateFormat="dd/mm/yy" showIcon="true" [locale]="calendarPortuguese" showButtonBar="true"></p-calendar>
-            <app-message [control]="dataFinal" error="required" text="Data final é obrigatória" severity="error"></app-message>
-          </div>
-          <div class="ui-g-5 ui-fluid">
-            <label>Descrição do lançamento</label>
-            <input pInputText type="text" name="descricaoLancamento" style="text-transform:uppercase;"
-             [(ngModel)]="filter.descricaoLancamento" #descricaoLancamento="ngModel">
-            <app-message [control]="dataFinal" error="required" text="Data final é obrigatória" severity="error"></app-message>
-          </div>
-          <div class="ui-g-3 ui-fluid">
-            <label>Apenas títulos em aberto</label>
-            <p-selectButton [options]="typesTitleView" #somenteTituloEmAberto name="somenteTituloEmAberto"
-              #somenteTituloEmAberto="ngModel" [(ngModel)]="selectedTypeTitleView"></p-selectButton>
-          </div>
-      </p-fieldset>
-    </div>
-
     <div class="ui-g">
-      <div class="ui-g-6">
-          <p-table #dt [columns]="cols" [value]="dataSource" [responsive]="true" [resizableColumns]="true"
-          [paginator]="true" [rows]="filter.linesPerPage" [(selection)]="selectedRow" dataKey="id" [lazy]="true"
-          (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecords" [loading]="loading"
-          (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
+        <div class="ui-g-12">
+            <p-fieldset legend="Filtro" [toggleable]="true">
+                <div class="ui-g-2 ui-fluid">
+                    <label>Data Inicial</label>
+                    <p-calendar required #dataInicial="ngModel" name="dataInicial" [(ngModel)]="filter.dtInicial" dateFormat="dd/mm/yy" showIcon="true" [locale]="calendarPortuguese" showButtonBar="true"></p-calendar>
+                    <app-message [control]="dataInicial" error="required" text="Data inicial é obrigatória" severity="error"></app-message>
+                </div>
+                <div class="ui-g-2 ui-fluid">
+                    <label>Data Final</label>
+                    <p-calendar required #dataFinal="ngModel" name="dataFinal" [(ngModel)]="filter.dtFinal" dateFormat="dd/mm/yy" showIcon="true" [locale]="calendarPortuguese" showButtonBar="true"></p-calendar>
+                    <app-message [control]="dataFinal" error="required" text="Data final é obrigatória" severity="error"></app-message>
+                </div>
+                <div class="ui-g-5 ui-fluid">
+                    <label>Descrição do lançamento</label>
+                    <input pInputText type="text" name="descricaoLancamento" style="text-transform:uppercase;" [(ngModel)]="filter.descricaoLancamento" #descricaoLancamento="ngModel">
+                    <app-message [control]="dataFinal" error="required" text="Data final é obrigatória" severity="error"></app-message>
+                </div>
+                <div class="ui-g-3 ui-fluid">
+                    <label>Apenas títulos em aberto</label>
+                    <p-selectButton [options]="typesTitleView" #somenteTituloEmAberto name="somenteTituloEmAberto" #somenteTituloEmAberto="ngModel" [(ngModel)]="selectedTypeTitleView"></p-selectButton>
+                </div>
+            </p-fieldset>
+        </div>
+
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <p-table #dt [columns]="cols" [value]="dataSource" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" [(selection)]="selectedRow" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecords"
+                    [loading]="loading" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" (onHeaderCheckboxToggle)="onRowsSelectUnSelect($event.checked)">
+                    <ng-template pTemplate="caption">
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th style="width: 3em">
+                                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                            </th>
+                            <th class="col-receita-header">Vencimento</th>
+                            <th class="col-receita-header">Descrição</th>
+                            <th class="col-despesa-header">Valor R$</th>
+                            <th class="col-despesa-header">Parcela</th>
+                            <th class="col-despesa-header">Status</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr [pSelectableRow]="rowData">
+                            <td>
+                                <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                            </td>
+                            <td class="ui-resizable-column">{{ rowData.nome }}</td>
+                            <td class="ui-resizable-column, col-receita">{{ rowData.aplicarNaReceita ? 'Sim' : 'Não' }}</td>
+                            <td class="ui-resizable-column, col-despesa">{{ rowData.aplicarNaDespesa ? 'Sim' : 'Não' }}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                        <tr>
+                            <td [attr.colspan]="6">
+                                Nenhum registro encontrado
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            <!-- <div class="ui-g-6">
+        <p-table #dt [columns]="cols" [value]="dataSource" [responsive]="true" [resizableColumns]="true" [paginator]="false"
+          [rows]="filter.linesPerPage" [(selection)]="selectedRow" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)"
+          [totalRecords]="totalRecords" [loading]="loading" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
           (onHeaderCheckboxToggle)="onRowsSelectUnSelect($event.checked)" [globalFilterFields]="['nome']">
           <ng-template pTemplate="caption">
-            <div class="ui-helper-clearfix">
-              <div style="text-align: left">
-                <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                <input #gf type="text" pInputText size="50" placeholder="Pesquisar" pTooltip="Digite o texto e pressione enter"
-                  tooltipPosition="top" style="width:auto; text-transform:uppercase;" (keyup)="columnFilter($event)">
-              </div>
-            </div>
           </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr>
-              <th style="width: 3em"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
-              <th>Nome</th>
-              <th class="col-receita-header">Aplicar na Receita</th>
-              <th class="col-despesa-header">Aplicar na Despesa</th>
-              <th class="col-acoes-header"></th>
+              <th style="width: 3em">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th>Vencimento</th>
+              <th class="col-receita-header">Descrição</th>
+              <th class="col-despesa-header">Valor R$</th>
+              <th class="col-despesa-header">Parcela</th>
+              <th class="col-despesa-header">Status</th>
             </tr>
           </ng-template>
-
           <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr [pSelectableRow]="rowData" [style.background]="rowData.ativo === false ? '#C48F8F' : null">
-              <td><p-tableCheckbox [value]="rowData"></p-tableCheckbox></td>
+            <tr [pSelectableRow]="rowData">
+              <td>
+                <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+              </td>
               <td class="ui-resizable-column">{{ rowData.nome }}</td>
               <td class="ui-resizable-column, col-receita">{{ rowData.aplicarNaReceita ? 'Sim' : 'Não' }}</td>
               <td class="ui-resizable-column, col-despesa">{{ rowData.aplicarNaDespesa ? 'Sim' : 'Não' }}</td>
-              <td class="ui-resizable-column, col-acoes">
-                <a pButton icon="fa fa-pencil" pTooltip="Editar" tooltipPosition="top" style="margin-right:5px"
-                  [routerLink]="['/lancamento', rowData.id]"></a>
-                <button pButton icon="fa fa-eye" pTooltip="Ativar" tooltipPosition="top"
-                  style="margin-right:5px" (click)="enable(rowData)" [disabled]="rowData.ativo === true"></button>
-                <button pButton icon="fa fa-eye-slash" pTooltip="Desativar" tooltipPosition="top"
-                  style="margin-right:5px;" (click)="disable(rowData)" [disabled]="rowData.ativo === false"></button>
-              </td>
             </tr>
           </ng-template>
           <ng-template pTemplate="emptymessage" let-columns>
             <tr>
-              <td [attr.colspan]="5">
+              <td [attr.colspan]="7">
                 Nenhum registro encontrado
               </td>
             </tr>
           </ng-template>
         </p-table>
-      </div>
-      <div class="ui-g-6">
-        <p-table #dt [columns]="cols" [value]="dataSource" [responsive]="true" [resizableColumns]="true"
-          [paginator]="true" [rows]="filter.linesPerPage" [(selection)]="selectedRow" dataKey="id" [lazy]="true"
-          (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecords" [loading]="loading"
-          (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
-          (onHeaderCheckboxToggle)="onRowsSelectUnSelect($event.checked)" [globalFilterFields]="['nome']">
-          <ng-template pTemplate="caption">
-            <div class="ui-helper-clearfix">
-              <div style="text-align: left">
-                <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                <input #gf type="text" pInputText size="50" placeholder="Pesquisar" pTooltip="Digite o texto e pressione enter"
-                  tooltipPosition="top" style="width:auto; text-transform:uppercase;" (keyup)="columnFilter($event)">
-              </div>
-            </div>
-          </ng-template>
-          <ng-template pTemplate="header" let-columns>
-            <tr>
-              <th style="width: 3em"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
-              <th>Nome</th>
-              <th class="col-receita-header">Aplicar na Receita</th>
-              <th class="col-despesa-header">Aplicar na Despesa</th>
-              <th class="col-acoes-header"></th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr [pSelectableRow]="rowData" [style.background]="rowData.ativo === false ? '#C48F8F' : null">
-              <td><p-tableCheckbox [value]="rowData"></p-tableCheckbox></td>
-              <td class="ui-resizable-column">{{ rowData.nome }}</td>
-              <td class="ui-resizable-column, col-receita">{{ rowData.aplicarNaReceita ? 'Sim' : 'Não' }}</td>
-              <td class="ui-resizable-column, col-despesa">{{ rowData.aplicarNaDespesa ? 'Sim' : 'Não' }}</td>
-              <td class="ui-resizable-column, col-acoes">
-                <a pButton icon="fa fa-pencil" pTooltip="Editar" tooltipPosition="top" style="margin-right:5px"
-                  [routerLink]="['/lancamento', rowData.id]"></a>
-                <button pButton icon="fa fa-eye" pTooltip="Ativar" tooltipPosition="top"
-                  style="margin-right:5px" (click)="enable(rowData)" [disabled]="rowData.ativo === true"></button>
-                <button pButton icon="fa fa-eye-slash" pTooltip="Desativar" tooltipPosition="top"
-                  style="margin-right:5px;" (click)="disable(rowData)" [disabled]="rowData.ativo === false"></button>
-              </td>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="emptymessage" let-columns>
-            <tr>
-              <td [attr.colspan]="5">
-                Nenhum registro encontrado
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </div>
+      </div> -->
 
-      <div class="ui-g-12">
-        <p-toolbar>
-          <!-- <div class="ui-toolbar-group-left">
+            <div class="ui-g-12">
+                <p-toolbar>
+                    <!-- <div class="ui-toolbar-group-left">
             <a pButton type="button" label="Novo" icon="pi pi-plus" routerLink="/centrocusto/novo"></a>
             <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
             <button pButton type="button" label="Desmarcar todos" icon="fa fa-square-o"
               class="ui-button-success" (click)="uncheckAll()" [disabled]="qtdSelectedRows == 0"></button>
           </div> -->
-          <!-- <div class="ui-toolbar-group-right">
+                    <!-- <div class="ui-toolbar-group-right">
             <p-fileUpload #uploader mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload"
               accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploader)"
               pTooltip="Importar Arquivo" tooltipPosition="right">
             </p-fileUpload>
           </div> -->
-          <!-- <div class="ui-toolbar-group-right">
+                    <!-- <div class="ui-toolbar-group-right">
             <button pButton type="button" label="Download de Exemplo" icon="fa fa-file-text"
               class="ui-button-raised" (click)="downloadExampleCSV({type: 'CC', filename: 'centro_custo.csv'})"
               pTooltip="Fazer download de arquivo de exemplo" tooltipPosition="left">
             </button>
           </div> -->
-        </p-toolbar>
+                </p-toolbar>
+            </div>
         </div>
     </div>
-  </div>
 </div>

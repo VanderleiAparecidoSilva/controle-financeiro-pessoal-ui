@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { MoneyHttp } from '../seguranca/money-http';
 import { AuthService } from '../seguranca/auth.service';
@@ -37,6 +37,26 @@ export class LancamentoService {
       .toPromise()
       .then( response => {
         return response;
+      });
+  }
+
+  findAll(filter: Filter): Promise<any> {
+    const httpOptions = {
+      params: new HttpParams()
+        .set('email', this.auth.jwtPayload.user_name)
+        .set('page', filter.page.toString())
+        .set('linesPerPage', filter.linesPerPage.toString())};
+    return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.lancamento}/credito`, httpOptions)
+      .toPromise()
+      .then( response => {
+        const obj = response.content;
+
+        const result = {
+          obj,
+          totalElements: response.totalElements
+        };
+
+        return result;
       });
   }
 
