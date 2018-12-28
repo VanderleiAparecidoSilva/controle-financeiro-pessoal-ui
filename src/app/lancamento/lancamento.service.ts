@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 
+import * as moment from 'moment';
+
 import { MoneyHttp } from '../seguranca/money-http';
 import { AuthService } from '../seguranca/auth.service';
 import { LancamentoDTO } from './../../models/domain/lancamento.dto';
@@ -10,10 +12,10 @@ import { api_dominio } from 'src/environments/api.dominio';
 export class Filter {
   page = 0;
   linesPerPage = 24;
-  dtInicial = null;
-  dtFinal = null;
+  dtInicial = new Date();
+  dtFinal = new Date();
   descricaoLancamento: string;
-  somenteTitulosAbertos = 'Sim';
+  somenteTitulosAbertos: string;
 }
 
 @Injectable({
@@ -28,12 +30,13 @@ export class LancamentoService {
 
   findById(id: string): Promise<LancamentoDTO> {
     const httpOptions = {
-      headers: new HttpHeaders()
-        .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
+      params: new HttpParams()
+        .set('email', this.auth.jwtPayload.user_name)
+        .set('id', id)
     };
 
     return this.httpClient.get<LancamentoDTO>(
-      `${environment.apiUrl}${api_dominio.lancamento}/${this.auth.jwtPayload.user_name}/${id}`, httpOptions)
+      `${environment.apiUrl}${api_dominio.lancamento}/email/id`, httpOptions)
       .toPromise()
       .then( response => {
         return response;
@@ -60,14 +63,16 @@ export class LancamentoService {
       });
   }
 
-  findAllCreditByPeriod(filter: Filter, dateFrom: Date, dateTo: Date): Promise<any> {
+  findAllCreditByPeriod(filter: Filter): Promise<any> {
     const httpOptions = {
       params: new HttpParams()
         .set('email', this.auth.jwtPayload.user_name)
         .set('page', filter.page.toString())
         .set('linesPerPage', filter.linesPerPage.toString())
-        .set('from', dateFrom.toString())
-        .set('to', dateTo.toString())};
+        .set('from', moment(filter.dtInicial).format('YYYY-MM-DD'))
+        .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))
+        .set('description', filter.descricaoLancamento)
+        .set('onlyOpen', filter.somenteTitulosAbertos)};
     return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.lancamento}/credito/periodo`, httpOptions)
       .toPromise()
       .then( response => {
@@ -102,14 +107,16 @@ export class LancamentoService {
       });
   }
 
-  findAllDebitByPeriod(filter: Filter, dateFrom: Date, dateTo: Date): Promise<any> {
+  findAllDebitByPeriod(filter: Filter): Promise<any> {
     const httpOptions = {
       params: new HttpParams()
         .set('email', this.auth.jwtPayload.user_name)
         .set('page', filter.page.toString())
         .set('linesPerPage', filter.linesPerPage.toString())
-        .set('from', dateFrom.toString())
-        .set('to', dateTo.toString())};
+        .set('from', moment(filter.dtInicial).format('YYYY-MM-DD'))
+        .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))
+        .set('description', filter.descricaoLancamento)
+        .set('onlyOpen', filter.somenteTitulosAbertos)};
     return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.lancamento}/debito/periodo`, httpOptions)
       .toPromise()
       .then( response => {

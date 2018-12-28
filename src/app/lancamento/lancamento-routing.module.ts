@@ -19,7 +19,20 @@ const routes: Routes = [
     data: { roles: ['ROLE_CADASTRAR_LANCAMENTO'] }
   },
   {
+    path: 'lancamento/nova/receita/:id',
+    component: LancamentoCadastroComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['ROLE_CADASTRAR_LANCAMENTO'] }
+  },
+  {
     path: 'lancamento/nova/despesa',
+    component: LancamentoCadastroComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['ROLE_CADASTRAR_LANCAMENTO'] }
+  }
+  ,
+  {
+    path: 'lancamento/nova/despesa/:id',
     component: LancamentoCadastroComponent,
     canActivate: [AuthGuard],
     data: { roles: ['ROLE_CADASTRAR_LANCAMENTO'] }

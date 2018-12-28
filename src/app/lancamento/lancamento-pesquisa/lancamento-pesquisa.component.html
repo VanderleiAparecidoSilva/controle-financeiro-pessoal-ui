@@ -12,14 +12,19 @@
                     <p-calendar required #dataFinal="ngModel" name="dataFinal" [(ngModel)]="filter.dtFinal" dateFormat="dd/mm/yy" showIcon="true" [locale]="calendarPortuguese" showButtonBar="true"></p-calendar>
                     <app-message [control]="dataFinal" error="required" text="Data final é obrigatória" severity="error"></app-message>
                 </div>
-                <div class="ui-g-5 ui-fluid">
+                <div class="ui-g-4 ui-fluid">
                     <label>Descrição do lançamento</label>
-                    <input pInputText type="text" name="descricaoLancamento" style="text-transform:uppercase;" [(ngModel)]="filter.descricaoLancamento" #descricaoLancamento="ngModel">
-                    <app-message [control]="dataFinal" error="required" text="Data final é obrigatória" severity="error"></app-message>
+                    <input pInputText type="text" name="descricaoLancamento" style="text-transform:uppercase;" [(ngModel)]="filter.descricaoLancamento"
+                      #descricaoLancamento="ngModel" (keyup)="columnFilter($event)">
                 </div>
-                <div class="ui-g-3 ui-fluid">
-                    <label>Apenas títulos em aberto</label>
-                    <p-selectButton [options]="typesTitleView" #somenteTituloEmAberto name="somenteTituloEmAberto" #somenteTituloEmAberto="ngModel" [(ngModel)]="selectedTypeTitleView"></p-selectButton>
+                <div class="ui-g-3" style="width:250px;margin-bottom:10px">
+                  <label>Somente títulos em aberto</label>
+                  <div class="ui-g-6"><p-radioButton class="ui-radiobutton-box" name="grpTituloAberto" value="Sim" label="Sim" [(ngModel)]="filter.somenteTitulosAbertos" inputId="yes"></p-radioButton></div>
+                  <div class="ui-g-6"><p-radioButton class="ui-radiobutton-box" name="grpTituloAberto" value="Nao" label="Não" [(ngModel)]="filter.somenteTitulosAbertos" inputId="no"></p-radioButton></div>
+                </div>
+                <div class="ui-g-1 ui-fluid">
+                  <label>Pesquisar</label>
+                  <button pButton type="button" icon="fa fa-search" class="ui-button-icon ui-button-info" (click)="findCreditDebit()" style="float:unset"></button>
                 </div>
             </p-fieldset>
         </div>

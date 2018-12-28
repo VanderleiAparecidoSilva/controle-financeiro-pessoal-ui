@@ -3,6 +3,8 @@ import { Title } from '@angular/platform-browser';
 
 import { LazyLoadEvent, SelectItem } from 'primeng/api';
 
+import * as moment from 'moment';
+
 import { LancamentoDTO } from './../../../models/domain/lancamento.dto';
 import { environment } from 'src/environments/environment';
 import { Filter, LancamentoService } from '../lancamento.service';
@@ -41,10 +43,6 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   calendarPortuguese: any;
 
-  typesTitleView: SelectItem[];
-
-  selectedTypeTitleView: String = 'Sim';
-
   constructor(
     private title: Title,
     private service: LancamentoService,
@@ -66,11 +64,9 @@ export class LancamentoPesquisaComponent implements OnInit {
       this.loading = true;
     });
 
-    this.typesTitleView = [];
-    this.typesTitleView.push({label: 'Sim', value: 'Sim', icon: 'fa fa-check'});
-    this.typesTitleView.push({label: 'Não', value: 'Nao', icon: 'fa fa-times'});
-
     this.defineCalendarPortuguese();
+
+    this.defineFilters(this.filter);
   }
 
   loadTransactionsLazy(event: LazyLoadEvent) {
@@ -80,8 +76,7 @@ export class LancamentoPesquisaComponent implements OnInit {
 
     setTimeout(function() {
       const page = event.first / event.rows;
-      this.findAllReceita(page);
-      this.findAllDespesa(page);
+      this.findCreditDebit(page);
     }.bind(this, 1));
 
     setTimeout(() => {
@@ -89,19 +84,29 @@ export class LancamentoPesquisaComponent implements OnInit {
     });
   }
 
-  columnFilter(event: any) {
-    if (event.key === 'Enter') {
-      // if (event.target.value === '') {
-      //   this.findAll(this.filter.page);
-      // } else {
-      //   this.findByName(0, event.target.value, 'false');
-      // }
+  defineFilters(filter: Filter) {
+    const dtInicial = localStorage.getItem('dtInicialLancamento');
+    const dtFinal = localStorage.getItem('dtFinalLancamento');
+    const somenteAbertos = localStorage.getItem('somenteTitulosEmAberto');
+
+    if (dtInicial) {
+      filter.dtInicial = moment(dtInicial).toDate();
     }
+
+    if (dtFinal) {
+      filter.dtFinal = moment(dtFinal).toDate();
+    }
+
+    if (somenteAbertos) {
+      filter.somenteTitulosAbertos = somenteAbertos;
+    }
+
+    filter.descricaoLancamento = '';
   }
 
   findAllReceita(page = 0) {
     this.filter.page = page;
-    this.service.findAllCredit(this.filter)
+    this.service.findAllCreditByPeriod(this.filter)
       .then(resultado => {
         this.dataSourceCredit = resultado.obj;
         this.totalRecordsCredit = resultado.totalElements;
@@ -111,12 +116,34 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   findAllDespesa(page = 0) {
     this.filter.page = page;
-    this.service.findAllDebit(this.filter)
+    this.service.findAllDebitByPeriod(this.filter)
       .then(resultado => {
         this.dataSourceDebit = resultado.obj;
         this.totalRecordsDebit = resultado.totalElements;
       })
       .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  findCreditDebit(page = 0) {
+    this.saveFilterData(this.filter);
+
+    this.dataSourceCredit = null;
+    this.dataSourceDebit = null;
+
+    this.findAllReceita(page);
+    this.findAllDespesa(page);
+  }
+
+  columnFilter(event: any) {
+    if (event.key === 'Enter') {
+      this.findCreditDebit();
+    }
+  }
+
+  saveFilterData(filter: Filter) {
+    localStorage.setItem('dtInicialLancamento', filter.dtInicial.toDateString());
+    localStorage.setItem('dtFinalLancamento', filter.dtFinal.toDateString());
+    localStorage.setItem('somenteTitulosEmAberto', filter.somenteTitulosAbertos);
   }
 
   uncheckAllCredit() {

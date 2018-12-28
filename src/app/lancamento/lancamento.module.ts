@@ -14,6 +14,7 @@ import {InputSwitchModule} from 'primeng/inputswitch';
 import { TableModule } from 'primeng/table';
 import {FieldsetModule} from 'primeng/fieldset';
 import {CheckboxModule} from 'primeng/checkbox';
+import {RadioButtonModule} from 'primeng/radiobutton';
 
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
@@ -41,6 +42,7 @@ import { LancamentoPesquisaComponent } from './lancamento-pesquisa/lancamento-pe
     TableModule,
     FieldsetModule,
     CheckboxModule,
+    RadioButtonModule,
 
     LancamentoRoutingModule
   ],

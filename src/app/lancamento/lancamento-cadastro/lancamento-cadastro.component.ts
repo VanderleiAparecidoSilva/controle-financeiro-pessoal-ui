@@ -47,6 +47,7 @@ export class LancamentoCadastroComponent implements OnInit {
   ngOnInit() {
     this.title.setTitle(`${environment.childTitle} Cadastro de ${this.entityName}`);
     const idEntity = this.route.snapshot.params['id'];
+    console.log(idEntity);
     if (idEntity) {
       this.loadEntity(idEntity);
     } else {
@@ -120,7 +121,11 @@ export class LancamentoCadastroComponent implements OnInit {
       .then((response) => {
         this.messageService.add({severity: 'success', summary: this.entityName,
           detail: `${this.entityName} cadastrado com sucesso!`});
-        this.router.navigate(['/lancamentos', response.id]);
+        if (this.router.url === '/lancamento/nova/receita') {
+          this.router.navigate(['/lancamento/nova/receita/', response.id]);
+        } else if (this.router.url === '/lancamento/nova/despesa') {
+          this.router.navigate(['/lancamento/nova/despesa/', response.id]);
+        }
       })
       .catch(error => {
         this.errorHandle.handle(error);
