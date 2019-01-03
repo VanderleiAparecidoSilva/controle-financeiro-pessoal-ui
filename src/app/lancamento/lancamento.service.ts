@@ -15,7 +15,7 @@ export class Filter {
   dtInicial = new Date();
   dtFinal = new Date();
   descricaoLancamento: string;
-  somenteTitulosAbertos: string;
+  somenteTitulosAbertos = 'Sim';
 }
 
 @Injectable({

@@ -70,6 +70,10 @@ export class AuthService {
 
   limparAccessToken() {
     localStorage.removeItem('token');
+    localStorage.removeItem('dtInicialLancamento_' + this.jwtPayload.user_name);
+    localStorage.removeItem('dtFinalLancamento_' + this.jwtPayload.user_name);
+    localStorage.removeItem('somenteTitulosEmAberto_' + this.jwtPayload.user_name);
+
     this.jwtPayload = null;
   }
 

@@ -1,3 +1,4 @@
+import { AuthService } from 'src/app/seguranca/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
@@ -47,6 +48,7 @@ export class LancamentoPesquisaComponent implements OnInit {
     private title: Title,
     private service: LancamentoService,
     private errorHandler: ErrorHandlerService,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
@@ -85,9 +87,9 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   defineFilters(filter: Filter) {
-    const dtInicial = localStorage.getItem('dtInicialLancamento');
-    const dtFinal = localStorage.getItem('dtFinalLancamento');
-    const somenteAbertos = localStorage.getItem('somenteTitulosEmAberto');
+    const dtInicial = localStorage.getItem('dtInicialLancamento_' + this.auth.jwtPayload.user_name);
+    const dtFinal = localStorage.getItem('dtFinalLancamento_' + this.auth.jwtPayload.user_name);
+    const somenteAbertos = localStorage.getItem('somenteTitulosEmAberto_' + this.auth.jwtPayload.user_name);
 
     if (dtInicial) {
       filter.dtInicial = moment(dtInicial).toDate();
@@ -96,9 +98,13 @@ export class LancamentoPesquisaComponent implements OnInit {
     if (dtFinal) {
       filter.dtFinal = moment(dtFinal).toDate();
     }
-
+    console.log(somenteAbertos);
     if (somenteAbertos) {
-      filter.somenteTitulosAbertos = somenteAbertos;
+      if (somenteAbertos === 'undefined') {
+        filter.somenteTitulosAbertos = 'Sim';
+      } else {
+        filter.somenteTitulosAbertos = somenteAbertos;
+      }
     }
 
     filter.descricaoLancamento = '';
@@ -141,9 +147,9 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   saveFilterData(filter: Filter) {
-    localStorage.setItem('dtInicialLancamento', filter.dtInicial.toDateString());
-    localStorage.setItem('dtFinalLancamento', filter.dtFinal.toDateString());
-    localStorage.setItem('somenteTitulosEmAberto', filter.somenteTitulosAbertos);
+    localStorage.setItem('dtInicialLancamento_' + this.auth.jwtPayload.user_name, filter.dtInicial.toDateString());
+    localStorage.setItem('dtFinalLancamento_' + this.auth.jwtPayload.user_name, filter.dtFinal.toDateString());
+    localStorage.setItem('somenteTitulosEmAberto_' + this.auth.jwtPayload.user_name, filter.somenteTitulosAbertos);
   }
 
   uncheckAllCredit() {
