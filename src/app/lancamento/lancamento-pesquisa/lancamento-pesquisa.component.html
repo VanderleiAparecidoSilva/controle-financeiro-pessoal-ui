@@ -4,12 +4,14 @@
             <p-fieldset legend="Filtro" [toggleable]="true">
                 <div class="ui-g-2 ui-fluid">
                     <label>Data Inicial</label>
-                    <p-calendar required #dataInicial="ngModel" name="dataInicial" [(ngModel)]="filter.dtInicial" dateFormat="dd/mm/yy" showIcon="true" [locale]="calendarPortuguese" showButtonBar="true"></p-calendar>
+                    <p-calendar required #dataInicial="ngModel" name="dataInicial" [(ngModel)]="filter.dtInicial" showIcon="true" dateFormat="dd/mm/yy"
+                    [locale]="calendarPortuguese" showButtonBar="true" [inputStyle]="{'width':'135px'}"></p-calendar>
                     <app-message [control]="dataInicial" error="required" text="Data inicial é obrigatória" severity="error"></app-message>
                 </div>
                 <div class="ui-g-2 ui-fluid">
                     <label>Data Final</label>
-                    <p-calendar required #dataFinal="ngModel" name="dataFinal" [(ngModel)]="filter.dtFinal" dateFormat="dd/mm/yy" showIcon="true" [locale]="calendarPortuguese" showButtonBar="true"></p-calendar>
+                    <p-calendar required #dataFinal="ngModel" name="dataFinal" [(ngModel)]="filter.dtFinal" showIcon="true" dateFormat="dd/mm/yy"
+                    [locale]="calendarPortuguese" showButtonBar="true" [inputStyle]="{'width':'135px'}"></p-calendar>
                     <app-message [control]="dataFinal" error="required" text="Data final é obrigatória" severity="error"></app-message>
                 </div>
                 <div class="ui-g-4 ui-fluid">
@@ -24,7 +26,7 @@
                 </div>
                 <div class="ui-g-1 ui-fluid">
                   <label>Pesquisar</label>
-                  <button pButton type="button" icon="fa fa-search" class="ui-button-icon ui-button-info" (click)="findCreditDebit()" style="float:unset"></button>
+                  <button pButton type="button" icon="fa fa-search" class="ui-button-icon ui-button-info" (click)="findCreditDebit()" style="width: 70px"></button>
                 </div>
             </p-fieldset>
         </div>
