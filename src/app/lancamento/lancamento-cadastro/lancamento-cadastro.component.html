@@ -15,18 +15,26 @@
         <app-message [control]="descricao" error="required" text="Descrição é obrigatória" severity="error"></app-message>
         <app-message [control]="descricao" error="minlength" text="Mínimo de {{ descricao.errors?.minlength?.requiredLength }} caracteres" severity="warn"></app-message>
       </div>
-      <div class="ui-g-12 ui-md-6 ui-fluid">
-        <label>Centro de Custo</label>
-        <p-autoComplete name="centroCusto" [(ngModel)]="entity.centrocusto" [suggestions]="centroCustoSelecionados"
+      <div class="ui-g-12 ui-md-3 ui-fluid">
+        <label>Centro de Custo Primário</label>
+        <p-autoComplete name="centroCusto" [(ngModel)]="entity.centroCustoPrimario" [suggestions]="centroCustoPrimarioSelecionados"
           (completeMethod)="filtrarListaCentroCustoPorTipo($event)" field="nome" [size]="30" [minLength]="1"
           #centroCusto="ngModel" required minlength="5" placeholder="Digite o nome do centro de custo" [dropdown]="true"></p-autoComplete>
           <app-message [control]="centroCusto" error="required" text="Centro de custo é obrigatório" severity="error"></app-message>
           <app-message [control]="centroCusto" error="minlength" text="Mínimo de {{ centroCusto.errors?.minlength?.requiredLength }} caracteres" severity="warn"></app-message>
       </div>
+      <div class="ui-g-12 ui-md-3 ui-fluid">
+        <label>Centro de Custo Secundário</label>
+        <p-autoComplete name="centroCustoSec" [(ngModel)]="entity.centroCustoSecundario" [suggestions]="centroCustoSecundarioSelecionados"
+          (completeMethod)="filtrarListaCentroCustoPorTipoSecundaria($event)" field="nome" [size]="30" [minLength]="1"
+          #centroCustoSec="ngModel" required minlength="5" placeholder="Digite o nome do centro de custo" [dropdown]="true"></p-autoComplete>
+          <app-message [control]="centroCustoSec" error="required" text="Centro de custo secundário é obrigatório" severity="error"></app-message>
+          <app-message [control]="centroCustoSec" error="minlength" text="Mínimo de {{ centroCustoSec.errors?.minlength?.requiredLength }} caracteres" severity="warn"></app-message>
+      </div>
       <div class="ui-g-3 ui-fluid">
         <label>Vencimento</label>
         <p-calendar required #vencimento="ngModel" name="vencimento" [(ngModel)]="entity.vencimento"
-          dateFormat="dd/mm/yy" showIcon="true" [locale]="calendarPortuguese" showButtonBar="true"></p-calendar>
+          dateFormat="dd/mm/yy" showIcon="true" [locale]="calendarPortuguese" showButtonBar="true" [inputStyle]="{'width':'240px'}"></p-calendar>
         <app-message [control]="vencimento" error="required" text="Vencimento é obrigatório" severity="error"></app-message>
       </div>
       <div class="ui-g-3 ui-fluid">

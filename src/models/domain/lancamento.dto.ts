@@ -4,7 +4,8 @@ export class LancamentoDTO {
   id = null;
   uuid = null;
   descricao: string;
-  centrocusto: string;
+  centroCustoPrimario: string;
+  centroCustoSecundario: string;
   vencimento = null;
   valorParcela = 0;
   quantidadeTotalParcelas = 1;

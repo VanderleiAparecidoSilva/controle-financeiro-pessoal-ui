@@ -43,6 +43,7 @@ export class CentrocustoPesquisaComponent implements OnInit {
 
     this.cols = [
       { field: 'nome', header: 'Nome' },
+      { field: 'primaria', header: 'Primária' },
       { field: 'aplicarNaReceita', header: 'Aplicar na Receita' },
       { field: 'aplicarNaDespesa', header: 'Aplicar na Despesa' }
     ];
@@ -167,8 +168,8 @@ export class CentrocustoPesquisaComponent implements OnInit {
   }
 
   downloadExampleCSV(args) {
-    let csv = 'Tipo;Nome;Aplica na Receita;Aplica na Despesa\n';
-    csv += args.type + ';;;';
+    let csv = 'Tipo;Nome;Primaria;Aplica na Receita;Aplica na Despesa\n';
+    csv += args.type + ';;;;';
     const hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
     hiddenElement.target = '_blank';

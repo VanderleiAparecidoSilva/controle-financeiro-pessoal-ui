@@ -33,16 +33,13 @@
 
         <div class="ui-g">
             <div class="ui-g-6">
-                <p-table #dt [columns]="cols" [value]="dataSourceCredit" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" [(selection)]="selectedRowCredit" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecordsCredit"
-                    [loading]="loading" (onRowSelect)="onRowSelectCredit($event)" (onRowUnselect)="onRowUnselectCredit($event)" (onHeaderCheckboxToggle)="onRowsSelectUnSelectCredit($event.checked)">
+                <p-table #dt [columns]="cols" [value]="dataSourceCredit" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" selectionMode="multiple" [(selection)]="selectedCredits" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecordsCredit"
+                    [loading]="loading" (onRowSelect)="onRowSelectCredit($event)" [scrollable]="true" scrollHeight="410px" (onRowUnselect)="onRowUnselectCredit($event)">
                     <ng-template pTemplate="caption">
                         <label class="header-receita-color">RECEITAS</label>
                     </ng-template>
                     <ng-template pTemplate="header" let-columns>
                         <tr>
-                            <th class="col-data-header" style="width: 3em">
-                                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                            </th>
                             <th class="col-data-header">Vencimento</th>
                             <th class="col-descricao-header">Descrição</th>
                             <th class="col-valor-header">Valor</th>
@@ -53,9 +50,6 @@
 
                     <ng-template pTemplate="body" let-rowData let-columns="columns">
                         <tr [pSelectableRow]="rowData" [style.color]="rowData.parcelaAtrasada ? 'red' : 'blue'">
-                            <td class="col-data">
-                              <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-                            </td>
                             <td class="ui-resizable-column, col-data">{{ rowData.vencimento | date: 'dd/MM/yyyy' }}</td>
                             <td class="ui-resizable-column, col-descricao">{{ rowData.descricao }}</td>
                             <td class="ui-resizable-column, col-valor">{{ rowData.valorParcela | number:'1.2-2'}}</td>
@@ -65,7 +59,7 @@
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
                         <tr>
-                            <td [attr.colspan]="6">
+                            <td [attr.colspan]="5">
                                 Nenhum registro encontrado
                             </td>
                         </tr>
@@ -73,16 +67,13 @@
                 </p-table>
             </div>
             <div class="ui-g-6">
-                <p-table #dt [columns]="cols" [value]="dataSourceDebit" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" [(selection)]="selectedRowDebit" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecordsDebit"
-                    [loading]="loading" (onRowSelect)="onRowSelectDebit($event)" (onRowUnselect)="onRowUnselectDebit($event)" (onHeaderCheckboxToggle)="onRowsSelectUnSelectDebit($event.checked)">
+                <p-table #dt [columns]="cols" [value]="dataSourceDebit" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" selectionMode="multiple" [(selection)]="selectedDebits" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecordsDebit"
+                    [loading]="loading" (onRowSelect)="onRowSelectDebit($event)" [scrollable]="true" scrollHeight="410px" (onRowUnselect)="onRowUnselectDebit($event)">
                     <ng-template pTemplate="caption">
                       <label class="header-despesa-color">DESPESAS</label>
                     </ng-template>
                     <ng-template pTemplate="header" let-columns>
                         <tr>
-                            <th class="col-data-header" style="width: 3em">
-                                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                            </th>
                             <th class="col-data-header">Vencimento</th>
                             <th class="col-descricao-header">Descrição</th>
                             <th class="col-valor-header">Valor</th>
@@ -93,9 +84,6 @@
 
                     <ng-template pTemplate="body" let-rowData let-columns="columns">
                         <tr [pSelectableRow]="rowData" [style.color]="rowData.parcelaAtrasada ? 'red' : 'blue'">
-                            <td class="col-data">
-                                <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-                            </td>
                             <td class="ui-resizable-column, col-data">{{ rowData.vencimento | date: 'dd/MM/yyyy' }}</td>
                             <td class="ui-resizable-column, col-descricao">{{ rowData.descricao }}</td>
                             <td class="ui-resizable-column, col-valor">{{ rowData.valorParcela | number:'1.2-2'}}</td>
@@ -105,7 +93,7 @@
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
                         <tr>
-                            <td [attr.colspan]="6">
+                            <td [attr.colspan]="5">
                                 Nenhum registro encontrado
                             </td>
                         </tr>

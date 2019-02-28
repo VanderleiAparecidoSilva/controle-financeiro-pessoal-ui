@@ -13,11 +13,19 @@
         <app-message [control]="nome" error="required" text="Nome é obrigatório" severity="error"></app-message>
         <app-message [control]="nome" error="minlength" text="Mínimo de {{ nome.errors?.minlength?.requiredLength }} caracteres" severity="warn"></app-message>
       </div>
-      <div class="ui-g-6 ui-md-3 ui-fluid">
+      <div class="ui-g-3 ui-md-3 ui-fluid">
+        <h3>Primária</h3>
+        <p-inputSwitch name="primary" [(ngModel)]="entity.primaria"></p-inputSwitch>
+      </div>
+      <div class="ui-g-3 ui-md-3 ui-fluid">
+          <h3>Secundária</h3>
+          <p-inputSwitch name="secondary" [(ngModel)]="entity.secundaria"></p-inputSwitch>
+        </div>
+      <div class="ui-g-3 ui-md-3 ui-fluid">
         <h3>Aplicar na receita</h3>
         <p-inputSwitch name="revenue" [(ngModel)]="entity.aplicarNaReceita"></p-inputSwitch>
       </div>
-      <div class="ui-g-6 ui-md-3 ui-fluid">
+      <div class="ui-g-3 ui-md-3 ui-fluid">
         <h3>Aplicar na despesa</h3>
         <p-inputSwitch name="expenditure" [(ngModel)]="entity.aplicarNaDespesa"></p-inputSwitch>
       </div>

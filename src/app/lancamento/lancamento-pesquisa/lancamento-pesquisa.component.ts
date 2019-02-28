@@ -30,6 +30,10 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   selectedRowDebit: LancamentoDTO;
 
+  selectedCredits: LancamentoDTO[];
+
+  selectedDebits: LancamentoDTO[];
+
   qtdSelectedRowsCredit = 0;
 
   qtdSelectedRowsDebit = 0;
@@ -98,7 +102,7 @@ export class LancamentoPesquisaComponent implements OnInit {
     if (dtFinal) {
       filter.dtFinal = moment(dtFinal).toDate();
     }
-    console.log(somenteAbertos);
+
     if (somenteAbertos) {
       if (somenteAbertos === 'undefined') {
         filter.somenteTitulosAbertos = 'Sim';
@@ -150,24 +154,6 @@ export class LancamentoPesquisaComponent implements OnInit {
     localStorage.setItem('dtInicialLancamento_' + this.auth.jwtPayload.user_name, filter.dtInicial.toDateString());
     localStorage.setItem('dtFinalLancamento_' + this.auth.jwtPayload.user_name, filter.dtFinal.toDateString());
     localStorage.setItem('somenteTitulosEmAberto_' + this.auth.jwtPayload.user_name, filter.somenteTitulosAbertos);
-  }
-
-  uncheckAllCredit() {
-    this.selectedRowCredit = null;
-    this.qtdSelectedRowsCredit = 0;
-  }
-
-  uncheckAllDebit() {
-    this.selectedRowDebit = null;
-    this.qtdSelectedRowsDebit = 0;
-  }
-
-  onRowsSelectUnSelectCredit(event) {
-    event ? this.qtdSelectedRowsCredit++ : this.qtdSelectedRowsCredit = 0;
-  }
-
-  onRowsSelectUnSelectDebit(event) {
-    event ? this.qtdSelectedRowsDebit++ : this.qtdSelectedRowsDebit = 0;
   }
 
   onRowSelectCredit(event) {

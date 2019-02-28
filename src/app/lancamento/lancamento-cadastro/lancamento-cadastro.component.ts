@@ -25,7 +25,8 @@ export class LancamentoCadastroComponent implements OnInit {
   entity = new LancamentoDTO();
 
   calendarPortuguese: any;
-  centroCustoSelecionados: any[];
+  centroCustoPrimarioSelecionados: any[];
+  centroCustoSecundarioSelecionados: any[];
   contaBancariaSelecionadas: any[];
   types: SelectItem[];
 
@@ -85,7 +86,14 @@ export class LancamentoCadastroComponent implements OnInit {
   filtrarListaCentroCustoPorTipo(event) {
     const query = event.query;
     this.centroCustoService.findAllActiveByType(this.entity.tipo).then(data => {
-        this.centroCustoSelecionados = this.filtrarRegistro(query, data);
+        this.centroCustoPrimarioSelecionados = this.filtrarRegistro(query, data);
+    });
+  }
+
+  filtrarListaCentroCustoPorTipoSecundaria(event) {
+    const query = event.query;
+    this.centroCustoService.findAllActiveByTypeSecondary(this.entity.tipo).then(data => {
+        this.centroCustoSecundarioSelecionados = this.filtrarRegistro(query, data);
     });
   }
 

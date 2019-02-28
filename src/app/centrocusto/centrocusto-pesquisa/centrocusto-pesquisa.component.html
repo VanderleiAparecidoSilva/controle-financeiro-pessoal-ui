@@ -26,6 +26,8 @@
             <tr>
               <th style="width: 3em"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
               <th>Nome</th>
+              <th class="col-primaria-header">Primária</th>
+              <th class="col-secundaria-header">Secundária</th>
               <th class="col-receita-header">Aplicar na Receita</th>
               <th class="col-despesa-header">Aplicar na Despesa</th>
               <th class="col-acoes-header"></th>
@@ -36,6 +38,8 @@
             <tr [pSelectableRow]="rowData" [style.background]="rowData.ativo === false ? '#C48F8F' : null">
               <td><p-tableCheckbox [value]="rowData"></p-tableCheckbox></td>
               <td class="ui-resizable-column">{{ rowData.nome }}</td>
+              <td class="ui-resizable-column, col-primaria">{{ rowData.primaria ? 'Sim' : 'Não' }}</td>
+              <td class="ui-resizable-column, col-secundaria">{{ rowData.secundaria ? 'Sim' : 'Não' }}</td>
               <td class="ui-resizable-column, col-receita">{{ rowData.aplicarNaReceita ? 'Sim' : 'Não' }}</td>
               <td class="ui-resizable-column, col-despesa">{{ rowData.aplicarNaDespesa ? 'Sim' : 'Não' }}</td>
               <td class="ui-resizable-column, col-acoes">

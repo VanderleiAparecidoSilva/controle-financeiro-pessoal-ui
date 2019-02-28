@@ -95,6 +95,24 @@ label {
   text-align: center;
 }
 
+.col-primaria-header {
+  width: 160px;
+}
+
+.col-primaria {
+  width: 160px;
+  text-align: center;
+}
+
+.col-secundaria-header {
+  width: 160px;
+}
+
+.col-secundaria {
+  width: 160px;
+  text-align: center;
+}
+
 .col-acoes-header {
   width: 140px;
 }
