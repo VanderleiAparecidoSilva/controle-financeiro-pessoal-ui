@@ -3,7 +3,7 @@ import { UsuarioDTO } from 'src/models/domain/usuario.dto';
 export class CentroCustoDTO {
   id = null;
   nome: string;
-  primaria = true;
+  primaria = false;
   secundaria = false;
   aplicarNaReceita = false;
   aplicarNaDespesa = false;

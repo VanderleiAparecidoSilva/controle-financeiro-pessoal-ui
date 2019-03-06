@@ -155,4 +155,18 @@ export class LancamentoService {
       .toPromise()
       .then(response => response);
   }
+
+  upload(obj: string): Promise<void> {
+    const httpOptions = {
+      params: new HttpParams()
+        .set('email', this.auth.jwtPayload.user_name),
+      headers: new HttpHeaders()
+        .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
+        .set('Content-Type', 'application/json')
+    };
+    return this.httpClient.post<void>(`${environment.apiUrl}${api_dominio.lancamento}/upload`,
+      obj, httpOptions)
+      .toPromise()
+      .then(() => null);
+  }
 }

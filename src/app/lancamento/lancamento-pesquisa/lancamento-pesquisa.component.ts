@@ -2,7 +2,7 @@ import { AuthService } from 'src/app/seguranca/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { LazyLoadEvent, SelectItem } from 'primeng/api';
+import { LazyLoadEvent, MessageService } from 'primeng/api';
 
 import * as moment from 'moment';
 
@@ -52,7 +52,8 @@ export class LancamentoPesquisaComponent implements OnInit {
     private title: Title,
     private service: LancamentoService,
     private errorHandler: ErrorHandlerService,
-    private auth: AuthService
+    private auth: AuthService,
+    private messageService: MessageService,
   ) { }
 
   ngOnInit() {
@@ -170,6 +171,53 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   onRowUnselectDebit(event) {
     this.qtdSelectedRowsDebit--;
+  }
+
+  onUploadHandler(event, uploader) {
+    for (const file of event.files) {
+      this.uploadFile(file, uploader);
+    }
+  }
+
+  downloadExampleCSV(args) {
+    let csv = 'Tipo;Descricao;Centro de Custo Primario;Centro de Custo Secundario;Vencimento;Valor da Parcela;Parcela;Total de Parcelas;' +
+    'Gerar Parcela Unica;Conta Bancaria;Observacao;Status;Tipo do Lancamento\n';
+    csv += args.type + ';;;;;;;;' + args.singleparcel + ';;;' + args.status + ';' + args.launchtype;
+    const hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=UTF-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = args.filename;
+    hiddenElement.click();
+  }
+
+  uploadFile(file, uploader) {
+    const reader: FileReader = new FileReader();
+    reader.readAsText(file, 'UTF-8');
+    reader.onload = (e) => {
+      const csv = reader.result;
+      const allTextLines = csv.toString().split(/\r|\n|\r/);
+      const headers = allTextLines[0].split(';');
+      for (let i = 0; i < allTextLines.length; i++) {
+        if (i > 0) {
+          if (allTextLines[i].split(';').length === headers.length) {
+            this.uploadData(allTextLines[i]);
+          }
+        }
+      }
+      uploader.clear();
+    };
+    this.messageService.add({severity: 'success', summary: 'Importação de Arquivo',
+      detail: `Arquivo enviado para processamento!`});
+  }
+
+  uploadData(data: string) {
+    this.service.upload(data)
+    .then(() => {
+      this.findCreditDebit(this.filter.page);
+    })
+    .catch(erro => {
+      this.errorHandler.handle(erro);
+    });
   }
 
   defineCalendarPortuguese() {

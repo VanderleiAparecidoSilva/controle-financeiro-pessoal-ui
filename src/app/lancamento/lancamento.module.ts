@@ -1,3 +1,4 @@
+import { FileUploadModule } from 'primeng/fileupload';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -43,6 +44,7 @@ import { LancamentoPesquisaComponent } from './lancamento-pesquisa/lancamento-pe
     FieldsetModule,
     CheckboxModule,
     RadioButtonModule,
+    FileUploadModule,
 
     LancamentoRoutingModule
   ],
