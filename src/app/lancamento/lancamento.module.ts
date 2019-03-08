@@ -16,6 +16,7 @@ import { TableModule } from 'primeng/table';
 import {FieldsetModule} from 'primeng/fieldset';
 import {CheckboxModule} from 'primeng/checkbox';
 import {RadioButtonModule} from 'primeng/radiobutton';
+import {SplitButtonModule} from 'primeng/splitbutton';
 
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
@@ -45,6 +46,7 @@ import { LancamentoPesquisaComponent } from './lancamento-pesquisa/lancamento-pe
     CheckboxModule,
     RadioButtonModule,
     FileUploadModule,
+    SplitButtonModule,
 
     LancamentoRoutingModule
   ],

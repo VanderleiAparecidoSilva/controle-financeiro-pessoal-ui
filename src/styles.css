@@ -50,6 +50,11 @@ label {
   width: 200px;
 }
 
+.col-total {
+  width: 200px;
+  text-align: right
+}
+
 .col-valor-header {
   width: 80px;
 }
@@ -120,4 +125,12 @@ label {
 .col-acoes {
   width: 140px;
   text-align: center;
+}
+
+.ui-menu .ui-menu-list li.ui-menuitem .ui-menuitem-link[target=separator] {
+  height: 0;
+  display: block;
+  padding: 0;
+  min-height: 0;
+  border-bottom: 1px #525252 solid;
 }

@@ -34,12 +34,13 @@
         <div class="ui-g">
             <div class="ui-g-6">
                 <p-table #dt [columns]="cols" [value]="dataSourceCredit" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" selectionMode="multiple" [(selection)]="selectedCredits" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecordsCredit"
-                    [loading]="loading" (onRowSelect)="onRowSelectCredit($event)" [scrollable]="true" scrollHeight="410px" (onRowUnselect)="onRowUnselectCredit($event)">
+                    [loading]="loading" (onRowSelect)="onRowSelectCredit($event)" [scrollable]="true" scrollHeight="380px" (onRowUnselect)="onRowUnselectCredit($event)">
                     <ng-template pTemplate="caption">
                         <label class="header-receita-color">RECEITAS</label>
                     </ng-template>
                     <ng-template pTemplate="header" let-columns>
                         <tr>
+                            <th></th>
                             <th class="col-data-header">Vencimento</th>
                             <th class="col-descricao-header">Descrição</th>
                             <th class="col-valor-header">Valor</th>
@@ -48,8 +49,9 @@
                         </tr>
                     </ng-template>
 
-                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
                         <tr [pSelectableRow]="rowData" [style.color]="rowData.parcelaAtrasada ? 'red' : 'blue'">
+                            <td><a href="#" [pRowToggler]="rowData"><i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i></a></td>
                             <td class="ui-resizable-column, col-data">{{ rowData.vencimento | date: 'dd/MM/yyyy' }}</td>
                             <td class="ui-resizable-column, col-descricao">{{ rowData.descricao }}</td>
                             <td class="ui-resizable-column, col-valor">{{ rowData.valorParcela | number:'1.2-2'}}</td>
@@ -57,9 +59,34 @@
                             <td class="ui-resizable-column, col-status">{{ rowData.status }}</td>
                         </tr>
                     </ng-template>
+                    <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+                        <tr>
+                            <td [attr.colspan]="columns.length + 1">
+                              <div class="ui-g ui-fluid" style="font-size:12px;padding:2px">
+                                <div class="ui-g-12 ui-md-9">
+                                  <div class="ui-g">
+                                    <div class="ui-g-12">
+                                        <b>Observação: </b> {{rowData.observacao}}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="footer" let-rowData>
+                        <tr>
+                            <td></td>
+                            <td class="ui-resizable-column, col-data"></td>
+                            <td class="ui-resizable-column, col-total">Total:</td>
+                            <td class="ui-resizable-column, col-valor"> {{ sumCredit() | number:'1.2-2'}}</td>
+                            <td class="ui-resizable-column, col-parcela"></td>
+                            <td class="ui-resizable-column, col-status"></td>
+                        </tr>
+                      </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
                         <tr>
-                            <td [attr.colspan]="5">
+                            <td [attr.colspan]="6">
                                 Nenhum registro encontrado
                             </td>
                         </tr>
@@ -68,12 +95,13 @@
             </div>
             <div class="ui-g-6">
                 <p-table #dt [columns]="cols" [value]="dataSourceDebit" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" selectionMode="multiple" [(selection)]="selectedDebits" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecordsDebit"
-                    [loading]="loading" (onRowSelect)="onRowSelectDebit($event)" [scrollable]="true" scrollHeight="410px" (onRowUnselect)="onRowUnselectDebit($event)">
+                    [loading]="loading" (onRowSelect)="onRowSelectDebit($event)" [scrollable]="true" scrollHeight="380px" (onRowUnselect)="onRowUnselectDebit($event)">
                     <ng-template pTemplate="caption">
                       <label class="header-despesa-color">DESPESAS</label>
                     </ng-template>
                     <ng-template pTemplate="header" let-columns>
                         <tr>
+                            <th></th>
                             <th class="col-data-header">Vencimento</th>
                             <th class="col-descricao-header">Descrição</th>
                             <th class="col-valor-header">Valor</th>
@@ -84,6 +112,7 @@
 
                     <ng-template pTemplate="body" let-rowData let-columns="columns">
                         <tr [pSelectableRow]="rowData" [style.color]="rowData.parcelaAtrasada ? 'red' : 'blue'">
+                            <td><a href="#" [pRowToggler]="rowData"><i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i></a></td>
                             <td class="ui-resizable-column, col-data">{{ rowData.vencimento | date: 'dd/MM/yyyy' }}</td>
                             <td class="ui-resizable-column, col-descricao">{{ rowData.descricao }}</td>
                             <td class="ui-resizable-column, col-valor">{{ rowData.valorParcela | number:'1.2-2'}}</td>
@@ -91,9 +120,34 @@
                             <td class="ui-resizable-column, col-status">{{ rowData.status }}</td>
                         </tr>
                     </ng-template>
+                    <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+                        <tr>
+                            <td [attr.colspan]="columns.length + 1">
+                              <div class="ui-g ui-fluid" style="font-size:12px;padding:2px">
+                                <div class="ui-g-12 ui-md-9">
+                                  <div class="ui-g">
+                                    <div class="ui-g-12">
+                                        <b>Observação: </b> {{rowData.observacao}}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="footer" let-rowData>
+                      <tr>
+                          <td></td>
+                          <td class="ui-resizable-column, col-data"></td>
+                          <td class="ui-resizable-column, col-total">Total:</td>
+                          <td class="ui-resizable-column, col-valor"> {{ sumDebit() | number:'1.2-2'}}</td>
+                          <td class="ui-resizable-column, col-parcela"></td>
+                          <td class="ui-resizable-column, col-status"></td>
+                      </tr>
+                    </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
                         <tr>
-                            <td [attr.colspan]="5">
+                            <td [attr.colspan]="6">
                                 Nenhum registro encontrado
                             </td>
                         </tr>
@@ -103,6 +157,12 @@
 
             <div class="ui-g-6">
                 <p-toolbar>
+                  <div class="ui-toolbar-group-left">
+                    <p-splitButton label="Receita(s)" icon="pi pi-list" [model]="creditSplitItems" styleClass="ui-button-warning"></p-splitButton>
+                    <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
+                    <button pButton type="button" label="Desmarcar todos" icon="fa fa-square-o"
+                      class="ui-button-success" (click)="uncheckAllCredit()" [disabled]="qtdSelectedRowsCredit == 0"></button>
+                  </div>
                   <div class="ui-toolbar-group-right">
                     <p-fileUpload #uploaderCredit mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload"
                       accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploaderCredit)"
@@ -110,7 +170,7 @@
                     </p-fileUpload>
                   </div>
                   <div class="ui-toolbar-group-right">
-                    <button pButton type="button" label="Download de Exemplo" icon="fa fa-file-text"
+                    <button pButton type="button" label="Exemplo" icon="fa fa-file-text"
                       class="ui-button-raised" (click)="downloadExampleCSV({type: 'LC', singleparcel: 'FALSE', status: 'ABERTO', launchtype: 'RECEITA', filename: 'lancamento_receita.csv'})"
                       pTooltip="Fazer download de arquivo de exemplo" tooltipPosition="left">
                     </button>
@@ -119,6 +179,12 @@
             </div>
             <div class="ui-g-6">
                 <p-toolbar>
+                  <div class="ui-toolbar-group-left">
+                    <p-splitButton label="Despesa(s)" icon="pi pi-list" [model]="debitSplitItems" styleClass="ui-button-warning"></p-splitButton>
+                    <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
+                    <button pButton type="button" label="Desmarcar todos" icon="fa fa-square-o"
+                      class="ui-button-success" (click)="uncheckAllDebit()" [disabled]="qtdSelectedRowsDebit == 0"></button>
+                  </div>
                   <div class="ui-toolbar-group-right">
                     <p-fileUpload #uploaderDebit mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload"
                       accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploaderDebit)"
@@ -126,7 +192,7 @@
                     </p-fileUpload>
                   </div>
                   <div class="ui-toolbar-group-right">
-                    <button pButton type="button" label="Download de Exemplo" icon="fa fa-file-text"
+                    <button pButton type="button" label="Exemplo" icon="fa fa-file-text"
                       class="ui-button-raised" (click)="downloadExampleCSV({type: 'LC', singleparcel: 'FALSE', status: 'ABERTO', launchtype: 'DESPESA', filename: 'lancamento_despesa.csv'})"
                       pTooltip="Fazer download de arquivo de exemplo" tooltipPosition="left">
                     </button>

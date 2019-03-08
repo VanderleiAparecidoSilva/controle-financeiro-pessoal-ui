@@ -1,8 +1,9 @@
 import { AuthService } from 'src/app/seguranca/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
-import { LazyLoadEvent, MessageService } from 'primeng/api';
+import { LazyLoadEvent, MessageService, MenuItem } from 'primeng/api';
 
 import * as moment from 'moment';
 
@@ -14,6 +15,19 @@ import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 @Component({
   selector: 'app-lancamento-pesquisa',
   templateUrl: './lancamento-pesquisa.component.html',
+  animations: [
+    trigger('rowExpansionTrigger', [
+        state('void', style({
+            transform: 'translateX(-10%)',
+            opacity: 0
+        })),
+        state('active', style({
+            transform: 'translateX(0)',
+            opacity: 1
+        })),
+        transition('* <=> *', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
+    ])
+  ],
   styleUrls: ['./lancamento-pesquisa.component.css']
 })
 export class LancamentoPesquisaComponent implements OnInit {
@@ -42,11 +56,19 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   totalRecordsDebit = 0;
 
+  creditSum = 0;
+
+  debitSum = 0;
+
   loading: boolean;
 
   filter = new Filter();
 
   calendarPortuguese: any;
+
+  creditSplitItems: MenuItem[];
+
+  debitSplitItems: MenuItem[];
 
   constructor(
     private title: Title,
@@ -67,6 +89,9 @@ export class LancamentoPesquisaComponent implements OnInit {
       { field: 'status', header: 'Status' }
     ];
 
+    this.defineMenuCredit();
+    this.defineMenuDebit();
+
     setTimeout(() => {
       this.loading = true;
     });
@@ -74,6 +99,28 @@ export class LancamentoPesquisaComponent implements OnInit {
     this.defineCalendarPortuguese();
 
     this.defineFilters(this.filter);
+  }
+
+  defineMenuCredit() {
+    const canDisabled = this.qtdSelectedRowsCredit === 0;
+    this.creditSplitItems = [
+      { label: 'Receber', icon: 'pi pi-check', disabled: canDisabled },
+      { label: 'Estornar', icon: 'pi pi-step-backward', disabled: canDisabled },
+      { disabled: true, target: 'separator' },
+      { label: 'Editar', icon: 'pi pi-refresh', disabled: canDisabled },
+      { label: 'Excluir', icon: 'pi pi-trash', disabled: canDisabled }
+    ];
+  }
+
+  defineMenuDebit() {
+    const canDisabled = this.qtdSelectedRowsDebit === 0;
+    this.debitSplitItems = [
+      { label: 'Pagar', icon: 'pi pi-check', disabled: canDisabled },
+      { label: 'Estornar', icon: 'pi pi-step-backward', disabled: canDisabled },
+      { disabled: true, target: 'separator' },
+      { label: 'Editar', icon: 'pi pi-refresh', disabled: canDisabled },
+      { label: 'Excluir', icon: 'pi pi-trash', disabled: canDisabled }
+    ];
   }
 
   loadTransactionsLazy(event: LazyLoadEvent) {
@@ -159,23 +206,43 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   onRowSelectCredit(event) {
     this.qtdSelectedRowsCredit++;
+    this.defineMenuCredit();
   }
 
   onRowSelectDebit(event) {
     this.qtdSelectedRowsDebit++;
+    this.defineMenuDebit();
   }
 
   onRowUnselectCredit(event) {
     this.qtdSelectedRowsCredit--;
+    this.defineMenuCredit();
   }
 
   onRowUnselectDebit(event) {
     this.qtdSelectedRowsDebit--;
+    this.defineMenuDebit();
   }
 
   onUploadHandler(event, uploader) {
     for (const file of event.files) {
       this.uploadFile(file, uploader);
+    }
+  }
+
+  sumCredit() {
+    if (this.dataSourceCredit != null) {
+      return this.dataSourceCredit.reduce((summ, v) => summ += v.valorParcela, 0);
+    } else {
+      return 0;
+    }
+  }
+
+  sumDebit() {
+    if (this.dataSourceDebit != null) {
+      return this.dataSourceDebit.reduce((summ, v) => summ += v.valorParcela, 0);
+    } else {
+      return 0;
     }
   }
 
@@ -234,4 +301,17 @@ export class LancamentoPesquisaComponent implements OnInit {
     };
   }
 
+  uncheckAllCredit() {
+    this.selectedRowCredit = null;
+    this.selectedCredits = null;
+    this.qtdSelectedRowsCredit = 0;
+    this.defineMenuCredit();
+  }
+
+  uncheckAllDebit() {
+    this.selectedRowDebit = null;
+    this.selectedDebits = null;
+    this.qtdSelectedRowsDebit = 0;
+    this.defineMenuDebit();
+  }
 }
