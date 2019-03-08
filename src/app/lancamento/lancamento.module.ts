@@ -17,6 +17,7 @@ import {FieldsetModule} from 'primeng/fieldset';
 import {CheckboxModule} from 'primeng/checkbox';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {SplitButtonModule} from 'primeng/splitbutton';
+import {TooltipModule} from 'primeng/tooltip';
 
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
@@ -47,6 +48,7 @@ import { LancamentoPesquisaComponent } from './lancamento-pesquisa/lancamento-pe
     RadioButtonModule,
     FileUploadModule,
     SplitButtonModule,
+    TooltipModule,
 
     LancamentoRoutingModule
   ],

@@ -62,6 +62,10 @@ export class NavbarComponent implements OnInit {
           icon: 'fa fa-print',
           items: [
             {
+              label: 'Dashboard',
+              icon: 'pi pi-chart-bar'
+            },
+            {
               label: 'Lançamentos',
               items: [
                 {
@@ -76,7 +80,11 @@ export class NavbarComponent implements OnInit {
             },
             {separator: true},
             {
-              label: 'Contas Bancárias',
+              label: 'Centro de Custo',
+              icon: 'fa fa-print'
+            },
+            {
+              label: 'Conta Bancária',
               icon: 'fa fa-print'
             }
           ]

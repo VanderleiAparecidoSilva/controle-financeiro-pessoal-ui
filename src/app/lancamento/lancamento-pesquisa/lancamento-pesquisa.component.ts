@@ -108,7 +108,9 @@ export class LancamentoPesquisaComponent implements OnInit {
       { label: 'Estornar', icon: 'pi pi-step-backward', disabled: canDisabled },
       { disabled: true, target: 'separator' },
       { label: 'Editar', icon: 'pi pi-refresh', disabled: canDisabled },
-      { label: 'Excluir', icon: 'pi pi-trash', disabled: canDisabled }
+      { label: 'Excluir', icon: 'pi pi-trash', disabled: canDisabled },
+      { disabled: true, target: 'separator' },
+      { label: 'Lançar', icon: 'pi pi-plus', disabled: false }
     ];
   }
 
@@ -119,7 +121,9 @@ export class LancamentoPesquisaComponent implements OnInit {
       { label: 'Estornar', icon: 'pi pi-step-backward', disabled: canDisabled },
       { disabled: true, target: 'separator' },
       { label: 'Editar', icon: 'pi pi-refresh', disabled: canDisabled },
-      { label: 'Excluir', icon: 'pi pi-trash', disabled: canDisabled }
+      { label: 'Excluir', icon: 'pi pi-trash', disabled: canDisabled },
+      { disabled: true, target: 'separator' },
+      { label: 'Lançar', icon: 'pi pi-plus', disabled: false }
     ];
   }
 

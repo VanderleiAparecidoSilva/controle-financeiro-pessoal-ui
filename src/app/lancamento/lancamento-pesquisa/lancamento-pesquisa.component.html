@@ -4,37 +4,38 @@
             <p-fieldset legend="Filtro" [toggleable]="true">
                 <div class="ui-g-2 ui-fluid">
                     <label>Data Inicial</label>
-                    <p-calendar required #dataInicial="ngModel" name="dataInicial" [(ngModel)]="filter.dtInicial" showIcon="true" dateFormat="dd/mm/yy"
-                    [locale]="calendarPortuguese" showButtonBar="true" [inputStyle]="{'width':'135px'}"></p-calendar>
+                    <p-calendar required #dataInicial="ngModel" name="dataInicial" [(ngModel)]="filter.dtInicial" showIcon="true" dateFormat="dd/mm/yy" [locale]="calendarPortuguese" showButtonBar="true" [inputStyle]="{'width':'135px'}"></p-calendar>
                     <app-message [control]="dataInicial" error="required" text="Data inicial é obrigatória" severity="error"></app-message>
                 </div>
                 <div class="ui-g-2 ui-fluid">
                     <label>Data Final</label>
-                    <p-calendar required #dataFinal="ngModel" name="dataFinal" [(ngModel)]="filter.dtFinal" showIcon="true" dateFormat="dd/mm/yy"
-                    [locale]="calendarPortuguese" showButtonBar="true" [inputStyle]="{'width':'135px'}"></p-calendar>
+                    <p-calendar required #dataFinal="ngModel" name="dataFinal" [(ngModel)]="filter.dtFinal" showIcon="true" dateFormat="dd/mm/yy" [locale]="calendarPortuguese" showButtonBar="true" [inputStyle]="{'width':'135px'}"></p-calendar>
                     <app-message [control]="dataFinal" error="required" text="Data final é obrigatória" severity="error"></app-message>
                 </div>
                 <div class="ui-g-4 ui-fluid">
                     <label>Descrição do lançamento</label>
-                    <input pInputText type="text" name="descricaoLancamento" style="text-transform:uppercase;" [(ngModel)]="filter.descricaoLancamento"
-                      #descricaoLancamento="ngModel" (keyup)="columnFilter($event)">
+                    <input pInputText type="text" name="descricaoLancamento" style="text-transform:uppercase;" [(ngModel)]="filter.descricaoLancamento" #descricaoLancamento="ngModel" (keyup)="columnFilter($event)">
                 </div>
                 <div class="ui-g-3" style="width:250px;margin-bottom:10px">
-                  <label>Somente títulos em aberto</label>
-                  <div class="ui-g-6"><p-radioButton class="ui-radiobutton-box" name="grpTituloAberto" value="Sim" label="Sim" [(ngModel)]="filter.somenteTitulosAbertos" inputId="yes"></p-radioButton></div>
-                  <div class="ui-g-6"><p-radioButton class="ui-radiobutton-box" name="grpTituloAberto" value="Nao" label="Não" [(ngModel)]="filter.somenteTitulosAbertos" inputId="no"></p-radioButton></div>
+                    <label>Somente títulos em aberto</label>
+                    <div class="ui-g-6">
+                        <p-radioButton class="ui-radiobutton-box" name="grpTituloAberto" value="Sim" label="Sim" [(ngModel)]="filter.somenteTitulosAbertos" inputId="yes"></p-radioButton>
+                    </div>
+                    <div class="ui-g-6">
+                        <p-radioButton class="ui-radiobutton-box" name="grpTituloAberto" value="Nao" label="Não" [(ngModel)]="filter.somenteTitulosAbertos" inputId="no"></p-radioButton>
+                    </div>
                 </div>
                 <div class="ui-g-1 ui-fluid">
-                  <label>Pesquisar</label>
-                  <button pButton type="button" icon="fa fa-search" class="ui-button-icon ui-button-info" (click)="findCreditDebit()" style="width: 70px"></button>
+                    <label>Pesquisar</label>
+                    <button pButton type="button" icon="fa fa-search" class="ui-button-icon ui-button-info" (click)="findCreditDebit()" style="width: 70px"></button>
                 </div>
             </p-fieldset>
         </div>
 
         <div class="ui-g">
             <div class="ui-g-6">
-                <p-table #dt [columns]="cols" [value]="dataSourceCredit" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" selectionMode="multiple" [(selection)]="selectedCredits" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecordsCredit"
-                    [loading]="loading" (onRowSelect)="onRowSelectCredit($event)" [scrollable]="true" scrollHeight="380px" (onRowUnselect)="onRowUnselectCredit($event)">
+                <p-table #dt [columns]="cols" [value]="dataSourceCredit" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" selectionMode="multiple" [(selection)]="selectedCredits" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)"
+                    [totalRecords]="totalRecordsCredit" [loading]="loading" (onRowSelect)="onRowSelectCredit($event)" [scrollable]="true" scrollHeight="380px" (onRowUnselect)="onRowUnselectCredit($event)">
                     <ng-template pTemplate="caption">
                         <label class="header-receita-color">RECEITAS</label>
                     </ng-template>
@@ -62,15 +63,15 @@
                     <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
                         <tr>
                             <td [attr.colspan]="columns.length + 1">
-                              <div class="ui-g ui-fluid" style="font-size:12px;padding:2px">
-                                <div class="ui-g-12 ui-md-9">
-                                  <div class="ui-g">
-                                    <div class="ui-g-12">
-                                        <b>Observação: </b> {{rowData.observacao}}
+                                <div class="ui-g ui-fluid" style="font-size:12px;padding:2px">
+                                    <div class="ui-g-12 ui-md-9">
+                                        <div class="ui-g">
+                                            <div class="ui-g-12">
+                                                <b>Observação: </b> {{rowData.observacao}}
+                                            </div>
+                                        </div>
                                     </div>
-                                  </div>
                                 </div>
-                              </div>
                             </td>
                         </tr>
                     </ng-template>
@@ -83,7 +84,7 @@
                             <td class="ui-resizable-column, col-parcela"></td>
                             <td class="ui-resizable-column, col-status"></td>
                         </tr>
-                      </ng-template>
+                    </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
                         <tr>
                             <td [attr.colspan]="6">
@@ -94,10 +95,10 @@
                 </p-table>
             </div>
             <div class="ui-g-6">
-                <p-table #dt [columns]="cols" [value]="dataSourceDebit" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" selectionMode="multiple" [(selection)]="selectedDebits" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)" [totalRecords]="totalRecordsDebit"
-                    [loading]="loading" (onRowSelect)="onRowSelectDebit($event)" [scrollable]="true" scrollHeight="380px" (onRowUnselect)="onRowUnselectDebit($event)">
+                <p-table #dt [columns]="cols" [value]="dataSourceDebit" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" selectionMode="multiple" [(selection)]="selectedDebits" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)"
+                    [totalRecords]="totalRecordsDebit" [loading]="loading" (onRowSelect)="onRowSelectDebit($event)" [scrollable]="true" scrollHeight="380px" (onRowUnselect)="onRowUnselectDebit($event)">
                     <ng-template pTemplate="caption">
-                      <label class="header-despesa-color">DESPESAS</label>
+                        <label class="header-despesa-color">DESPESAS</label>
                     </ng-template>
                     <ng-template pTemplate="header" let-columns>
                         <tr>
@@ -123,27 +124,27 @@
                     <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
                         <tr>
                             <td [attr.colspan]="columns.length + 1">
-                              <div class="ui-g ui-fluid" style="font-size:12px;padding:2px">
-                                <div class="ui-g-12 ui-md-9">
-                                  <div class="ui-g">
-                                    <div class="ui-g-12">
-                                        <b>Observação: </b> {{rowData.observacao}}
+                                <div class="ui-g ui-fluid" style="font-size:12px;padding:2px">
+                                    <div class="ui-g-12 ui-md-9">
+                                        <div class="ui-g">
+                                            <div class="ui-g-12">
+                                                <b>Observação: </b> {{rowData.observacao}}
+                                            </div>
+                                        </div>
                                     </div>
-                                  </div>
                                 </div>
-                              </div>
                             </td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="footer" let-rowData>
-                      <tr>
-                          <td></td>
-                          <td class="ui-resizable-column, col-data"></td>
-                          <td class="ui-resizable-column, col-total">Total:</td>
-                          <td class="ui-resizable-column, col-valor"> {{ sumDebit() | number:'1.2-2'}}</td>
-                          <td class="ui-resizable-column, col-parcela"></td>
-                          <td class="ui-resizable-column, col-status"></td>
-                      </tr>
+                        <tr>
+                            <td></td>
+                            <td class="ui-resizable-column, col-data"></td>
+                            <td class="ui-resizable-column, col-total">Total:</td>
+                            <td class="ui-resizable-column, col-valor"> {{ sumDebit() | number:'1.2-2'}}</td>
+                            <td class="ui-resizable-column, col-parcela"></td>
+                            <td class="ui-resizable-column, col-status"></td>
+                        </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
                         <tr>
@@ -157,46 +158,38 @@
 
             <div class="ui-g-6">
                 <p-toolbar>
-                  <div class="ui-toolbar-group-left">
-                    <p-splitButton label="Receita(s)" icon="pi pi-list" [model]="creditSplitItems" styleClass="ui-button-warning"></p-splitButton>
-                    <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
-                    <button pButton type="button" label="Desmarcar todos" icon="fa fa-square-o"
-                      class="ui-button-success" (click)="uncheckAllCredit()" [disabled]="qtdSelectedRowsCredit == 0"></button>
-                  </div>
-                  <div class="ui-toolbar-group-right">
-                    <p-fileUpload #uploaderCredit mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload"
-                      accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploaderCredit)"
-                      pTooltip="Importar Arquivo" tooltipPosition="right">
-                    </p-fileUpload>
-                  </div>
-                  <div class="ui-toolbar-group-right">
-                    <button pButton type="button" label="Exemplo" icon="fa fa-file-text"
-                      class="ui-button-raised" (click)="downloadExampleCSV({type: 'LC', singleparcel: 'FALSE', status: 'ABERTO', launchtype: 'RECEITA', filename: 'lancamento_receita.csv'})"
-                      pTooltip="Fazer download de arquivo de exemplo" tooltipPosition="left">
+                    <div class="ui-toolbar-group-left">
+                        <p-splitButton label="Receita(s)" icon="pi pi-list" [model]="creditSplitItems" styleClass="ui-button-warning"></p-splitButton>
+                        <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
+                        <button pButton type="button" label="Desmarcar todos" icon="fa fa-square-o" class="ui-button-success" (click)="uncheckAllCredit()" [disabled]="qtdSelectedRowsCredit == 0"></button>
+                    </div>
+                    <div class="ui-toolbar-group-right">
+                        <p-fileUpload #uploaderCredit mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload" accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploaderCredit)" pTooltip="Importar Arquivo" tooltipPosition="right">
+                        </p-fileUpload>
+                    </div>
+                    <div class="ui-toolbar-group-right">
+                        <button pButton type="button" label="Exemplo" icon="fa fa-file-text" class="ui-button-raised" (click)="downloadExampleCSV({type: 'LC', singleparcel: 'FALSE', status: 'ABERTO', launchtype: 'RECEITA', filename: 'lancamento_receita.csv'})" pTooltip="Fazer download de arquivo de exemplo"
+                            tooltipPosition="left">
                     </button>
-                  </div>
+                    </div>
                 </p-toolbar>
             </div>
             <div class="ui-g-6">
                 <p-toolbar>
-                  <div class="ui-toolbar-group-left">
-                    <p-splitButton label="Despesa(s)" icon="pi pi-list" [model]="debitSplitItems" styleClass="ui-button-warning"></p-splitButton>
-                    <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
-                    <button pButton type="button" label="Desmarcar todos" icon="fa fa-square-o"
-                      class="ui-button-success" (click)="uncheckAllDebit()" [disabled]="qtdSelectedRowsDebit == 0"></button>
-                  </div>
-                  <div class="ui-toolbar-group-right">
-                    <p-fileUpload #uploaderDebit mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload"
-                      accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploaderDebit)"
-                      pTooltip="Importar Arquivo" tooltipPosition="right">
-                    </p-fileUpload>
-                  </div>
-                  <div class="ui-toolbar-group-right">
-                    <button pButton type="button" label="Exemplo" icon="fa fa-file-text"
-                      class="ui-button-raised" (click)="downloadExampleCSV({type: 'LC', singleparcel: 'FALSE', status: 'ABERTO', launchtype: 'DESPESA', filename: 'lancamento_despesa.csv'})"
-                      pTooltip="Fazer download de arquivo de exemplo" tooltipPosition="left">
+                    <div class="ui-toolbar-group-left">
+                        <p-splitButton label="Despesa(s)" icon="pi pi-list" [model]="debitSplitItems" styleClass="ui-button-warning"></p-splitButton>
+                        <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
+                        <button pButton type="button" label="Desmarcar todos" icon="fa fa-square-o" class="ui-button-success" (click)="uncheckAllDebit()" [disabled]="qtdSelectedRowsDebit == 0"></button>
+                    </div>
+                    <div class="ui-toolbar-group-right">
+                        <p-fileUpload #uploaderDebit mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload" accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploaderDebit)" pTooltip="Importar Arquivo" tooltipPosition="right">
+                        </p-fileUpload>
+                    </div>
+                    <div class="ui-toolbar-group-right">
+                        <button pButton type="button" label="Exemplo" icon="fa fa-file-text" class="ui-button-raised" (click)="downloadExampleCSV({type: 'LC', singleparcel: 'FALSE', status: 'ABERTO', launchtype: 'DESPESA', filename: 'lancamento_despesa.csv'})" pTooltip="Fazer download de arquivo de exemplo"
+                            tooltipPosition="left">
                     </button>
-                  </div>
+                    </div>
                 </p-toolbar>
             </div>
         </div>
