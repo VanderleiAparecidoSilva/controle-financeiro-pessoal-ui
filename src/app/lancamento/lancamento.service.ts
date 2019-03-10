@@ -48,7 +48,7 @@ export class LancamentoService {
       params: new HttpParams()
         .set('email', this.auth.jwtPayload.user_name)
         .set('page', filter.page.toString())
-        .set('linesPerPage', filter.linesPerPage.toString())};
+        .set('linesPerPage', '500')};
     return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.lancamento}/credito`, httpOptions)
       .toPromise()
       .then( response => {
@@ -68,7 +68,7 @@ export class LancamentoService {
       params: new HttpParams()
         .set('email', this.auth.jwtPayload.user_name)
         .set('page', filter.page.toString())
-        .set('linesPerPage', filter.linesPerPage.toString())
+        .set('linesPerPage', '500')
         .set('from', moment(filter.dtInicial).format('YYYY-MM-DD'))
         .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))
         .set('description', filter.descricaoLancamento)
@@ -92,7 +92,7 @@ export class LancamentoService {
       params: new HttpParams()
         .set('email', this.auth.jwtPayload.user_name)
         .set('page', filter.page.toString())
-        .set('linesPerPage', filter.linesPerPage.toString())};
+        .set('linesPerPage', '500')};
     return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.lancamento}/debito`, httpOptions)
       .toPromise()
       .then( response => {
@@ -112,7 +112,7 @@ export class LancamentoService {
       params: new HttpParams()
         .set('email', this.auth.jwtPayload.user_name)
         .set('page', filter.page.toString())
-        .set('linesPerPage', filter.linesPerPage.toString())
+        .set('linesPerPage', '500')
         .set('from', moment(filter.dtInicial).format('YYYY-MM-DD'))
         .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))
         .set('description', filter.descricaoLancamento)
