@@ -1,3 +1,4 @@
+import { BaixaDTO } from './../../models/domain/baixa.dto';
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 
@@ -22,7 +23,6 @@ export class Filter {
   providedIn: 'root'
 })
 export class LancamentoService {
-
   constructor(
     private httpClient: MoneyHttp,
     private auth: AuthService
@@ -151,6 +151,32 @@ export class LancamentoService {
     };
     return this.httpClient.put<LancamentoDTO>(
       `${environment.apiUrl}${api_dominio.lancamento}/${this.auth.jwtPayload.user_name}/${obj.id}`,
+      JSON.stringify(obj), httpOptions)
+      .toPromise()
+      .then(response => response);
+  }
+
+  issue(id: string, obj: BaixaDTO): Promise<BaixaDTO> {
+    const httpOptions = {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
+        .set('Content-Type', 'application/json')
+    };
+    return this.httpClient.put<BaixaDTO>(
+      `${environment.apiUrl}${api_dominio.lancamento}/baixar/${id}`,
+      JSON.stringify(obj), httpOptions)
+      .toPromise()
+      .then(response => response);
+  }
+
+  reverse(id: string, obj: BaixaDTO): Promise<BaixaDTO> {
+    const httpOptions = {
+      headers: new HttpHeaders()
+        .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
+        .set('Content-Type', 'application/json')
+    };
+    return this.httpClient.put<BaixaDTO>(
+      `${environment.apiUrl}${api_dominio.lancamento}/estornar/${id}`,
       JSON.stringify(obj), httpOptions)
       .toPromise()
       .then(response => response);

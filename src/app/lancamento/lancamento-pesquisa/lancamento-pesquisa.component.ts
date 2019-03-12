@@ -8,10 +8,12 @@ import { LazyLoadEvent, MessageService, MenuItem } from 'primeng/api';
 import * as moment from 'moment';
 
 import { LancamentoDTO } from './../../../models/domain/lancamento.dto';
+import { BaixaDTO } from './../../../models/domain/baixa.dto';
 import { environment } from 'src/environments/environment';
 import { Filter, LancamentoService } from '../lancamento.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { Router } from '@angular/router';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-lancamento-pesquisa',
@@ -71,6 +73,8 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   debitSplitItems: MenuItem[];
 
+  observacao: string;
+
   constructor(
     private title: Title,
     private service: LancamentoService,
@@ -104,32 +108,34 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   defineMenuCredit() {
-    const canDisabled = this.qtdSelectedRowsCredit === 0;
-    const canEditAndDelete = (this.qtdSelectedRowsCredit === 0 || this.qtdSelectedRowsCredit > 1);
-    const canReverse = (this.qtdSelectedRowsCredit === 0 || this.selectedCredits.filter(cr => cr.status.toUpperCase() === 'RECEBIDO').length != this.selectedCredits.length);
+    const canReceive = (this.qtdSelectedRowsCredit === 0 || this.selectedCredits.filter(cr => cr.status.toUpperCase() === 'ABERTO').length !== this.selectedCredits.length);
+    const canReverse = (this.qtdSelectedRowsCredit === 0 || this.selectedCredits.filter(cr => cr.status.toUpperCase() === 'RECEBIDO').length !== this.selectedCredits.length);
+    const canDelete = ((this.qtdSelectedRowsCredit === 0) || (this.selectedCredits.filter(cr => cr.status.toUpperCase() === 'ABERTO').length !== this.selectedCredits.length));
+    const canEditAndDelete = ((this.qtdSelectedRowsCredit === 0 || this.qtdSelectedRowsCredit > 1) || (this.selectedCredits.filter(cr => cr.status.toUpperCase() === 'ABERTO').length !== this.selectedCredits.length));
 
     this.creditSplitItems = [
-      { label: 'Receber', icon: 'pi pi-check', disabled: canDisabled, command: () => { this.receiveCredit(); } },
+      { label: 'Receber', icon: 'pi pi-check', disabled: canReceive, command: () => { this.receiveCredit(); } },
       { label: 'Estornar', icon: 'pi pi-step-backward', disabled: canReverse, command: () => { this.reverseCredit(); } },
       { disabled: true, target: 'separator' },
-      { label: 'Editar', icon: 'pi pi-refresh', disabled: canEditAndDelete, command: () => { this.editCredit(); } },
-      { label: 'Excluir', icon: 'pi pi-trash', disabled: canDisabled, command: () => { this.deleteCredit(); } },
+      { label: 'Editar', icon: 'pi pi-refresh', disabled: (canEditAndDelete), command: () => { this.editCredit(); } },
+      { label: 'Excluir', icon: 'pi pi-trash', disabled: canDelete, command: () => { this.deleteCredit(); } },
       { disabled: true, target: 'separator' },
       { label: 'Lançar', icon: 'pi pi-plus', disabled: false, command: () => { this.insertCredit(); } }
     ];
   }
 
   defineMenuDebit() {
-    const canDisabled = this.qtdSelectedRowsDebit === 0;
-    const canEditAndDelete = (this.qtdSelectedRowsDebit === 0 || this.qtdSelectedRowsDebit > 1);
-    const canReverse = (this.qtdSelectedRowsDebit === 0 || this.selectedDebits.filter(cr => cr.status.toUpperCase() === 'PAGO').length != this.selectedDebits.length);
+    const canPay = (this.qtdSelectedRowsDebit === 0 || this.selectedDebits.filter(cr => cr.status.toUpperCase() === 'ABERTO').length !== this.selectedDebits.length);
+    const canReverse = (this.qtdSelectedRowsDebit === 0 || this.selectedDebits.filter(cr => cr.status.toUpperCase() === 'PAGO').length !== this.selectedDebits.length);
+    const canDelete = ((this.qtdSelectedRowsDebit === 0) || (this.selectedDebits.filter(db => db.status.toUpperCase() === 'ABERTO').length !== this.selectedDebits.length));
+    const canEditAndDelete = ((this.qtdSelectedRowsDebit === 0 || this.qtdSelectedRowsDebit > 1) || (this.selectedDebits.filter(db => db.status.toUpperCase() === 'ABERTO').length !== this.selectedDebits.length));
 
     this.debitSplitItems = [
-      { label: 'Pagar', icon: 'pi pi-check', disabled: canDisabled, command: () => { this.payDebit(); } },
+      { label: 'Pagar', icon: 'pi pi-check', disabled: canPay, command: () => { this.payDebit(); } },
       { label: 'Estornar', icon: 'pi pi-step-backward', disabled: canReverse, command: () => { this.reverseDebit(); } },
       { disabled: true, target: 'separator' },
       { label: 'Editar', icon: 'pi pi-refresh', disabled: canEditAndDelete, command: () => { this.editDebit(); } },
-      { label: 'Excluir', icon: 'pi pi-trash', disabled: canDisabled, command: () => { this.deleteDebit(); } },
+      { label: 'Excluir', icon: 'pi pi-trash', disabled: canDelete, command: () => { this.deleteDebit(); } },
       { disabled: true, target: 'separator' },
       { label: 'Lançar', icon: 'pi pi-plus', disabled: false, command: () => { this.insertDebit(); } }
     ];
@@ -151,13 +157,29 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   receiveCredit() {
-    console.log(this.selectedCredits.length);
-    console.log('Clicou em receber');
+    this.selectedCredits.forEach(cr => {
+      this.service.issue(cr.id, this.getBaixa(cr))
+      .then(resultado => {
+        this.dataSourceCredit = [];
+        this.findAllReceita();
+        this.clearSelectedCredit();
+        this.defineMenuCredit();
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+    });
   }
 
   reverseCredit() {
-    console.log(this.selectedCredits.length);
-    console.log('Clicou em estornar crédito');
+    this.selectedCredits.forEach(cr => {
+      this.service.reverse(cr.id, this.getBaixa(cr))
+      .then(resultado => {
+        this.dataSourceCredit = [];
+        this.findAllReceita();
+        this.clearSelectedCredit();
+        this.defineMenuCredit();
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+    });
   }
 
   editCredit() {
@@ -171,6 +193,7 @@ export class LancamentoPesquisaComponent implements OnInit {
         this.dataSourceCredit = [];
         this.findAllReceita();
         this.clearSelectedCredit();
+        this.defineMenuCredit();
       })
       .catch(erro => this.errorHandler.handle(erro));
     });
@@ -181,13 +204,29 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   payDebit() {
-    console.log(this.selectedDebits.length);
-    console.log('Clicou em pagar');
+    this.selectedDebits.forEach(db => {
+      this.service.issue(db.id, this.getBaixa(db))
+      .then(resultado => {
+        this.dataSourceDebit = [];
+        this.findAllDespesa();
+        this.clearSelectedDebit();
+        this.defineMenuDebit();
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+    });
   }
 
   reverseDebit() {
-    console.log(this.selectedDebits.length);
-    console.log('Clicou em estornar débito');
+    this.selectedDebits.forEach(db => {
+      this.service.reverse(db.id, this.getBaixa(db))
+      .then(resultado => {
+        this.dataSourceDebit = [];
+        this.findAllDespesa();
+        this.clearSelectedDebit();
+        this.defineMenuDebit();
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+    });
   }
 
   editDebit() {
@@ -201,6 +240,7 @@ export class LancamentoPesquisaComponent implements OnInit {
         this.dataSourceDebit = [];
         this.findAllDespesa();
         this.clearSelectedDebit();
+        this.defineMenuDebit();
       })
       .catch(erro => this.errorHandler.handle(erro));
     });
@@ -389,5 +429,24 @@ export class LancamentoPesquisaComponent implements OnInit {
     this.selectedDebits = [];
     this.qtdSelectedRowsDebit = 0;
     this.defineMenuDebit();
+  }
+
+  selectCredit(event, lancamento: LancamentoDTO, overlaypanel: OverlayPanel) {
+    this.observacao = 'Observação: ' + lancamento.observacao;
+    overlaypanel.toggle(event);
+  }
+
+  selectDebit(event, lancamento: LancamentoDTO, overlaypanel: OverlayPanel) {
+    this.observacao = 'Observação: ' + lancamento.observacao;
+    overlaypanel.toggle(event);
+  }
+
+  getBaixa(lancamento: LancamentoDTO): BaixaDTO {
+    const baixa = new BaixaDTO();
+    baixa.usuario = lancamento.usuario;
+    baixa.data = new Date();
+    baixa.observacao = `Lançamento de ${lancamento.tipo === 'RECEITA' ? ' crédito, recebido ' : ' débito, pago '} em ${new Date().getDate.toString()}`;
+
+    return baixa;
   }
 }

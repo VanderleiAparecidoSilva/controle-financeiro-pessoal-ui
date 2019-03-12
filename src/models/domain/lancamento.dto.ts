@@ -1,3 +1,4 @@
+import { BaixaDTO } from './baixa.dto';
 import { UsuarioDTO } from './usuario.dto';
 
 export class LancamentoDTO {

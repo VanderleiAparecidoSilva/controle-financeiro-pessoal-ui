@@ -41,68 +41,6 @@
                     </ng-template>
                     <ng-template pTemplate="header" let-columns>
                         <tr>
-                            <th></th>
-                            <th class="col-data-header">Vencimento</th>
-                            <th class="col-descricao-header">Descrição</th>
-                            <th class="col-valor-header">Valor</th>
-                            <th class="col-parcela-header">Parcela</th>
-                            <th class="col-status-header">Status</th>
-                        </tr>
-                    </ng-template>
-
-                    <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-                        <tr [pSelectableRow]="rowData" [style.color]="rowData.parcelaAtrasada ? 'red' : 'blue'">
-                            <td><a href="#" [pRowToggler]="rowData"><i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i></a></td>
-                            <td class="ui-resizable-column, col-data">{{ rowData.vencimento | date: 'dd/MM/yyyy' }}</td>
-                            <td class="ui-resizable-column, col-descricao">{{ rowData.descricao }}</td>
-                            <td class="ui-resizable-column, col-valor">{{ rowData.valorParcela | number:'1.2-2'}}</td>
-                            <td class="ui-resizable-column, col-parcela">{{ rowData.parcelaComTotalParcelas }}</td>
-                            <td class="ui-resizable-column, col-status">{{ rowData.status }}</td>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
-                        <tr>
-                            <td [attr.colspan]="columns.length + 1">
-                                <div class="ui-g ui-fluid" style="font-size:12px;padding:2px">
-                                    <div class="ui-g-12 ui-md-9">
-                                        <div class="ui-g">
-                                            <div class="ui-g-12">
-                                                <b>Observação: </b> {{rowData.observacao}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="footer" let-rowData>
-                        <tr>
-                            <td></td>
-                            <td class="ui-resizable-column, col-data"></td>
-                            <td class="ui-resizable-column, col-total">Total:</td>
-                            <td class="ui-resizable-column, col-valor"> {{ sumCredit() | number:'1.2-2'}}</td>
-                            <td class="ui-resizable-column, col-parcela"></td>
-                            <td class="ui-resizable-column, col-status"></td>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="emptymessage" let-columns>
-                        <tr>
-                            <td [attr.colspan]="6">
-                                Nenhum registro encontrado
-                            </td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-            </div>
-            <div class="ui-g-6">
-                <p-table #dt [columns]="cols" [value]="dataSourceDebit" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" selectionMode="multiple" [(selection)]="selectedDebits" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)"
-                    [totalRecords]="totalRecordsDebit" [loading]="loading" (onRowSelect)="onRowSelectDebit($event)" [scrollable]="true" scrollHeight="380px" (onRowUnselect)="onRowUnselectDebit($event)">
-                    <ng-template pTemplate="caption">
-                        <label class="header-despesa-color">DESPESAS</label>
-                    </ng-template>
-                    <ng-template pTemplate="header" let-columns>
-                        <tr>
-                            <th></th>
                             <th class="col-data-header">Vencimento</th>
                             <th class="col-descricao-header">Descrição</th>
                             <th class="col-valor-header">Valor</th>
@@ -112,33 +50,62 @@
                     </ng-template>
 
                     <ng-template pTemplate="body" let-rowData let-columns="columns">
-                        <tr [pSelectableRow]="rowData" [style.color]="rowData.parcelaAtrasada ? 'red' : 'blue'">
-                            <td><a href="#" [pRowToggler]="rowData"><i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i></a></td>
+                      <tr [pSelectableRow]="rowData" [style.color]="rowData.status === 'RECEBIDO' ? 'green' : rowData.parcelaAtrasada ? 'red' : 'blue'">
+                        <td class="ui-resizable-column, col-data">{{ rowData.vencimento | date: 'dd/MM/yyyy' }}</td>
+                        <td class="ui-resizable-column, col-descricao" pTooltip="{{ rowData.observacao }}" tooltipPosition="right">{{ rowData.descricao }}</td>
+                        <td class="ui-resizable-column, col-valor">{{ rowData.valorParcela | number:'1.2-2'}}</td>
+                        <td class="ui-resizable-column, col-parcela">{{ rowData.parcelaComTotalParcelas }}</td>
+                        <td class="ui-resizable-column, col-status">{{ rowData.status }}</td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="footer" let-rowData>
+                        <tr>
+                            <td class="ui-resizable-column, col-data"></td>
+                            <td class="ui-resizable-column, col-total">Total:</td>
+                            <td class="ui-resizable-column, col-valor"> {{ sumCredit() | number:'1.2-2'}}</td>
+                            <td class="ui-resizable-column, col-parcela"></td>
+                            <td class="ui-resizable-column, col-status"></td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                        <tr>
+                            <td [attr.colspan]="5">
+                                Nenhum registro encontrado
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <p-overlayPanel #opCredit>
+                  <span pTooltip="Observação: " appendTo="target" style="position: relative">{{ observacao }}</span>
+                </p-overlayPanel>
+            </div>
+            <div class="ui-g-6">
+                <p-table #dt [columns]="cols" [value]="dataSourceDebit" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" selectionMode="multiple" [(selection)]="selectedDebits" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)"
+                    [totalRecords]="totalRecordsDebit" [loading]="loading" (onRowSelect)="onRowSelectDebit($event)" [scrollable]="true" scrollHeight="380px" (onRowUnselect)="onRowUnselectDebit($event)">
+                    <ng-template pTemplate="caption">
+                        <label class="header-despesa-color">DESPESAS</label>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th class="col-data-header">Vencimento</th>
+                            <th class="col-descricao-header">Descrição</th>
+                            <th class="col-valor-header">Valor</th>
+                            <th class="col-parcela-header">Parcela</th>
+                            <th class="col-status-header">Status</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr [pSelectableRow]="rowData" [style.color]="rowData.status === 'PAGO' ? 'green' : rowData.parcelaAtrasada ? 'red' : 'blue'">
                             <td class="ui-resizable-column, col-data">{{ rowData.vencimento | date: 'dd/MM/yyyy' }}</td>
-                            <td class="ui-resizable-column, col-descricao">{{ rowData.descricao }}</td>
+                            <td class="ui-resizable-column, col-descricao" pTooltip="{{ rowData.observacao }}" tooltipPosition="right">{{ rowData.descricao }}</td>
                             <td class="ui-resizable-column, col-valor">{{ rowData.valorParcela | number:'1.2-2'}}</td>
                             <td class="ui-resizable-column, col-parcela">{{ rowData.parcelaComTotalParcelas }}</td>
                             <td class="ui-resizable-column, col-status">{{ rowData.status }}</td>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
-                        <tr>
-                            <td [attr.colspan]="columns.length + 1">
-                                <div class="ui-g ui-fluid" style="font-size:12px;padding:2px">
-                                    <div class="ui-g-12 ui-md-9">
-                                        <div class="ui-g">
-                                            <div class="ui-g-12">
-                                                <b>Observação: </b> {{rowData.observacao}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </ng-template>
                     <ng-template pTemplate="footer" let-rowData>
                         <tr>
-                            <td></td>
                             <td class="ui-resizable-column, col-data"></td>
                             <td class="ui-resizable-column, col-total">Total:</td>
                             <td class="ui-resizable-column, col-valor"> {{ sumDebit() | number:'1.2-2'}}</td>
@@ -148,12 +115,15 @@
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
                         <tr>
-                            <td [attr.colspan]="6">
+                            <td [attr.colspan]="5">
                                 Nenhum registro encontrado
                             </td>
                         </tr>
                     </ng-template>
                 </p-table>
+                <p-overlayPanel #opDebit>
+                  <span pTooltip="Observação: " appendTo="target" style="position: relative">{{ observacao }}</span>
+                </p-overlayPanel>
             </div>
 
             <div class="ui-g-6">
