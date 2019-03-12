@@ -11,6 +11,7 @@ import { LancamentoDTO } from './../../../models/domain/lancamento.dto';
 import { environment } from 'src/environments/environment';
 import { Filter, LancamentoService } from '../lancamento.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lancamento-pesquisa',
@@ -76,6 +77,7 @@ export class LancamentoPesquisaComponent implements OnInit {
     private errorHandler: ErrorHandlerService,
     private auth: AuthService,
     private messageService: MessageService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -103,27 +105,33 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   defineMenuCredit() {
     const canDisabled = this.qtdSelectedRowsCredit === 0;
+    const canEditAndDelete = (this.qtdSelectedRowsCredit === 0 || this.qtdSelectedRowsCredit > 1);
+    const canReverse = (this.qtdSelectedRowsCredit === 0 || this.selectedCredits.filter(cr => cr.status.toUpperCase() === 'RECEBIDO').length != this.selectedCredits.length);
+
     this.creditSplitItems = [
-      { label: 'Receber', icon: 'pi pi-check', disabled: canDisabled },
-      { label: 'Estornar', icon: 'pi pi-step-backward', disabled: canDisabled },
+      { label: 'Receber', icon: 'pi pi-check', disabled: canDisabled, command: () => { this.receiveCredit(); } },
+      { label: 'Estornar', icon: 'pi pi-step-backward', disabled: canReverse, command: () => { this.reverseCredit(); } },
       { disabled: true, target: 'separator' },
-      { label: 'Editar', icon: 'pi pi-refresh', disabled: canDisabled },
-      { label: 'Excluir', icon: 'pi pi-trash', disabled: canDisabled },
+      { label: 'Editar', icon: 'pi pi-refresh', disabled: canEditAndDelete, command: () => { this.editCredit(); } },
+      { label: 'Excluir', icon: 'pi pi-trash', disabled: canDisabled, command: () => { this.deleteCredit(); } },
       { disabled: true, target: 'separator' },
-      { label: 'Lançar', icon: 'pi pi-plus', disabled: false }
+      { label: 'Lançar', icon: 'pi pi-plus', disabled: false, command: () => { this.insertCredit(); } }
     ];
   }
 
   defineMenuDebit() {
     const canDisabled = this.qtdSelectedRowsDebit === 0;
+    const canEditAndDelete = (this.qtdSelectedRowsDebit === 0 || this.qtdSelectedRowsDebit > 1);
+    const canReverse = (this.qtdSelectedRowsDebit === 0 || this.selectedDebits.filter(cr => cr.status.toUpperCase() === 'PAGO').length != this.selectedDebits.length);
+
     this.debitSplitItems = [
-      { label: 'Pagar', icon: 'pi pi-check', disabled: canDisabled },
-      { label: 'Estornar', icon: 'pi pi-step-backward', disabled: canDisabled },
+      { label: 'Pagar', icon: 'pi pi-check', disabled: canDisabled, command: () => { this.payDebit(); } },
+      { label: 'Estornar', icon: 'pi pi-step-backward', disabled: canReverse, command: () => { this.reverseDebit(); } },
       { disabled: true, target: 'separator' },
-      { label: 'Editar', icon: 'pi pi-refresh', disabled: canDisabled },
-      { label: 'Excluir', icon: 'pi pi-trash', disabled: canDisabled },
+      { label: 'Editar', icon: 'pi pi-refresh', disabled: canEditAndDelete, command: () => { this.editDebit(); } },
+      { label: 'Excluir', icon: 'pi pi-trash', disabled: canDisabled, command: () => { this.deleteDebit(); } },
       { disabled: true, target: 'separator' },
-      { label: 'Lançar', icon: 'pi pi-plus', disabled: false }
+      { label: 'Lançar', icon: 'pi pi-plus', disabled: false, command: () => { this.insertDebit(); } }
     ];
   }
 
@@ -140,6 +148,78 @@ export class LancamentoPesquisaComponent implements OnInit {
     setTimeout(() => {
       this.loading = false;
     });
+  }
+
+  receiveCredit() {
+    console.log(this.selectedCredits.length);
+    console.log('Clicou em receber');
+  }
+
+  reverseCredit() {
+    console.log(this.selectedCredits.length);
+    console.log('Clicou em estornar crédito');
+  }
+
+  editCredit() {
+    this.router.navigate(['/lancamento/nova/receita', this.selectedCredits[0].id]);
+  }
+
+  deleteCredit() {
+    this.selectedCredits.forEach(cr => {
+      this.service.disable(cr.id)
+      .then(resultado => {
+        this.dataSourceCredit = [];
+        this.findAllReceita();
+        this.clearSelectedCredit();
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+    });
+  }
+
+  insertCredit() {
+    this.router.navigate(['/lancamento/nova/receita']);
+  }
+
+  payDebit() {
+    console.log(this.selectedDebits.length);
+    console.log('Clicou em pagar');
+  }
+
+  reverseDebit() {
+    console.log(this.selectedDebits.length);
+    console.log('Clicou em estornar débito');
+  }
+
+  editDebit() {
+    this.router.navigate(['/lancamento/nova/despesa', this.selectedDebits[0].id]);
+  }
+
+  deleteDebit() {
+    this.selectedDebits.forEach(db => {
+      this.service.disable(db.id)
+      .then(resultado => {
+        this.dataSourceDebit = [];
+        this.findAllDespesa();
+        this.clearSelectedDebit();
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+    });
+  }
+
+  insertDebit() {
+    this.router.navigate(['/lancamento/nova/despesa']);
+  }
+
+  clearSelectedCredit() {
+    this.selectedRowCredit = null;
+    this.selectedCredits = [];
+    this.qtdSelectedRowsCredit = 0;
+  }
+
+  clearSelectedDebit() {
+    this.selectedRowDebit = null;
+    this.selectedDebits = [];
+    this.qtdSelectedRowsDebit = 0;
   }
 
   defineFilters(filter: Filter) {
@@ -189,8 +269,8 @@ export class LancamentoPesquisaComponent implements OnInit {
   findCreditDebit(page = 0) {
     this.saveFilterData(this.filter);
 
-    this.dataSourceCredit = null;
-    this.dataSourceDebit = null;
+    this.dataSourceCredit = [];
+    this.dataSourceDebit = [];
 
     this.findAllReceita(page);
     this.findAllDespesa(page);
@@ -235,19 +315,11 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   sumCredit() {
-    if (this.dataSourceCredit != null) {
-      return this.dataSourceCredit.reduce((summ, v) => summ += v.valorParcela, 0);
-    } else {
-      return 0;
-    }
+    return this.dataSourceCredit.reduce((summ, v) => summ += v.valorParcela, 0);
   }
 
   sumDebit() {
-    if (this.dataSourceDebit != null) {
-      return this.dataSourceDebit.reduce((summ, v) => summ += v.valorParcela, 0);
-    } else {
-      return 0;
-    }
+    return this.dataSourceDebit.reduce((summ, v) => summ += v.valorParcela, 0);
   }
 
   downloadExampleCSV(args) {
@@ -307,14 +379,14 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   uncheckAllCredit() {
     this.selectedRowCredit = null;
-    this.selectedCredits = null;
+    this.selectedCredits = [];
     this.qtdSelectedRowsCredit = 0;
     this.defineMenuCredit();
   }
 
   uncheckAllDebit() {
     this.selectedRowDebit = null;
-    this.selectedDebits = null;
+    this.selectedDebits = [];
     this.qtdSelectedRowsDebit = 0;
     this.defineMenuDebit();
   }
