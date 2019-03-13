@@ -48,7 +48,6 @@ export class LancamentoCadastroComponent implements OnInit {
   ngOnInit() {
     this.title.setTitle(`${environment.childTitle} Cadastro de ${this.entityName}`);
     const idEntity = this.route.snapshot.params['id'];
-    console.log(idEntity);
     if (idEntity) {
       this.loadEntity(idEntity);
     } else {
@@ -77,6 +76,13 @@ export class LancamentoCadastroComponent implements OnInit {
 
   updateEditTitle() {
     this.title.setTitle(`${environment.childTitle} Alteração de ${this.entityName}: ${this.entity.descricao}`);
+    this.refreshOnEdit();
+  }
+
+  refreshOnEdit() {
+    this.entity.vencimento = new Date(this.entity.vencimento);
+    this.entity.vencimento.setDate(this.entity.vencimento.getDate() + 1);
+    this.onSpinnerChangeEvent(null);
   }
 
   get onEdit() {

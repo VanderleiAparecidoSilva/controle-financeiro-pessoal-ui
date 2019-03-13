@@ -18,6 +18,8 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {SplitButtonModule} from 'primeng/splitbutton';
 import {TooltipModule} from 'primeng/tooltip';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
 
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 

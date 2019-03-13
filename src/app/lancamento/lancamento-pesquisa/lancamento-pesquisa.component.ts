@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
-import { LazyLoadEvent, MessageService, MenuItem } from 'primeng/api';
+import { LazyLoadEvent, MessageService, MenuItem, ConfirmationService } from 'primeng/api';
 
 import * as moment from 'moment';
 
@@ -81,7 +81,8 @@ export class LancamentoPesquisaComponent implements OnInit {
     private errorHandler: ErrorHandlerService,
     private auth: AuthService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private confirmationService: ConfirmationService,
   ) { }
 
   ngOnInit() {
@@ -170,15 +171,24 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   reverseCredit() {
-    this.selectedCredits.forEach(cr => {
-      this.service.reverse(cr.id, this.getBaixa(cr))
-      .then(resultado => {
-        this.dataSourceCredit = [];
-        this.findAllReceita();
-        this.clearSelectedCredit();
-        this.defineMenuCredit();
-      })
-      .catch(erro => this.errorHandler.handle(erro));
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja prosseguir?',
+      header: 'Confirmação de Estorno',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      accept: () => {
+        this.selectedCredits.forEach(cr => {
+          this.service.reverse(cr.id, this.getBaixa(cr))
+          .then(resultado => {
+            this.dataSourceCredit = [];
+            this.findAllReceita();
+            this.clearSelectedCredit();
+            this.defineMenuCredit();
+          })
+          .catch(erro => this.errorHandler.handle(erro));
+        });
+      }
     });
   }
 
@@ -187,15 +197,24 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   deleteCredit() {
-    this.selectedCredits.forEach(cr => {
-      this.service.disable(cr.id)
-      .then(resultado => {
-        this.dataSourceCredit = [];
-        this.findAllReceita();
-        this.clearSelectedCredit();
-        this.defineMenuCredit();
-      })
-      .catch(erro => this.errorHandler.handle(erro));
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja prosseguir?',
+      header: 'Confirmação de Exclusão',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      accept: () => {
+        this.selectedCredits.forEach(cr => {
+          this.service.disable(cr.id)
+          .then(resultado => {
+            this.dataSourceCredit = [];
+            this.findAllReceita();
+            this.clearSelectedCredit();
+            this.defineMenuCredit();
+          })
+          .catch(erro => this.errorHandler.handle(erro));
+        });
+      }
     });
   }
 
@@ -217,15 +236,24 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   reverseDebit() {
-    this.selectedDebits.forEach(db => {
-      this.service.reverse(db.id, this.getBaixa(db))
-      .then(resultado => {
-        this.dataSourceDebit = [];
-        this.findAllDespesa();
-        this.clearSelectedDebit();
-        this.defineMenuDebit();
-      })
-      .catch(erro => this.errorHandler.handle(erro));
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja prosseguir?',
+      header: 'Confirmação de Estorno',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      accept: () => {
+        this.selectedDebits.forEach(db => {
+          this.service.reverse(db.id, this.getBaixa(db))
+          .then(resultado => {
+            this.dataSourceDebit = [];
+            this.findAllDespesa();
+            this.clearSelectedDebit();
+            this.defineMenuDebit();
+          })
+          .catch(erro => this.errorHandler.handle(erro));
+        });
+      }
     });
   }
 
@@ -234,15 +262,24 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   deleteDebit() {
-    this.selectedDebits.forEach(db => {
-      this.service.disable(db.id)
-      .then(resultado => {
-        this.dataSourceDebit = [];
-        this.findAllDespesa();
-        this.clearSelectedDebit();
-        this.defineMenuDebit();
-      })
-      .catch(erro => this.errorHandler.handle(erro));
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja prosseguir?',
+      header: 'Confirmação de Exclusão',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      accept: () => {
+        this.selectedDebits.forEach(db => {
+          this.service.disable(db.id)
+          .then(resultado => {
+            this.dataSourceDebit = [];
+            this.findAllDespesa();
+            this.clearSelectedDebit();
+            this.defineMenuDebit();
+          })
+          .catch(erro => this.errorHandler.handle(erro));
+        });
+      }
     });
   }
 
