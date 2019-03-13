@@ -75,9 +75,6 @@
                         </tr>
                     </ng-template>
                 </p-table>
-                <p-overlayPanel #opCredit>
-                  <span pTooltip="Observação: " appendTo="target" style="position: relative">{{ observacao }}</span>
-                </p-overlayPanel>
             </div>
             <div class="ui-g-6">
                 <p-table #dt [columns]="cols" [value]="dataSourceDebit" [responsive]="true" [resizableColumns]="true" [paginator]="false" [rows]="filter.linesPerPage" selectionMode="multiple" [(selection)]="selectedDebits" dataKey="id" [lazy]="true" (onLazyLoad)="loadTransactionsLazy($event)"
@@ -121,9 +118,6 @@
                         </tr>
                     </ng-template>
                 </p-table>
-                <p-overlayPanel #opDebit>
-                  <span pTooltip="Observação: " appendTo="target" style="position: relative">{{ observacao }}</span>
-                </p-overlayPanel>
             </div>
 
             <div class="ui-g-6">
