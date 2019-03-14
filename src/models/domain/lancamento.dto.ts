@@ -8,8 +8,7 @@ export class LancamentoDTO {
   centroCustoSecundario: string;
   vencimento = null;
   valorParcela = 0;
-  quantidadeTotalParcelas = 1;
-  parcela = 0;
+  parcela = 1;
   gerarParcelaUnica = false;
   contabancaria: string;
   observacao: string;

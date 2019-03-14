@@ -348,6 +348,8 @@ export class LancamentoPesquisaComponent implements OnInit {
 
     this.dataSourceCredit = [];
     this.dataSourceDebit = [];
+    this.uncheckAllCredit();
+    this.uncheckAllDebit();
 
     this.findAllReceita(page);
     this.findAllDespesa(page);
@@ -400,9 +402,9 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   downloadExampleCSV(args) {
-    let csv = 'Tipo;Descricao;Centro de Custo Primario;Centro de Custo Secundario;Vencimento;Valor da Parcela;Parcela;Total de Parcelas;' +
+    let csv = 'Tipo;Descricao;Centro de Custo Primario;Centro de Custo Secundario;Vencimento;Valor da Parcela;Parcela;' +
     'Gerar Parcela Unica;Conta Bancaria;Observacao;Status;Tipo do Lancamento\n';
-    csv += args.type + ';;;;;;;;' + args.singleparcel + ';;;' + args.status + ';' + args.launchtype;
+    csv += args.type + ';;;;;;;' + args.singleparcel + ';;;' + args.status + ';' + args.launchtype;
     const hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=UTF-8,' + encodeURI(csv);
     hiddenElement.target = '_blank';

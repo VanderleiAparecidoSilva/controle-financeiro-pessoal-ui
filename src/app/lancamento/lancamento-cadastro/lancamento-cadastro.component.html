@@ -45,17 +45,12 @@
         <app-message [control]="valorParcela" error="required" text="Valor da parcela é obrigatório" severity="error"></app-message>
       </div>
       <div class="ui-g-3 ui-fluid">
-        <label>Número de Parcelas</label>
-        <p-spinner [(ngModel)]="entity.quantidadeTotalParcelas" [min]="1" [max]="1000"
+        <label>{{onEdit ? 'Parcela' : 'Número de Parcelas'}}</label>
+        <p-spinner [(ngModel)]="entity.parcela" [min]="1" [max]="1000"
           name="quantidadeParcelas" required #qtdParcela="ngModel" (onChange)="onSpinnerChangeEvent($event)"
-          (ngModelChange)="onSpinnerChangeEvent($event)"></p-spinner>
+          (ngModelChange)="onSpinnerChangeEvent($event)" [disabled]="parcelaReadOnly()"></p-spinner>
         <app-message [control]="qtdParcela" error="required" text="Número de parcelas é obrigatório" severity="error"></app-message>
       </div>
-
-      <p
-      colocar acima quando estiver editando o texto parcela + o numero da parcela selecionada
-
-
       <div class="ui-g-3 ui-fluid">
         <label>Total</label>
         <input pInputText type="text" name="total" style="text-transform:uppercase;" disabled="true"

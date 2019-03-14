@@ -204,7 +204,7 @@ export class LancamentoCadastroComponent implements OnInit {
   }
 
   onSpinnerChangeEvent(event) {
-    this.totalValue = this.entity.valorParcela * this.entity.quantidadeTotalParcelas;
+    this.onEdit ? this.totalValue = this.entity.valorParcela : this.totalValue = this.entity.valorParcela * this.entity.parcela;
   }
 
   defineCalendarPortuguese() {
@@ -219,5 +219,9 @@ export class LancamentoCadastroComponent implements OnInit {
       today: 'Hoje',
       clear: 'Limpar'
     };
+  }
+
+  parcelaReadOnly() {
+    return this.onEdit;
   }
 }
