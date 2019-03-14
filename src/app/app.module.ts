@@ -1,3 +1,4 @@
+import { DashboardModule } from './dashboard/dashboard.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -31,6 +32,7 @@ import { LancamentoModule } from './lancamento/lancamento.module';
     ContabancariaModule,
     LancamentoModule,
     SegurancaModule,
+    DashboardModule,
 
     AppRoutingModule
   ],
