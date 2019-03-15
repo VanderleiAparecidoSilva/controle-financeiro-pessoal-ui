@@ -4,20 +4,18 @@ import * as moment from 'moment';
 
 import { environment } from 'src/environments/environment.prod';
 import { MoneyHttp } from './../seguranca/money-http';
+import { api_dominio } from 'src/environments/api.dominio';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
 
-  lancamentoUrl: string;
-
   constructor(private http: MoneyHttp) {
-    this.lancamentoUrl = `${environment.apiUrl}/lancamentos`;
   }
 
   lancamentosPorCentroCusto(): Promise<Array<any>> {
-    return this.http.get<Array<any>>(`${this.lancamentoUrl}/estatisticas/por-centrocusto`)
+    return this.http.get<Array<any>>(`${environment.apiUrl}${api_dominio.lancamento}/estatisticas/por-centrocusto`)
     .toPromise();
   }
 }

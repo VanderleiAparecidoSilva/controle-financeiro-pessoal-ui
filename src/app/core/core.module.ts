@@ -19,6 +19,7 @@ import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component'
 import { CentrocustoService } from '../centrocusto/centrocusto.service';
 import { ContabancariaService } from './../contabancaria/contabancaria.service';
 import { LancamentoService } from './../lancamento/lancamento.service';
+import { DashboardService } from '../dashboard/dashboard.service';
 import { ErrorHandlerService } from './error-handler.service';
 import { AuthService } from './../seguranca/auth.service';
 import { UsuarioService } from '../seguranca/usuario.service';
@@ -54,6 +55,7 @@ registerLocaleData(localePt);
     CentrocustoService,
     ContabancariaService,
     LancamentoService,
+    DashboardService,
     ErrorHandlerService,
     JwtHelperService,
     AuthService,
