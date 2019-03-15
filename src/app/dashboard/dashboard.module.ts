@@ -3,6 +3,8 @@ import { CommonModule, DecimalPipe } from '@angular/common';
 
 import { PanelModule } from 'primeng/panel';
 import { ChartModule } from 'primeng/chart';
+import { FieldsetModule } from 'primeng/fieldset';
+import { CalendarModule } from 'primeng/calendar';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { SharedModule } from '../shared/shared.module';
@@ -15,11 +17,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
     PanelModule,
     ChartModule,
+    FieldsetModule,
+    CalendarModule,
 
     SharedModule,
     DashboardRoutingModule
   ],
-  declarations: [DashboardComponent],
+  // declarations: [DashboardComponent],
   providers: [ DecimalPipe ]
 })
 export class DashboardModule { }

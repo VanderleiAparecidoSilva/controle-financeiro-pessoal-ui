@@ -1,21 +1,45 @@
 import { Injectable } from '@angular/core';
+import { HttpParams } from '@angular/common/http';
 
 import * as moment from 'moment';
 
-import { environment } from 'src/environments/environment.prod';
-import { MoneyHttp } from './../seguranca/money-http';
+import { environment } from 'src/environments/environment';
 import { api_dominio } from 'src/environments/api.dominio';
+import { MoneyHttp } from './../seguranca/money-http';
+import { AuthService } from '../seguranca/auth.service';
+
+export class Filter {
+  dtInicial = new Date();
+  dtFinal = new Date();
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
-
-  constructor(private http: MoneyHttp) {
+  constructor(private http: MoneyHttp,
+    private auth: AuthService) {
   }
 
-  lancamentosPorCentroCusto(): Promise<Array<any>> {
-    return this.http.get<Array<any>>(`${environment.apiUrl}${api_dominio.lancamento}/estatisticas/por-centrocusto`)
+  lancamentosCreditoPorCentroCusto(filter: Filter): Promise<Array<any>> {
+    const httpOptions = {
+      params: new HttpParams()
+        .set('email', this.auth.jwtPayload.user_name)
+        .set('from', moment(filter.dtInicial).format('YYYY-MM-DD'))
+        .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))};
+
+    return this.http.get<Array<any>>(`${environment.apiUrl}${api_dominio.lancamento}/estatisticas/credito/por-centrocusto`, httpOptions)
+    .toPromise();
+  }
+
+  lancamentosDebitoPorCentroCusto(filter: Filter): Promise<Array<any>> {
+    const httpOptions = {
+      params: new HttpParams()
+        .set('email', this.auth.jwtPayload.user_name)
+        .set('from', moment(filter.dtInicial).format('YYYY-MM-DD'))
+        .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))};
+
+    return this.http.get<Array<any>>(`${environment.apiUrl}${api_dominio.lancamento}/estatisticas/debito/por-centrocusto`, httpOptions)
     .toPromise();
   }
 }

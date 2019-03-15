@@ -63,7 +63,8 @@ export class NavbarComponent implements OnInit {
           items: [
             {
               label: 'Dashboard',
-              icon: 'pi pi-chart-bar'
+              icon: 'pi pi-chart-bar',
+              routerLink: '/dashboard'
             },
             {
               label: 'Lançamentos',
