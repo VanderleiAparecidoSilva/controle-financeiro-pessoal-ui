@@ -5,6 +5,20 @@
         </div>
 
         <div class="ui-g-12">
+            <p-fieldset legend="Filtro" [toggleable]="true">
+                <div class="ui-g-2 ui-fluid">
+                    <label>Data Inicial</label>
+                    <p-calendar name="dataInicial" #dataInicial="ngModel" [(ngModel)]="filter.dtInicial" showIcon="true" dateFormat="dd/mm/yy" [locale]="calendarPortuguese" showButtonBar="true" [inputStyle]="{'width':'135px'}"></p-calendar>
+                </div>
+                <div class="ui-g-2 ui-fluid">
+                    <label>Data Final</label>
+                    <p-calendar name="dataFinal" #dataFinal="ngModel" [(ngModel)]="filter.dtFinal" showIcon="true" dateFormat="dd/mm/yy" [locale]="calendarPortuguese" showButtonBar="true" [inputStyle]="{'width':'135px'}"></p-calendar>
+                </div>
+                <div class="ui-g-1 ui-fluid">
+                    <label>Pesquisar</label>
+                    <button pButton type="button" icon="fa fa-search" class="ui-button-icon ui-button-info" (click)="executeCharts()" style="width: 70px"></button>
+                </div>
+            </p-fieldset>
         </div>
 
         <div class="ui-g-12 ui-md-6">

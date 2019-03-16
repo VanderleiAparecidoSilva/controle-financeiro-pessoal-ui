@@ -74,6 +74,9 @@ export class AuthService {
     localStorage.removeItem('dtFinalLancamento_' + this.jwtPayload.user_name);
     localStorage.removeItem('somenteTitulosEmAberto_' + this.jwtPayload.user_name);
 
+    localStorage.removeItem('dtInicialGrafico_' + this.jwtPayload.user_name);
+    localStorage.removeItem('dtFinalGrafico_' + this.jwtPayload.user_name);
+
     this.jwtPayload = null;
   }
 

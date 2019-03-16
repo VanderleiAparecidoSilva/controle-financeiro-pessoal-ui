@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
 
 import * as moment from 'moment';
 
@@ -15,7 +14,6 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private dashboardService: DashboardService,
-    private decimalPipe: DecimalPipe,
     private auth: AuthService) { }
 
   pieChartDataCreditSynthetic: any;
@@ -37,6 +35,15 @@ export class DashboardComponent implements OnInit {
       this.defineCalendarPortuguese();
       this.defineFilters(this.filter);
 
+      this.showCharts();
+    }
+
+    executeCharts() {
+      this.showCharts();
+      this.saveFilterData(this.filter);
+    }
+
+    showCharts() {
       this.configurarGraficoPizzaCreditSynthetic();
       this.configurarGraficoPizzaDebitSynthetic();
       this.configurarGraficoPizzaCreditAnalytical();
@@ -58,8 +65,8 @@ export class DashboardComponent implements OnInit {
     }
 
     defineFilters(filter: Filter) {
-      const dtInicial = localStorage.getItem('dtInicialLancamento_' + this.auth.jwtPayload.user_name);
-      const dtFinal = localStorage.getItem('dtFinalLancamento_' + this.auth.jwtPayload.user_name);
+      const dtInicial = localStorage.getItem('dtInicialGrafico_' + this.auth.jwtPayload.user_name);
+      const dtFinal = localStorage.getItem('dtFinalGrafico_' + this.auth.jwtPayload.user_name);
       if (dtInicial) {
         filter.dtInicial = moment(dtInicial).toDate();
       }
@@ -67,6 +74,11 @@ export class DashboardComponent implements OnInit {
       if (dtFinal) {
         filter.dtFinal = moment(dtFinal).toDate();
       }
+    }
+
+    saveFilterData(filter: Filter) {
+      localStorage.setItem('dtInicialGrafico_' + this.auth.jwtPayload.user_name, filter.dtInicial.toDateString());
+      localStorage.setItem('dtFinalGrafico_' + this.auth.jwtPayload.user_name, filter.dtFinal.toDateString());
     }
 
     defineChartOptions() {
