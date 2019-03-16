@@ -21,25 +21,47 @@ export class DashboardService {
     private auth: AuthService) {
   }
 
-  lancamentosCreditoPorCentroCusto(filter: Filter): Promise<Array<any>> {
+  lancamentosCreditoPorCentroCustoSintetico(filter: Filter): Promise<Array<any>> {
     const httpOptions = {
       params: new HttpParams()
         .set('email', this.auth.jwtPayload.user_name)
         .set('from', moment(filter.dtInicial).format('YYYY-MM-DD'))
         .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))};
 
-    return this.http.get<Array<any>>(`${environment.apiUrl}${api_dominio.lancamento}/estatisticas/credito/por-centrocusto`, httpOptions)
+    return this.http.get<Array<any>>(`${environment.apiUrl}${api_dominio.lancamento}/estatisticas/credito/por-centrocusto-sintetico`, httpOptions)
     .toPromise();
   }
 
-  lancamentosDebitoPorCentroCusto(filter: Filter): Promise<Array<any>> {
+  lancamentosDebitoPorCentroCustoSintetico(filter: Filter): Promise<Array<any>> {
     const httpOptions = {
       params: new HttpParams()
         .set('email', this.auth.jwtPayload.user_name)
         .set('from', moment(filter.dtInicial).format('YYYY-MM-DD'))
         .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))};
 
-    return this.http.get<Array<any>>(`${environment.apiUrl}${api_dominio.lancamento}/estatisticas/debito/por-centrocusto`, httpOptions)
+    return this.http.get<Array<any>>(`${environment.apiUrl}${api_dominio.lancamento}/estatisticas/debito/por-centrocusto-sintetico`, httpOptions)
+    .toPromise();
+  }
+
+  lancamentosCreditoPorCentroCustoAnalitico(filter: Filter): Promise<Array<any>> {
+    const httpOptions = {
+      params: new HttpParams()
+        .set('email', this.auth.jwtPayload.user_name)
+        .set('from', moment(filter.dtInicial).format('YYYY-MM-DD'))
+        .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))};
+
+    return this.http.get<Array<any>>(`${environment.apiUrl}${api_dominio.lancamento}/estatisticas/credito/por-centrocusto-analitico`, httpOptions)
+    .toPromise();
+  }
+
+  lancamentosDebitoPorCentroCustoAnalitico(filter: Filter): Promise<Array<any>> {
+    const httpOptions = {
+      params: new HttpParams()
+        .set('email', this.auth.jwtPayload.user_name)
+        .set('from', moment(filter.dtInicial).format('YYYY-MM-DD'))
+        .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))};
+
+    return this.http.get<Array<any>>(`${environment.apiUrl}${api_dominio.lancamento}/estatisticas/debito/por-centrocusto-analitico`, httpOptions)
     .toPromise();
   }
 }

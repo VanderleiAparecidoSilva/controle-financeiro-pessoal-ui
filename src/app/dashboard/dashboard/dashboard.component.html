@@ -1,22 +1,26 @@
 <div class="container">
-  <div class="ui-g">
-    <div class="ui-g-12">
-      <h1>Dashboard</h1>
-    </div>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <h1>Dashboard</h1>
+        </div>
 
-    <div class="ui-g-12">
-    </div>
+        <div class="ui-g-12">
+        </div>
 
-    <div class="ui-g-12 ui-md-6">
-      <p-panel header="Lançamentos de crédito por centro de custo">
-        <p-chart type="doughnut" [data]="pieChartDataCredit" [options]="options"></p-chart>
-      </p-panel>
-    </div>
+        <div class="ui-g-12 ui-md-6">
+            <p-chart type="doughnut" [data]="pieChartDataCreditSynthetic" [options]="optionsCreditSynthetic"></p-chart>
+        </div>
 
-    <div class="ui-g-12 ui-md-6">
-      <p-panel header="Lançamentos de débito por centro de custo">
-        <p-chart type="doughnut" [data]="pieChartDataDebit" [options]="options"></p-chart>
-      </p-panel>
+        <div class="ui-g-12 ui-md-6">
+            <p-chart type="doughnut" [data]="pieChartDataDebitSynthetic" [options]="optionsDebitSynthetic"></p-chart>
+        </div>
+
+        <div class="ui-g-12 ui-md-6">
+            <p-chart type="doughnut" [data]="pieChartDataCreditAnalytical" [options]="optionsCreditAnalytical"></p-chart>
+        </div>
+
+        <div class="ui-g-12 ui-md-6">
+            <p-chart type="doughnut" [data]="pieChartDataDebitAnalytical" [options]="optionsDebitAnalytical"></p-chart>
+        </div>
     </div>
-  </div>
 </div>
