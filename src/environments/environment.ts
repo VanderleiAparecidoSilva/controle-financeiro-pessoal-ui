@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
+  production: true,
   apiUrl: 'https://controle-financeiro-pessoal.herokuapp.com',
   bucketApiUrl: 'https://s3-sa-east-1.amazonaws.com/controle-financeiro-pessoal/',
   photoPrefix: 'up_',

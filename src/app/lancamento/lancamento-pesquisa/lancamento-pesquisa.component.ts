@@ -394,11 +394,19 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   sumCredit() {
-    return this.dataSourceCredit.reduce((summ, v) => summ += v.valorParcela, 0);
+    if (this.dataSourceCredit.length > 0) {
+      return this.dataSourceCredit.reduce((summ, v) => summ += v.valorParcela, 0);
+    } else {
+      return 0;
+    }
   }
 
   sumDebit() {
-    return this.dataSourceDebit.reduce((summ, v) => summ += v.valorParcela, 0);
+    if (this.dataSourceDebit.length > 0) {
+      return this.dataSourceDebit.reduce((summ, v) => summ += v.valorParcela, 0);
+    } else {
+      return 0;
+    }
   }
 
   downloadExampleCSV(args) {
