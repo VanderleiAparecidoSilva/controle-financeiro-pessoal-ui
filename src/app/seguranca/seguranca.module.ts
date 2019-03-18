@@ -33,6 +33,7 @@ const jwtConf: JwtModule = {
     HttpClientModule,
 
     JwtModule.forRoot(jwtConf),
+
     SegurancaRoutingModule
   ],
   declarations: [LoginFormComponent],
