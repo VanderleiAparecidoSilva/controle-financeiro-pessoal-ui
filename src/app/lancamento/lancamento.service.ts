@@ -190,6 +190,7 @@ export class LancamentoService {
         .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
         .set('Content-Type', 'application/json')
     };
+
     return this.httpClient.post<void>(`${environment.apiUrl}${api_dominio.lancamento}/upload`,
       obj, httpOptions)
       .toPromise()
