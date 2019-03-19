@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://controle-financeiro-pessoal.herokuapp.com',
+  apiUrl: 'http://localhost:8080',
   bucketApiUrl: 'https://s3-sa-east-1.amazonaws.com/controle-financeiro-pessoal/',
   photoPrefix: 'up_',
   defaultTitle: 'Controle Financeiro - By Vanderlei',
