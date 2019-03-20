@@ -118,8 +118,9 @@ export class LancamentoPesquisaComponent implements OnInit {
       { label: 'Receber', icon: 'pi pi-check', disabled: canReceive, command: () => { this.receiveCredit(); } },
       { label: 'Estornar', icon: 'pi pi-step-backward', disabled: canReverse, command: () => { this.reverseCredit(); } },
       { disabled: true, target: 'separator' },
-      { label: 'Editar', icon: 'pi pi-refresh', disabled: (canEditAndDelete), command: () => { this.editCredit(); } },
+      { label: 'Editar', icon: 'pi pi-refresh', disabled: canEditAndDelete, command: () => { this.editCredit(); } },
       { label: 'Excluir', icon: 'pi pi-trash', disabled: canDelete, command: () => { this.deleteCredit(); } },
+      { label: 'Mudar Tipo', icon: 'pi pi-refresh', disabled: canEditAndDelete, command: () => { this.changeTypeCredit(); } },
       { disabled: true, target: 'separator' },
       { label: 'Lançar', icon: 'pi pi-plus', disabled: false, command: () => { this.insertCredit(); } }
     ];
@@ -137,6 +138,7 @@ export class LancamentoPesquisaComponent implements OnInit {
       { disabled: true, target: 'separator' },
       { label: 'Editar', icon: 'pi pi-refresh', disabled: canEditAndDelete, command: () => { this.editDebit(); } },
       { label: 'Excluir', icon: 'pi pi-trash', disabled: canDelete, command: () => { this.deleteDebit(); } },
+      { label: 'Mudar Tipo', icon: 'pi pi-refresh', disabled: canEditAndDelete, command: () => { this.changeTypeDebit(); } },
       { disabled: true, target: 'separator' },
       { label: 'Lançar', icon: 'pi pi-plus', disabled: false, command: () => { this.insertDebit(); } }
     ];
@@ -218,6 +220,30 @@ export class LancamentoPesquisaComponent implements OnInit {
     });
   }
 
+  changeTypeCredit() {
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja prosseguir?',
+      header: 'Confirmação de Alteração do Tipo',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      accept: () => {
+        this.selectedCredits.forEach(cr => {
+          this.service.changeType(cr.id)
+          .then(resultado => {
+            this.dataSourceCredit = [];
+            this.findAllReceita();
+            this.findAllDespesa();
+            this.clearSelectedCredit();
+            this.defineMenuCredit();
+            this.defineMenuDebit();
+          })
+          .catch(erro => this.errorHandler.handle(erro));
+        });
+      }
+    });
+  }
+
   insertCredit() {
     this.router.navigate(['/lancamento/nova/receita']);
   }
@@ -276,6 +302,30 @@ export class LancamentoPesquisaComponent implements OnInit {
             this.findAllDespesa();
             this.clearSelectedDebit();
             this.defineMenuDebit();
+          })
+          .catch(erro => this.errorHandler.handle(erro));
+        });
+      }
+    });
+  }
+
+  changeTypeDebit() {
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja prosseguir?',
+      header: 'Confirmação de Alteração do Tipo',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      accept: () => {
+        this.selectedDebits.forEach(db => {
+          this.service.changeType(db.id)
+          .then(resultado => {
+            this.dataSourceDebit = [];
+            this.findAllDespesa();
+            this.findAllReceita();
+            this.clearSelectedDebit();
+            this.defineMenuDebit();
+            this.defineMenuCredit();
           })
           .catch(erro => this.errorHandler.handle(erro));
         });

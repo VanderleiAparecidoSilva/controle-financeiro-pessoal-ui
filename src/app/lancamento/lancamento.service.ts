@@ -209,4 +209,17 @@ export class LancamentoService {
       .toPromise()
       .then(response => response);
   }
+
+  changeType(obj: string): Promise<void> {
+    const httpOptions = {
+      headers: new HttpHeaders()
+      .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
+      .set('Content-Type', 'application/json')
+    };
+    return this.httpClient.put<void>(
+      `${environment.apiUrl}${api_dominio.lancamento}/tipo/${obj}`,
+      JSON.stringify(obj), httpOptions)
+      .toPromise()
+      .then(response => response);
+  }
 }
