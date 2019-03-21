@@ -131,6 +131,18 @@ export class LancamentoService {
       });
   }
 
+  findAllActiveByType(tipo: any): Promise<any> {
+    const httpOptions = {
+      params: new HttpParams()
+        .set('email', this.auth.jwtPayload.user_name)
+        .set('tipo', tipo)};
+    return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.lancamento}/ativos/tipo`, httpOptions)
+      .toPromise()
+      .then( response => {
+        return response;
+      });
+  }
+
   save(obj: LancamentoDTO): Promise<LancamentoDTO> {
     const httpOptions = {
       headers: new HttpHeaders()
@@ -149,8 +161,8 @@ export class LancamentoService {
         .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
         .set('Content-Type', 'application/json')
     };
-    return this.httpClient.put<LancamentoDTO>(
-      `${environment.apiUrl}${api_dominio.lancamento}/${this.auth.jwtPayload.user_name}/${obj.id}`,
+    console.log(JSON.stringify(obj));
+    return this.httpClient.put<LancamentoDTO>(`${environment.apiUrl}${api_dominio.lancamento}`,
       JSON.stringify(obj), httpOptions)
       .toPromise()
       .then(response => response);

@@ -27,6 +27,7 @@ export class LancamentoCadastroComponent implements OnInit {
   calendarPortuguese: any;
   centroCustoPrimarioSelecionados: any[];
   centroCustoSecundarioSelecionados: any[];
+  lancamentosSelecionados: any[];
   contaBancariaSelecionadas: any[];
   types: SelectItem[];
 
@@ -89,6 +90,13 @@ export class LancamentoCadastroComponent implements OnInit {
     return Boolean(this.entity.id);
   }
 
+  filtrarDescricaoLancamentoPorTipo(event) {
+    const query = event.query;
+    this.service.findAllActiveByType(this.entity.tipo).then(data => {
+      this.lancamentosSelecionados = this.filtrarRegistroLancamento(query, data);
+    });
+  }
+
   filtrarListaCentroCustoPorTipo(event) {
     const query = event.query;
     this.centroCustoService.findAllActiveByType(this.entity.tipo).then(data => {
@@ -111,6 +119,17 @@ export class LancamentoCadastroComponent implements OnInit {
   }
 
   filtrarRegistro(query, allData: any[]): any[] {
+    const filtered: any[] = [];
+    for (let i = 0; i < allData.length; i++) {
+      const data = allData[i];
+      if (data.nome.toLowerCase().indexOf(query.toLowerCase()) === 0) {
+        filtered.push(data);
+      }
+    }
+    return filtered;
+  }
+
+  filtrarRegistroLancamento(query, allData: any[]): any[] {
     const filtered: any[] = [];
     for (let i = 0; i < allData.length; i++) {
       const data = allData[i];
