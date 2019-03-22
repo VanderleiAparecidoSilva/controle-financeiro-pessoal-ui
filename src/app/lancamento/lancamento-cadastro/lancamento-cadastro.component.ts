@@ -239,8 +239,4 @@ export class LancamentoCadastroComponent implements OnInit {
       clear: 'Limpar'
     };
   }
-
-  parcelaReadOnly() {
-    return this.onEdit;
-  }
 }

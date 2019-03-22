@@ -10,9 +10,8 @@
       </div>
       <div class="ui-g-12 ui-md-6 ui-fluid">
         <label>Descrição</label>
-        <p-autoComplete name="descricao" [(ngModel)]="entity.descricao" [suggestions]="lancamentosSelecionados"
-          (completeMethod)="filtrarDescricaoLancamentoPorTipo($event)" field="nome" [size]="30" [minLength]="1"
-          #descricao="ngModel" required minlength="5" autofocus placeholder="Digite a descrição do lançamento"></p-autoComplete>
+          <input pInputText type="text" name="descricao" style="text-transform:uppercase;"
+            required minlength="5" [(ngModel)]="entity.descricao" #descricao="ngModel" [disabled]="onEdit" autofocus>
           <app-message [control]="descricao" error="required" text="Descrição é obrigatória" severity="error"></app-message>
           <app-message [control]="descricao" error="minlength" text="Mínimo de {{ descricao.errors?.minlength?.requiredLength }} caracteres" severity="warn"></app-message>
       </div>
@@ -49,7 +48,7 @@
         <label>{{onEdit ? 'Parcela' : 'Número de Parcelas'}}</label>
         <p-spinner [(ngModel)]="entity.parcela" [min]="1" [max]="1000"
           name="quantidadeParcelas" required #qtdParcela="ngModel" (onChange)="onSpinnerChangeEvent($event)"
-          (ngModelChange)="onSpinnerChangeEvent($event)" [disabled]="parcelaReadOnly()"></p-spinner>
+          (ngModelChange)="onSpinnerChangeEvent($event)" [disabled]="onEdit"></p-spinner>
         <app-message [control]="qtdParcela" error="required" text="Número de parcelas é obrigatório" severity="error"></app-message>
       </div>
       <div class="ui-g-3 ui-fluid">
