@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 
-import { MessageService, SelectItem } from 'primeng/api';
+import { MessageService, SelectItem, DialogService } from 'primeng/api';
 
 import { environment } from 'src/environments/environment';
 import { LancamentoDTO } from './../../../models/domain/lancamento.dto';
@@ -13,11 +13,14 @@ import { UsuarioDTO } from 'src/models/domain/usuario.dto';
 import { AuthService } from 'src/app/seguranca/auth.service';
 import { ContabancariaService } from './../../contabancaria/contabancaria.service';
 import { CentrocustoService } from './../../centrocusto/centrocusto.service';
+import { LancamentoFiltroDTO } from 'src/models/domain/lancamentofiltro.dto';
+import { ListaDescricaoLancamentoComponent } from './lista-descricao-lancamento.component';
 
 @Component({
   selector: 'app-lancamento-cadastro',
   templateUrl: './lancamento-cadastro.component.html',
-  styleUrls: ['./lancamento-cadastro.component.css']
+  styleUrls: ['./lancamento-cadastro.component.css'],
+  providers: [DialogService]
 })
 export class LancamentoCadastroComponent implements OnInit {
 
@@ -27,7 +30,6 @@ export class LancamentoCadastroComponent implements OnInit {
   calendarPortuguese: any;
   centroCustoPrimarioSelecionados: any[];
   centroCustoSecundarioSelecionados: any[];
-  lancamentosSelecionados: any[];
   contaBancariaSelecionadas: any[];
   types: SelectItem[];
 
@@ -43,7 +45,8 @@ export class LancamentoCadastroComponent implements OnInit {
     private messageService: MessageService,
     private title: Title,
     private auth: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -88,13 +91,6 @@ export class LancamentoCadastroComponent implements OnInit {
 
   get onEdit() {
     return Boolean(this.entity.id);
-  }
-
-  filtrarDescricaoLancamentoPorTipo(event) {
-    const query = event.query;
-    this.service.findAllActiveByType(this.entity.tipo).then(data => {
-      this.lancamentosSelecionados = this.filtrarRegistroLancamento(query, data);
-    });
   }
 
   filtrarListaCentroCustoPorTipo(event) {
@@ -238,5 +234,20 @@ export class LancamentoCadastroComponent implements OnInit {
       today: 'Hoje',
       clear: 'Limpar'
     };
+  }
+
+  findDescriptionByType() {
+    const ref = this.dialogService.open(ListaDescricaoLancamentoComponent, {
+      data: this.entity.tipo,
+      header: 'Selecione a descrição',
+      width: '70%',
+      contentStyle: { 'max-height': '350px', 'overflow': 'auto' }
+    });
+
+    ref.onClose.subscribe((name: LancamentoFiltroDTO) => {
+        if (name) {
+          this.entity.descricao = name.nome;
+        }
+    });
   }
 }

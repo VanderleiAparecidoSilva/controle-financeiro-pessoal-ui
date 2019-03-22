@@ -1,4 +1,3 @@
-import { FileUploadModule } from 'primeng/fileupload';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,8 +17,8 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {SplitButtonModule} from 'primeng/splitbutton';
 import {TooltipModule} from 'primeng/tooltip';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {ConfirmationService} from 'primeng/api';
+import { DynamicDialogModule } from 'primeng/components/dynamicdialog/dynamicdialog';
+import { FileUploadModule } from 'primeng/fileupload';
 
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
@@ -27,6 +26,7 @@ import { LancamentoRoutingModule } from './lancamento-routing.module';
 import { LancamentoCadastroComponent } from './lancamento-cadastro/lancamento-cadastro.component';
 import { SharedModule } from '../shared/shared.module';
 import { LancamentoPesquisaComponent } from './lancamento-pesquisa/lancamento-pesquisa.component';
+import { ListaDescricaoLancamentoComponent } from './lancamento-cadastro/lista-descricao-lancamento.component';
 
 @NgModule({
   imports: [
@@ -51,12 +51,17 @@ import { LancamentoPesquisaComponent } from './lancamento-pesquisa/lancamento-pe
     FileUploadModule,
     SplitButtonModule,
     TooltipModule,
+    DynamicDialogModule,
 
     LancamentoRoutingModule
   ],
   declarations: [
     LancamentoCadastroComponent,
-    LancamentoPesquisaComponent
+    LancamentoPesquisaComponent,
+    ListaDescricaoLancamentoComponent
+  ],
+  entryComponents: [
+    ListaDescricaoLancamentoComponent
   ]
 })
 export class LancamentoModule { }
