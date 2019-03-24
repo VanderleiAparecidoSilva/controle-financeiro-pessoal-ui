@@ -1,9 +1,10 @@
-import { AuthService } from 'src/app/seguranca/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Router } from '@angular/router';
 
-import { LazyLoadEvent, MessageService, MenuItem, ConfirmationService } from 'primeng/api';
+import { LazyLoadEvent, MessageService, MenuItem, ConfirmationService, DialogService } from 'primeng/api';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 import * as moment from 'moment';
 
@@ -12,8 +13,9 @@ import { BaixaDTO } from './../../../models/domain/baixa.dto';
 import { environment } from 'src/environments/environment';
 import { Filter, LancamentoService } from '../lancamento.service';
 import { ErrorHandlerService } from 'src/app/core/error-handler.service';
-import { Router } from '@angular/router';
-import { OverlayPanel } from 'primeng/overlaypanel';
+import { AuthService } from 'src/app/seguranca/auth.service';
+import { ListaDescricaoLancamentoComponent } from '../lancamento-cadastro/lista-descricao-lancamento.component';
+import { LancamentoFiltroDTO } from 'src/models/domain/lancamentofiltro.dto';
 
 @Component({
   selector: 'app-lancamento-pesquisa',
@@ -31,7 +33,8 @@ import { OverlayPanel } from 'primeng/overlaypanel';
         transition('* <=> *', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
     ])
   ],
-  styleUrls: ['./lancamento-pesquisa.component.css']
+  styleUrls: ['./lancamento-pesquisa.component.css'],
+  providers: [DialogService]
 })
 export class LancamentoPesquisaComponent implements OnInit {
 
@@ -83,6 +86,7 @@ export class LancamentoPesquisaComponent implements OnInit {
     private messageService: MessageService,
     private router: Router,
     private confirmationService: ConfirmationService,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -403,6 +407,20 @@ export class LancamentoPesquisaComponent implements OnInit {
 
     this.findAllReceita(page);
     this.findAllDespesa(page);
+  }
+
+  findDescription() {
+    const ref = this.dialogService.open(ListaDescricaoLancamentoComponent, {
+      header: 'Selecione a descrição',
+      width: '70%',
+      contentStyle: { 'max-height': '350px', 'overflow': 'auto' }
+    });
+
+    ref.onClose.subscribe((name: LancamentoFiltroDTO) => {
+        if (name) {
+          this.filter.descricaoLancamento = name.nome;
+        }
+    });
   }
 
   columnFilter(event: any) {

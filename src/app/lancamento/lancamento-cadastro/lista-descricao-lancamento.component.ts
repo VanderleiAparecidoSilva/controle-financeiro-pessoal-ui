@@ -34,7 +34,11 @@ export class ListaDescricaoLancamentoComponent {
   constructor(private service: LancamentoService, public ref: DynamicDialogRef, public config: DynamicDialogConfig) { }
 
   ngOnInit() {
-    this.service.findAllActiveByType(this.config.data).then(nomes => this.nomes = nomes);
+    if (this.config.data) {
+      this.service.findAllActiveByType(this.config.data).then(nomes => this.nomes = nomes);
+    } else {
+      this.service.findAllActive().then(nomes => this.nomes = nomes);
+    }
   }
 
   selectName(name: LancamentoFiltroDTO) {

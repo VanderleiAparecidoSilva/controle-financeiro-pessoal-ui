@@ -46,7 +46,7 @@ export class LancamentoCadastroComponent implements OnInit {
     private title: Title,
     private auth: AuthService,
     private route: ActivatedRoute,
-    public dialogService: DialogService
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {

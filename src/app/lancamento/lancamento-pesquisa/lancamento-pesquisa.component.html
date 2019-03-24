@@ -14,7 +14,8 @@
                 </div>
                 <div class="ui-g-4 ui-fluid">
                     <label>Descrição do lançamento</label>
-                    <input pInputText type="text" name="descricaoLancamento" style="text-transform:uppercase;" [(ngModel)]="filter.descricaoLancamento" #descricaoLancamento="ngModel" (keyup)="columnFilter($event)">
+                    <input pInputText type="text" name="descricaoLancamento" style="text-transform:uppercase;width: 322px;" [(ngModel)]="filter.descricaoLancamento" #descricaoLancamento="ngModel" (keyup)="columnFilter($event)">
+                    <button type="button" (click)="findDescription()" pButton icon="pi pi-search" pTooltip="Localizar descrição" tooltipPosition="top" placeholder="Top"></button>
                 </div>
                 <div class="ui-g-3" style="width:250px;margin-bottom:10px">
                     <label>Somente títulos em aberto</label>
