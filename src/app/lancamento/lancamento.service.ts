@@ -161,7 +161,6 @@ export class LancamentoService {
         .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
         .set('Content-Type', 'application/json')
     };
-    console.log(JSON.stringify(obj));
     return this.httpClient.put<LancamentoDTO>(`${environment.apiUrl}${api_dominio.lancamento}`,
       JSON.stringify(obj), httpOptions)
       .toPromise()
@@ -233,5 +232,16 @@ export class LancamentoService {
       JSON.stringify(obj), httpOptions)
       .toPromise()
       .then(response => response);
+  }
+
+  findAllActive(): Promise<any> {
+    const httpOptions = {
+      params: new HttpParams()
+        .set('email', this.auth.jwtPayload.user_name)};
+    return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.lancamento}/ativos`, httpOptions)
+      .toPromise()
+      .then( response => {
+        return response;
+      });
   }
 }
