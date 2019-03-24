@@ -121,12 +121,10 @@ export class LancamentoService {
       .toPromise()
       .then( response => {
         const obj = response.content;
-
         const result = {
           obj,
           totalElements: response.totalElements
         };
-
         return result;
       });
   }
