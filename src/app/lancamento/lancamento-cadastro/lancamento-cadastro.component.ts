@@ -5,6 +5,8 @@ import { FormControl } from '@angular/forms';
 
 import { MessageService, SelectItem, DialogService } from 'primeng/api';
 
+import * as moment from 'moment';
+
 import { environment } from 'src/environments/environment';
 import { LancamentoDTO } from './../../../models/domain/lancamento.dto';
 import { LancamentoService } from './../lancamento.service';
@@ -84,8 +86,7 @@ export class LancamentoCadastroComponent implements OnInit {
   }
 
   refreshOnEdit() {
-    this.entity.vencimento = new Date(this.entity.vencimento);
-    this.entity.vencimento.setDate(this.entity.vencimento.getDate() + 1);
+    this.entity.vencimento = new Date(moment(this.entity.vencimento, 'YYYY-MM-DD').toDate());
     this.onSpinnerChangeEvent(null);
   }
 

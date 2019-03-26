@@ -10,7 +10,7 @@ export class LancamentoDTO {
   valorParcela = 0;
   parcela = 1;
   gerarParcelaUnica = false;
-  contabancaria: string;
+  contaBancaria: string;
   observacao: string;
   status = 'ABERTO';
   tipo = 'RECEITA';
