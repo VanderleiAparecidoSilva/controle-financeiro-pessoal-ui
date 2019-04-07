@@ -46,7 +46,8 @@ export class ContabancariaPesquisaComponent implements OnInit {
         { field: 'nome', header: 'Nome' },
         { field: 'numeroContaBancaria', header: 'Número' },
         { field: 'limiteContaBancaria', header: 'Limite' },
-        { field: 'saldoContaBancaria', header: 'Saldo' }
+        { field: 'saldoContaBancaria', header: 'Saldo' },
+        { field: 'contaBancariaPadrao', header: 'Padrão' }
       ];
 
       setTimeout(() => {
@@ -169,8 +170,8 @@ export class ContabancariaPesquisaComponent implements OnInit {
     }
 
     downloadExampleCSV(args) {
-      let csv = 'Tipo;Nome;Numero;Limite;Saldo;Vincular Saldo no Total;Atualizar Saldo na Baixa de Titulos\n';
-      csv += args.type + ';;;;;;';
+      let csv = 'Tipo;Nome;Numero;Limite;Saldo;Padrao;Vincular Saldo no Total;Atualizar Saldo na Baixa de Titulos\n';
+      csv += args.type + ';;;;;FALSE;FALSE;FALSE';
       const hiddenElement = document.createElement('a');
       hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
       hiddenElement.target = '_blank';

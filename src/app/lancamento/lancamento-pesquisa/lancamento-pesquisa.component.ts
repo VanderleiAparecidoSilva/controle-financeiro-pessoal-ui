@@ -167,8 +167,7 @@ export class LancamentoPesquisaComponent implements OnInit {
     this.selectedCredits.forEach(cr => {
       this.service.issue(cr.id, this.getBaixa(cr))
       .then(resultado => {
-        this.dataSourceCredit = [];
-        this.findAllReceita();
+        cr.status = 'RECEBIDO';
         this.clearSelectedCredit();
         this.defineMenuCredit();
       })
@@ -187,8 +186,7 @@ export class LancamentoPesquisaComponent implements OnInit {
         this.selectedCredits.forEach(cr => {
           this.service.reverse(cr.id, this.getBaixa(cr))
           .then(resultado => {
-            this.dataSourceCredit = [];
-            this.findAllReceita();
+            cr.status = 'ABERTO';
             this.clearSelectedCredit();
             this.defineMenuCredit();
           })
@@ -256,8 +254,7 @@ export class LancamentoPesquisaComponent implements OnInit {
     this.selectedDebits.forEach(db => {
       this.service.issue(db.id, this.getBaixa(db))
       .then(resultado => {
-        this.dataSourceDebit = [];
-        this.findAllDespesa();
+        db.status = 'PAGO';
         this.clearSelectedDebit();
         this.defineMenuDebit();
       })
@@ -276,8 +273,7 @@ export class LancamentoPesquisaComponent implements OnInit {
         this.selectedDebits.forEach(db => {
           this.service.reverse(db.id, this.getBaixa(db))
           .then(resultado => {
-            this.dataSourceDebit = [];
-            this.findAllDespesa();
+            db.status = 'ABERTO';
             this.clearSelectedDebit();
             this.defineMenuDebit();
           })

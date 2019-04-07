@@ -8,6 +8,7 @@ export class ContaBancariaDTO {
   saldoContaBancaria = 0;
   vincularSaldoBancarioNoTotalReceita = true;
   atualizarSaldoBancarioNaBaixaTitulo = true;
+  contaBancariaPadrao = false;
   ativo = true;
   usuario = new UsuarioDTO();
 }

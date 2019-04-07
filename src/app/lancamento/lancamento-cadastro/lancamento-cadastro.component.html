@@ -1,94 +1,80 @@
 <div class="container">
-  <form #f="ngForm" autocomplete="off" (ngSubmit)="save(f)">
-    <div class="ui-g">
-      <div class="ui-g-12">
-        <h1>{{onEdit ? 'Editar' : 'Novo'}} {{ entityName }}</h1>
-      </div>
-      <div class="ui-g-12">
-        <p-selectButton [options]="types" #tipo name="tipo" #tipo="ngModel" (onOptionClick)="optionClick($event)"
-          required [(ngModel)]="entity.tipo" [disabled]="onEdit"></p-selectButton>
-      </div>
-      <div class="ui-g-12 ui-md-6 ui-fluid">
-        <label>Descrição</label>
-          <input pInputText type="text" name="descricao" style="text-transform:uppercase;width: 532px;"
-            required minlength="5" [(ngModel)]="entity.descricao" #descricao="ngModel" [disabled]="onEdit" autofocus>
-          <app-message [control]="descricao" error="required" text="Descrição é obrigatória" severity="error"></app-message>
-          <app-message [control]="descricao" error="minlength" text="Mínimo de {{ descricao.errors?.minlength?.requiredLength }} caracteres" severity="warn"></app-message>
-          <button type="button" (click)="findDescriptionByType()" pButton icon="pi pi-search" [disabled]="onEdit" pTooltip="Localizar descrição" tooltipPosition="top" placeholder="Top"></button>
-      </div>
-      <div class="ui-g-12 ui-md-3 ui-fluid">
-        <label>Centro de Custo Primário</label>
-        <p-autoComplete name="centroCusto" [(ngModel)]="entity.centroCustoPrimario" [suggestions]="centroCustoPrimarioSelecionados"
-          (completeMethod)="filtrarListaCentroCustoPorTipo($event)" field="nome" [size]="30" [minLength]="1"
-          #centroCusto="ngModel" required minlength="5" placeholder="Digite o nome do centro de custo" [dropdown]="true"></p-autoComplete>
-          <app-message [control]="centroCusto" error="required" text="Centro de custo é obrigatório" severity="error"></app-message>
-          <app-message [control]="centroCusto" error="minlength" text="Mínimo de {{ centroCusto.errors?.minlength?.requiredLength }} caracteres" severity="warn"></app-message>
-      </div>
-      <div class="ui-g-12 ui-md-3 ui-fluid">
-        <label>Centro de Custo Secundário</label>
-        <p-autoComplete name="centroCustoSec" [(ngModel)]="entity.centroCustoSecundario" [suggestions]="centroCustoSecundarioSelecionados"
-          (completeMethod)="filtrarListaCentroCustoPorTipoSecundaria($event)" field="nome" [size]="30" [minLength]="1"
-          #centroCustoSec="ngModel" required minlength="5" placeholder="Digite o nome do centro de custo" [dropdown]="true"></p-autoComplete>
-          <app-message [control]="centroCustoSec" error="required" text="Centro de custo secundário é obrigatório" severity="error"></app-message>
-          <app-message [control]="centroCustoSec" error="minlength" text="Mínimo de {{ centroCustoSec.errors?.minlength?.requiredLength }} caracteres" severity="warn"></app-message>
-      </div>
-      <div class="ui-g-3 ui-fluid">
-        <label>Vencimento</label>
-        <p-calendar required #vencimento="ngModel" name="vencimento" [(ngModel)]="entity.vencimento"
-          dateFormat="dd/mm/yy" showIcon="true" [locale]="calendarPortuguese" showButtonBar="true" [inputStyle]="{'width':'240px'}"></p-calendar>
-        <app-message [control]="vencimento" error="required" text="Vencimento é obrigatório" severity="error"></app-message>
-      </div>
-      <div class="ui-g-3 ui-fluid">
-        <label>Valor da Parcela</label>
-        <input pInputText type="text" name="valorParcela" style="text-transform:uppercase;" required #valorParcela="ngModel"
-          [(ngModel)]="entity.valorParcela" placeholder="0,00" (ngModelChange)="onSpinnerChangeEvent($event)"
-          currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }">
-        <app-message [control]="valorParcela" error="required" text="Valor da parcela é obrigatório" severity="error"></app-message>
-      </div>
-      <div class="ui-g-3 ui-fluid">
-        <label>{{onEdit ? 'Parcela' : 'Número de Parcelas'}}</label>
-        <p-spinner [(ngModel)]="entity.parcela" [min]="1" [max]="1000"
-          name="quantidadeParcelas" required #qtdParcela="ngModel" (onChange)="onSpinnerChangeEvent($event)"
-          (ngModelChange)="onSpinnerChangeEvent($event)" [disabled]="onEdit"></p-spinner>
-        <app-message [control]="qtdParcela" error="required" text="Número de parcelas é obrigatório" severity="error"></app-message>
-      </div>
-      <div class="ui-g-3 ui-fluid">
-        <label>Total</label>
-        <input pInputText type="text" name="total" style="text-transform:uppercase;" disabled="true"
-          placeholder="0,00" [(ngModel)]="totalValue" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }">
-      </div>
-      <div class="ui-g-12 ui-fluid">
-        <label>Conta Bancária</label>
-        <p-autoComplete name="contaBancaria" [(ngModel)]="entity.contabancaria" [suggestions]="contaBancariaSelecionadas"
-          (completeMethod)="filtrarListaContaBancaria($event)" field="nome" [size]="30" [minLength]="1"
-          placeholder="Digite o nome da conta bancária" [dropdown]="true"></p-autoComplete>
-      </div>
-      <div class="ui-g-12 ui-fluid">
-        <label>Observação</label>
-        <textarea pInputTextarea rows="5" type="text" name="observacao" style="text-transform:uppercase;"
-         [(ngModel)]="entity.observacao"></textarea>
-      </div>
-      <div class="ui-g-6 ui-fluid">
-        <h3 class="first">{{tipo.value == 1 ? 'Inserir pago?' : 'Inserir recebido?'}}</h3>
-        <p-inputSwitch name="inputPagoRecebido" (onChange)="handleChange($event)" [(ngModel)]="typeChecked"></p-inputSwitch>
-      </div>
-      <div class="ui-g-6 ui-fluid">
-          <h3 class="first">Gerar parcela única</h3>
-          <p-inputSwitch name="inputParcelaUnica" [(ngModel)]="entity.gerarParcelaUnica"></p-inputSwitch>
+    <form #f="ngForm" autocomplete="off" (ngSubmit)="save(f)">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <h1>{{onEdit ? 'Editar' : 'Novo'}} {{ entityName }}</h1>
+            </div>
+            <div class="ui-g-12">
+                <p-selectButton [options]="types" #tipo name="tipo" #tipo="ngModel" (onOptionClick)="optionClick($event)" required [(ngModel)]="entity.tipo" [disabled]="onEdit"></p-selectButton>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-fluid">
+                <label>Descrição</label>
+                <input pInputText type="text" name="descricao" style="text-transform:uppercase;width: 532px;" required minlength="5" [(ngModel)]="entity.descricao" #descricao="ngModel" [disabled]="onEdit" autofocus>
+                <app-message [control]="descricao" error="required" text="Descrição é obrigatória" severity="error"></app-message>
+                <app-message [control]="descricao" error="minlength" text="Mínimo de {{ descricao.errors?.minlength?.requiredLength }} caracteres" severity="warn"></app-message>
+                <button type="button" (click)="findDescriptionByType()" pButton icon="pi pi-search" [disabled]="onEdit" pTooltip="Localizar descrição" tooltipPosition="top" placeholder="Top"></button>
+            </div>
+            <div class="ui-g-12 ui-md-3 ui-fluid">
+                <label>Centro de Custo Primário</label>
+                <p-autoComplete name="centroCusto" [(ngModel)]="entity.centroCustoPrimario" [suggestions]="centroCustoPrimarioSelecionados" (completeMethod)="filtrarListaCentroCustoPorTipo($event)" field="nome" [size]="30" [minLength]="1" #centroCusto="ngModel" required
+                    minlength="5" placeholder="Digite o nome do centro de custo" [dropdown]="true"></p-autoComplete>
+                <app-message [control]="centroCusto" error="required" text="Centro de custo é obrigatório" severity="error"></app-message>
+                <app-message [control]="centroCusto" error="minlength" text="Mínimo de {{ centroCusto.errors?.minlength?.requiredLength }} caracteres" severity="warn"></app-message>
+            </div>
+            <div class="ui-g-12 ui-md-3 ui-fluid">
+                <label>Centro de Custo Secundário</label>
+                <p-autoComplete name="centroCustoSec" [(ngModel)]="entity.centroCustoSecundario" [suggestions]="centroCustoSecundarioSelecionados" (completeMethod)="filtrarListaCentroCustoPorTipoSecundaria($event)" field="nome" [size]="30" [minLength]="1" #centroCustoSec="ngModel"
+                    required minlength="5" placeholder="Digite o nome do centro de custo" [dropdown]="true"></p-autoComplete>
+                <app-message [control]="centroCustoSec" error="required" text="Centro de custo secundário é obrigatório" severity="error"></app-message>
+                <app-message [control]="centroCustoSec" error="minlength" text="Mínimo de {{ centroCustoSec.errors?.minlength?.requiredLength }} caracteres" severity="warn"></app-message>
+            </div>
+            <div class="ui-g-3 ui-fluid">
+                <label>Vencimento</label>
+                <p-calendar required #vencimento="ngModel" name="vencimento" [(ngModel)]="entity.vencimento" dateFormat="dd/mm/yy" showIcon="true" [locale]="calendarPortuguese" showButtonBar="true" [inputStyle]="{'width':'240px'}"></p-calendar>
+                <app-message [control]="vencimento" error="required" text="Vencimento é obrigatório" severity="error"></app-message>
+            </div>
+            <div class="ui-g-3 ui-fluid">
+                <label>Valor da Parcela</label>
+                <input pInputText type="text" name="valorParcela" style="text-transform:uppercase;" required #valorParcela="ngModel" [(ngModel)]="entity.valorParcela" placeholder="0,00" (ngModelChange)="onSpinnerChangeEvent($event)" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }">
+                <app-message [control]="valorParcela" error="required" text="Valor da parcela é obrigatório" severity="error"></app-message>
+            </div>
+            <div class="ui-g-3 ui-fluid">
+                <label>{{onEdit ? 'Parcela' : 'Número de Parcelas'}}</label>
+                <p-spinner [(ngModel)]="entity.parcela" [min]="1" [max]="1000" name="quantidadeParcelas" required #qtdParcela="ngModel" (onChange)="onSpinnerChangeEvent($event)" (ngModelChange)="onSpinnerChangeEvent($event)" [disabled]="onEdit"></p-spinner>
+                <app-message [control]="qtdParcela" error="required" text="Número de parcelas é obrigatório" severity="error"></app-message>
+            </div>
+            <div class="ui-g-3 ui-fluid">
+                <label>Total</label>
+                <input pInputText type="text" name="total" style="text-transform:uppercase;" disabled="true" placeholder="0,00" [(ngModel)]="totalValue" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }">
+            </div>
+            <div class="ui-g-12 ui-fluid">
+                <label>Conta Bancária</label>
+                <p-autoComplete name="contaBancaria" [(ngModel)]="entity.contabancaria" [suggestions]="contaBancariaSelecionadas" (completeMethod)="filtrarListaContaBancaria($event)" field="nome" [size]="30" [minLength]="1" placeholder="Digite o nome da conta bancária"
+                    [dropdown]="true"></p-autoComplete>
+            </div>
+            <div class="ui-g-12 ui-fluid">
+                <label>Observação</label>
+                <textarea pInputTextarea rows="5" type="text" name="observacao" style="text-transform:uppercase;" [(ngModel)]="entity.observacao"></textarea>
+            </div>
+            <div class="ui-g-6 ui-fluid">
+                <h3 class="first">{{tipo.value == 1 ? 'Inserir pago?' : 'Inserir recebido?'}}</h3>
+                <p-inputSwitch name="inputPagoRecebido" (onChange)="handleChange($event)" [(ngModel)]="typeChecked"></p-inputSwitch>
+            </div>
+            <div class="ui-g-6 ui-fluid">
+                <h3 class="first">Gerar parcela única</h3>
+                <p-inputSwitch name="inputParcelaUnica" [(ngModel)]="entity.gerarParcelaUnica"></p-inputSwitch>
+            </div>
         </div>
-    </div>
-    <div class="ui-g-12">
-      <p-toolbar>
-        <div class="ui-toolbar-group-left">
-          <button pButton type="submit" label="Salvar" icon="fa fa-check" [disabled]="f.invalid"></button>
-          <button pButton type="button" label="Novo" icon="pi pi-plus" class="ui-button-success"
-            (click)="newEntity(f)"></button>
+        <div class="ui-g-12">
+            <p-toolbar>
+                <div class="ui-toolbar-group-left">
+                    <button pButton type="submit" label="Salvar" icon="fa fa-check" [disabled]="f.invalid"></button>
+                    <button pButton type="button" label="Novo" icon="pi pi-plus" class="ui-button-success" (click)="newEntity(f)"></button>
+                </div>
+                <div class="ui-toolbar-group-right">
+                    <a pButton type="button" label="Voltar" icon="fa fa-reply" class="ui-button-warning" [routerLink]="['/lancamentos']" pTooltip="Voltar para pesquisa" tooltipPosition="left"></a>
+                </div>
+            </p-toolbar>
         </div>
-        <div class="ui-toolbar-group-right">
-          <a pButton type="button" label="Voltar" icon="fa fa-reply" class="ui-button-warning"
-            [routerLink]="['/lancamentos']" pTooltip="Voltar para pesquisa" tooltipPosition="left"></a>
-        </div>
-      </p-toolbar>
-      </div>
-  </form>
+    </form>
 </div>

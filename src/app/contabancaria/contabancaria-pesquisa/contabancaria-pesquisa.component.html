@@ -27,6 +27,7 @@
                             <th class="col-receita-header">Número</th>
                             <th class="col-despesa-header">Limite</th>
                             <th class="col-despesa-header">Saldo</th>
+                            <th class="col-despesa-header">Padrão</th>
                             <th class="col-acoes-header"></th>
                         </tr>
                     </ng-template>
@@ -40,6 +41,7 @@
                             <td class="ui-resizable-column, col-receita">{{ rowData.numeroContaBancaria }}</td>
                             <td class="ui-resizable-column, col-despesa">{{ rowData.limiteContaBancaria | currency:'BRL':true:'1.2-2' }}</td>
                             <td class="ui-resizable-column, col-despesa">{{ rowData.saldoContaBancaria | currency:'BRL':true:'1.2-2' }}</td>
+                            <td class="ui-resizable-column, col-receita">{{ rowData.contaBancariaPadrao ? 'Sim' : 'Não' }}</td>
                             <td class="ui-resizable-column, col-acoes">
                                 <a pButton icon="fa fa-pencil" pTooltip="Editar" tooltipPosition="top" style="margin-right:5px" [routerLink]="['/contabancaria', rowData.id]"></a>
                                 <button pButton icon="fa fa-eye" pTooltip="Ativar" tooltipPosition="top" style="margin-right:5px" (click)="enable(rowData)" [disabled]="rowData.ativo === true"></button>
@@ -49,7 +51,7 @@
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
                         <tr>
-                            <td [attr.colspan]="6">
+                            <td [attr.colspan]="7">
                                 Nenhum registro encontrado
                             </td>
                         </tr>

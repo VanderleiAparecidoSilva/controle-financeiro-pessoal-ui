@@ -1,56 +1,52 @@
 <div class="container">
-  <form #f="ngForm" autocomplete="off" (ngSubmit)="save(f)">
-    <div class="ui-g">
-      <div class="ui-g-12">
-        <h1>{{onEdit ? 'Editar' : 'Nova'}} {{ entityName }}</h1>
-      </div>
-      <div class="ui-g-6 ui-md-3 ui-fluid">
-        <label>Nome</label>
-        <input pInputText type="text" name="nome" style="text-transform:uppercase;"
-          required minlength="3" [(ngModel)]="entity.nome" #nome="ngModel" autofocus>
-      </div>
-      <div class="ui-g-6 ui-md-3 ui-fluid">
-        <label>Número</label>
-        <input pInputText type="text" name="numeroContaBancaria" style="text-transform:uppercase;"
-         [(ngModel)]="entity.numeroContaBancaria">
-      </div>
-      <div class="ui-g-12">
-        <app-message [control]="nome" error="required" text="Nome é obrigatório" severity="error"></app-message>
-        <app-message [control]="nome" error="minlength" text="Mínimo de {{ nome.errors?.minlength?.requiredLength }} caracteres" severity="warn"></app-message>
-      </div>
-      <div class="ui-g-6 ui-md-3 ui-fluid">
-        <label>Limite</label>
-        <input pInputText type="text" name="limite" style="text-transform:uppercase;"
-         [(ngModel)]="entity.limiteContaBancaria" placeholder="0,00"
-         currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }">
-      </div>
-      <div class="ui-g-6 ui-md-3 ui-fluid">
-        <label>Saldo</label>
-        <input pInputText type="text" name="saldoContaBancaria" style="text-transform:uppercase;"
-         [(ngModel)]="entity.saldoContaBancaria" placeholder="0,00"
-         currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }">
-      </div>
-      <div class="ui-g-12 ui-fluid">
-        <h3>Vincular Saldo no Total (Receitas)</h3>
-        <p-inputSwitch name="saldoTotal" [(ngModel)]="entity.vincularSaldoBancarioNoTotalReceita"></p-inputSwitch>
-      </div>
-      <div class="ui-g-12 ui-fluid">
-        <h3>Atualizar Saldo na Baixa de Título(s)</h3>
-        <p-inputSwitch name="saldoBaixa" [(ngModel)]="entity.atualizarSaldoBancarioNaBaixaTitulo"></p-inputSwitch>
-      </div>
-      <div class="ui-g-12">
-        <p-toolbar>
-          <div class="ui-toolbar-group-left">
-            <button pButton type="submit" label="Salvar" icon="fa fa-check" [disabled]="f.invalid"></button>
-            <button pButton type="button" label="Novo" icon="pi pi-plus" class="ui-button-success"
-              (click)="newEntity(f)"></button>
-          </div>
-          <div class="ui-toolbar-group-right">
-            <a pButton type="button" label="Voltar" icon="fa fa-reply" class="ui-button-warning"
-              [routerLink]="['/contabancaria']" pTooltip="Voltar para pesquisa" tooltipPosition="left"></a>
-          </div>
-        </p-toolbar>
-      </div>
-    </div>
-  </form>
+    <form #f="ngForm" autocomplete="off" (ngSubmit)="save(f)">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <h1>{{onEdit ? 'Editar' : 'Nova'}} {{ entityName }}</h1>
+            </div>
+            <div class="ui-g-6 ui-md-3 ui-fluid">
+                <label>Nome</label>
+                <input pInputText type="text" name="nome" style="text-transform:uppercase;" required minlength="3" [(ngModel)]="entity.nome" #nome="ngModel" autofocus>
+            </div>
+            <div class="ui-g-6 ui-md-3 ui-fluid">
+                <label>Número</label>
+                <input pInputText type="text" name="numeroContaBancaria" style="text-transform:uppercase;" [(ngModel)]="entity.numeroContaBancaria">
+            </div>
+            <div class="ui-g-12">
+                <app-message [control]="nome" error="required" text="Nome é obrigatório" severity="error"></app-message>
+                <app-message [control]="nome" error="minlength" text="Mínimo de {{ nome.errors?.minlength?.requiredLength }} caracteres" severity="warn"></app-message>
+            </div>
+            <div class="ui-g-6 ui-md-3 ui-fluid">
+                <label>Limite</label>
+                <input pInputText type="text" name="limite" style="text-transform:uppercase;" [(ngModel)]="entity.limiteContaBancaria" placeholder="0,00" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }">
+            </div>
+            <div class="ui-g-6 ui-md-3 ui-fluid">
+                <label>Saldo</label>
+                <input pInputText type="text" name="saldoContaBancaria" style="text-transform:uppercase;" [(ngModel)]="entity.saldoContaBancaria" placeholder="0,00" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }">
+            </div>
+            <div class="ui-g-12 ui-fluid">
+                <h3>Vincular Saldo no Total (Receitas)</h3>
+                <p-inputSwitch name="saldoTotal" [(ngModel)]="entity.vincularSaldoBancarioNoTotalReceita"></p-inputSwitch>
+            </div>
+            <div class="ui-g-12 ui-fluid">
+                <h3>Atualizar Saldo na Baixa de Título(s)</h3>
+                <p-inputSwitch name="saldoBaixa" [(ngModel)]="entity.atualizarSaldoBancarioNaBaixaTitulo"></p-inputSwitch>
+            </div>
+            <div class="ui-g-12 ui-fluid">
+                <h3>Conta Bancária Padrão</h3>
+                <p-inputSwitch name="contaBancariaPadrao" [(ngModel)]="entity.contaBancariaPadrao"></p-inputSwitch>
+            </div>
+            <div class="ui-g-12">
+                <p-toolbar>
+                    <div class="ui-toolbar-group-left">
+                        <button pButton type="submit" label="Salvar" icon="fa fa-check" [disabled]="f.invalid"></button>
+                        <button pButton type="button" label="Novo" icon="pi pi-plus" class="ui-button-success" (click)="newEntity(f)"></button>
+                    </div>
+                    <div class="ui-toolbar-group-right">
+                        <a pButton type="button" label="Voltar" icon="fa fa-reply" class="ui-button-warning" [routerLink]="['/contabancaria']" pTooltip="Voltar para pesquisa" tooltipPosition="left"></a>
+                    </div>
+                </p-toolbar>
+            </div>
+        </div>
+    </form>
 </div>

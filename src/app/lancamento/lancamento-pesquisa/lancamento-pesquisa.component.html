@@ -51,13 +51,13 @@
                     </ng-template>
 
                     <ng-template pTemplate="body" let-rowData let-columns="columns">
-                      <tr [pSelectableRow]="rowData" [style.color]="rowData.status === 'RECEBIDO' ? 'green' : rowData.parcelaAtrasada ? 'red' : 'blue'">
-                        <td class="ui-resizable-column, col-data">{{ rowData.vencimento | date: 'dd/MM/yyyy' }}</td>
-                        <td class="ui-resizable-column, col-descricao" pTooltip="{{ rowData.observacao }}" tooltipPosition="right">{{ rowData.descricao }}</td>
-                        <td class="ui-resizable-column, col-valor">{{ rowData.valorParcela | number:'1.2-2'}}</td>
-                        <td class="ui-resizable-column, col-parcela">{{ rowData.parcelaComTotalParcelas }}</td>
-                        <td class="ui-resizable-column, col-status">{{ rowData.status }}</td>
-                      </tr>
+                        <tr [pSelectableRow]="rowData" [style.color]="rowData.status === 'RECEBIDO' ? 'green' : rowData.parcelaAtrasada ? 'red' : 'blue'">
+                            <td class="ui-resizable-column, col-data">{{ rowData.vencimento | date: 'dd/MM/yyyy' }}</td>
+                            <td class="ui-resizable-column, col-descricao" pTooltip="{{ rowData.observacao }}" tooltipPosition="right">{{ rowData.descricao }}</td>
+                            <td class="ui-resizable-column, col-valor">{{ rowData.valorParcela | number:'1.2-2'}}</td>
+                            <td class="ui-resizable-column, col-parcela">{{ rowData.parcelaComTotalParcelas }}</td>
+                            <td class="ui-resizable-column, col-status">{{ rowData.status }}</td>
+                        </tr>
                     </ng-template>
                     <ng-template pTemplate="footer" let-rowData>
                         <tr>
@@ -124,7 +124,7 @@
             <div class="ui-g-6">
                 <p-toolbar>
                     <div class="ui-toolbar-group-left">
-                        <p-splitButton label="Receita(s)" icon="pi pi-list" [model]="creditSplitItems" styleClass="ui-button-warning"></p-splitButton>
+                        <p-splitButton label="Receita(s)" (onClick)="insertCredit()" icon="pi pi-list" [model]="creditSplitItems" styleClass="ui-button-warning"></p-splitButton>
                         <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
                         <button pButton type="button" label="Desmarcar todos" icon="fa fa-square-o" class="ui-button-success" (click)="uncheckAllCredit()" [disabled]="qtdSelectedRowsCredit == 0"></button>
                     </div>
@@ -142,7 +142,7 @@
             <div class="ui-g-6">
                 <p-toolbar>
                     <div class="ui-toolbar-group-left">
-                        <p-splitButton label="Despesa(s)" icon="pi pi-list" [model]="debitSplitItems" styleClass="ui-button-warning"></p-splitButton>
+                        <p-splitButton label="Despesa(s)" (onClick)="insertDebit()" icon="pi pi-list" [model]="debitSplitItems" styleClass="ui-button-warning"></p-splitButton>
                         <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
                         <button pButton type="button" label="Desmarcar todos" icon="fa fa-square-o" class="ui-button-success" (click)="uncheckAllDebit()" [disabled]="qtdSelectedRowsDebit == 0"></button>
                     </div>

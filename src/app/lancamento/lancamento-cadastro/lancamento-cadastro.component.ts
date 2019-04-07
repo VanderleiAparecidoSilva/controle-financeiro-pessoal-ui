@@ -164,6 +164,7 @@ export class LancamentoCadastroComponent implements OnInit {
 
   updateEntity(form: FormControl) {
     this.entity.usuario = this.getUser();
+    this.entity.contabancaria === "" ? this.entity.contabancaria = null : this.entity.contabancaria;
     this.service.update(this.entity)
     .then((response) => {
       this.entity = response;
