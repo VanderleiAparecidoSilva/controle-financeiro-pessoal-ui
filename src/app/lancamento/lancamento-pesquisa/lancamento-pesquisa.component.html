@@ -62,7 +62,7 @@
                     <ng-template pTemplate="footer" let-rowData>
                         <tr>
                             <td class="ui-resizable-column, col-data"></td>
-                            <td class="ui-resizable-column, col-total">Total:</td>
+                            <td class="ui-resizable-column, col-total">Total de Créditos:</td>
                             <td class="ui-resizable-column, col-valor"> {{ sumCredit() | number:'1.2-2'}}</td>
                             <td class="ui-resizable-column, col-parcela"></td>
                             <td class="ui-resizable-column, col-status"></td>
@@ -105,7 +105,7 @@
                     <ng-template pTemplate="footer" let-rowData>
                         <tr>
                             <td class="ui-resizable-column, col-data"></td>
-                            <td class="ui-resizable-column, col-total">Total:</td>
+                            <td class="ui-resizable-column, col-total">Total de Débitos:</td>
                             <td class="ui-resizable-column, col-valor"> {{ sumDebit() | number:'1.2-2'}}</td>
                             <td class="ui-resizable-column, col-parcela"></td>
                             <td class="ui-resizable-column, col-status"></td>
@@ -126,7 +126,7 @@
                     <div class="ui-toolbar-group-left">
                         <p-splitButton label="Receita(s)" (onClick)="insertCredit()" icon="pi pi-list" [model]="creditSplitItems" styleClass="ui-button-warning"></p-splitButton>
                         <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
-                        <button pButton type="button" label="Desmarcar todos" icon="fa fa-square-o" class="ui-button-success" (click)="uncheckAllCredit()" [disabled]="qtdSelectedRowsCredit == 0"></button>
+                        <p-splitButton label="Selecão" icon="fa fa-square-o" [model]="creditSelectionItems" styleClass="ui-button-success"></p-splitButton>
                     </div>
                     <div class="ui-toolbar-group-right">
                         <p-fileUpload #uploaderCredit mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload" accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploaderCredit)" pTooltip="Importar Arquivo" tooltipPosition="right">
@@ -144,7 +144,7 @@
                     <div class="ui-toolbar-group-left">
                         <p-splitButton label="Despesa(s)" (onClick)="insertDebit()" icon="pi pi-list" [model]="debitSplitItems" styleClass="ui-button-warning"></p-splitButton>
                         <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
-                        <button pButton type="button" label="Desmarcar todos" icon="fa fa-square-o" class="ui-button-success" (click)="uncheckAllDebit()" [disabled]="qtdSelectedRowsDebit == 0"></button>
+                        <p-splitButton label="Selecão" icon="fa fa-square-o" [model]="debitSelectionItems" styleClass="ui-button-success"></p-splitButton>
                     </div>
                     <div class="ui-toolbar-group-right">
                         <p-fileUpload #uploaderDebit mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload" accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploaderDebit)" pTooltip="Importar Arquivo" tooltipPosition="right">

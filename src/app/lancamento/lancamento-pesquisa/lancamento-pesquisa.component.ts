@@ -74,6 +74,10 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   creditSplitItems: MenuItem[];
 
+  creditSelectionItems: MenuItem[];
+
+  debitSelectionItems: MenuItem[];
+
   debitSplitItems: MenuItem[];
 
   observacao: string;
@@ -103,6 +107,9 @@ export class LancamentoPesquisaComponent implements OnInit {
     this.defineMenuCredit();
     this.defineMenuDebit();
 
+    this.defineMenuCreditSelection();
+    this.defineMenuDebitSelection();
+
     setTimeout(() => {
       this.loading = true;
     });
@@ -127,6 +134,26 @@ export class LancamentoPesquisaComponent implements OnInit {
       { label: 'Mudar Tipo', icon: 'pi pi-refresh', disabled: canEditAndDelete, command: () => { this.changeTypeCredit(); } },
       { disabled: true, target: 'separator' },
       { label: 'Lançar', icon: 'pi pi-plus', disabled: false, command: () => { this.insertCredit(); } }
+    ];
+  }
+
+  defineMenuCreditSelection() {
+    const canSumSelectedCredit = (this.selectedCredits == null || this.selectedCredits.length <= 0);
+    this.creditSelectionItems = [
+      { label: 'Marcar todos', icon: 'pi pi-circle-on', disabled: false, command: () => { this.checkAllCredit(); } },
+      { label: 'Desmarcar todos', icon: 'pi pi-circle-off', disabled: false, command: () => { this.uncheckAllCredit(); } },
+      { disabled: true, target: 'separator' },
+      { label: 'Calcular seleção', icon: 'pi pi-plus', disabled: canSumSelectedCredit, command: () => { this.showSumCredit(); } }
+    ];
+  }
+
+  defineMenuDebitSelection() {
+    const canSumSelectedDebit = (this.selectedDebits == null || this.selectedDebits.length <= 0);
+    this.debitSelectionItems = [
+      { label: 'Marcar todos', icon: 'pi pi-circle-on', disabled: false, command: () => { this.checkAllDebit(); } },
+      { label: 'Desmarcar todos', icon: 'pi pi-circle-off', disabled: false, command: () => { this.uncheckAllDebit(); } },
+      { disabled: true, target: 'separator' },
+      { label: 'Calcular seleção', icon: 'pi pi-plus', disabled: canSumSelectedDebit, command: () => { this.showSumDebit(); } }
     ];
   }
 
@@ -323,7 +350,9 @@ export class LancamentoPesquisaComponent implements OnInit {
             this.dataSourceDebit = [];
             this.findAllDespesa();
             this.findAllReceita();
+
             this.clearSelectedDebit();
+
             this.defineMenuDebit();
             this.defineMenuCredit();
           })
@@ -434,27 +463,44 @@ export class LancamentoPesquisaComponent implements OnInit {
   onRowSelectCredit(event) {
     this.qtdSelectedRowsCredit++;
     this.defineMenuCredit();
+    this.defineMenuCreditSelection();
   }
 
   onRowSelectDebit(event) {
     this.qtdSelectedRowsDebit++;
     this.defineMenuDebit();
+    this.defineMenuDebitSelection();
   }
 
   onRowUnselectCredit(event) {
     this.qtdSelectedRowsCredit--;
     this.defineMenuCredit();
+    this.defineMenuCreditSelection();
   }
 
   onRowUnselectDebit(event) {
     this.qtdSelectedRowsDebit--;
     this.defineMenuDebit();
+    this.defineMenuDebitSelection();
   }
 
   onUploadHandler(event, uploader) {
     for (const file of event.files) {
       this.uploadFile(file, uploader);
     }
+  }
+
+  showSumCredit() {
+    this.messageService.add({key: 'tl', severity: 'success', summary: 'Soma de Créditos',
+    detail: this.sumSelectedCredits() });
+  }
+
+  sumSelectedCredits(): string {
+    if (this.selectedCredits != null && this.selectedCredits.length > 0) {
+      return this.getFormattedValue(this.selectedCredits.reduce((summ, v) => summ += v.valorParcela, 0));
+    }
+
+    return this.getFormattedValue(0);
   }
 
   sumCredit() {
@@ -465,12 +511,29 @@ export class LancamentoPesquisaComponent implements OnInit {
     }
   }
 
+  showSumDebit() {
+    this.messageService.add({severity: 'success', summary: 'Soma de Débitos',
+    detail: this.sumSelectedDebits() });
+  }
+
+  sumSelectedDebits(): string {
+    if (this.selectedDebits != null && this.selectedDebits.length > 0) {
+      return this.getFormattedValue(this.selectedDebits.reduce((summ, v) => summ += v.valorParcela, 0));
+    }
+
+    return this.getFormattedValue(0);
+  }
+
   sumDebit() {
     if (this.dataSourceDebit.length > 0) {
       return this.dataSourceDebit.reduce((summ, v) => summ += v.valorParcela, 0);
     } else {
       return 0;
     }
+  }
+
+  getFormattedValue(value: number) {
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
   }
 
   downloadExampleCSV(args) {
@@ -528,11 +591,38 @@ export class LancamentoPesquisaComponent implements OnInit {
     };
   }
 
+  checkAllCredit() {
+    if (this.dataSourceCredit != null) {
+      this.dataSourceCredit.forEach(cr => {
+        this.selectedCredits.push(cr);
+        this.qtdSelectedRowsCredit++;
+      });
+
+      this.selectedCredits = this.selectedCredits.slice();
+    }
+    this.defineMenuCredit();
+    this.defineMenuCreditSelection();
+  }
+
   uncheckAllCredit() {
     this.selectedRowCredit = null;
     this.selectedCredits = [];
     this.qtdSelectedRowsCredit = 0;
     this.defineMenuCredit();
+    this.defineMenuCreditSelection();
+  }
+
+  checkAllDebit() {
+    if (this.dataSourceDebit != null) {
+      this.dataSourceDebit.forEach(db => {
+        this.selectedDebits.push(db);
+        this.qtdSelectedRowsDebit++;
+      });
+
+      this.selectedDebits = this.selectedDebits.slice();
+    }
+    this.defineMenuDebit();
+    this.defineMenuDebitSelection();
   }
 
   uncheckAllDebit() {
@@ -540,6 +630,7 @@ export class LancamentoPesquisaComponent implements OnInit {
     this.selectedDebits = [];
     this.qtdSelectedRowsDebit = 0;
     this.defineMenuDebit();
+    this.defineMenuDebitSelection();
   }
 
   selectCredit(event, lancamento: LancamentoDTO, overlaypanel: OverlayPanel) {
