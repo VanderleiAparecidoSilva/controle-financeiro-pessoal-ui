@@ -512,7 +512,7 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   showSumDebit() {
-    this.messageService.add({severity: 'success', summary: 'Soma de Débitos',
+    this.messageService.add({severity: 'error', summary: 'Soma de Débitos',
     detail: this.sumSelectedDebits() });
   }
 
