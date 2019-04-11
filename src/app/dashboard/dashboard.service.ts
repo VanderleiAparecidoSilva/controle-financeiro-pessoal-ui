@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { api_dominio } from 'src/environments/api.dominio';
 import { MoneyHttp } from './../seguranca/money-http';
 import { AuthService } from '../seguranca/auth.service';
+import { stringify } from '@angular/core/src/render3/util';
 
 export class Filter {
   dtInicial = new Date();
@@ -24,6 +25,9 @@ export class DashboardService {
   }
 
   lancamentosCreditoPorCentroCustoSintetico(filter: Filter): Promise<Array<any>> {
+    if ((filter.centroCustoPrimario === null) || (filter.centroCustoPrimario === '')) {
+      filter.centroCustoPrimario = null;
+    }
     const httpOptions = {
       params: new HttpParams()
         .set('email', this.auth.jwtPayload.user_name)
