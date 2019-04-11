@@ -6,6 +6,7 @@ import { PanelModule } from 'primeng/panel';
 import { ChartModule } from 'primeng/chart';
 import { FieldsetModule } from 'primeng/fieldset';
 import {CalendarModule} from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { SharedModule } from '../shared/shared.module';
@@ -21,6 +22,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ChartModule,
     FieldsetModule,
     CalendarModule,
+    AutoCompleteModule,
 
     SharedModule,
     DashboardRoutingModule

@@ -1,3 +1,4 @@
+import { CentroCustoDTO } from './../../models/domain/centrocusto.dto';
 import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 
@@ -11,6 +12,7 @@ import { AuthService } from '../seguranca/auth.service';
 export class Filter {
   dtInicial = new Date();
   dtFinal = new Date();
+  centroCustoPrimario: string;
 }
 
 @Injectable({
@@ -26,7 +28,8 @@ export class DashboardService {
       params: new HttpParams()
         .set('email', this.auth.jwtPayload.user_name)
         .set('from', moment(filter.dtInicial).format('YYYY-MM-DD'))
-        .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))};
+        .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))
+        .set('costCenter', JSON.stringify(filter.centroCustoPrimario))};
 
     return this.http.get<Array<any>>(`${environment.apiUrl}${api_dominio.lancamento}/estatisticas/credito/por-centrocusto-sintetico`, httpOptions)
     .toPromise();
@@ -37,7 +40,8 @@ export class DashboardService {
       params: new HttpParams()
         .set('email', this.auth.jwtPayload.user_name)
         .set('from', moment(filter.dtInicial).format('YYYY-MM-DD'))
-        .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))};
+        .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))
+        .set('costCenter', JSON.stringify(filter.centroCustoPrimario))};
 
     return this.http.get<Array<any>>(`${environment.apiUrl}${api_dominio.lancamento}/estatisticas/debito/por-centrocusto-sintetico`, httpOptions)
     .toPromise();
@@ -48,7 +52,8 @@ export class DashboardService {
       params: new HttpParams()
         .set('email', this.auth.jwtPayload.user_name)
         .set('from', moment(filter.dtInicial).format('YYYY-MM-DD'))
-        .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))};
+        .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))
+        .set('costCenter', JSON.stringify(filter.centroCustoPrimario))};
 
     return this.http.get<Array<any>>(`${environment.apiUrl}${api_dominio.lancamento}/estatisticas/credito/por-centrocusto-analitico`, httpOptions)
     .toPromise();
@@ -59,7 +64,8 @@ export class DashboardService {
       params: new HttpParams()
         .set('email', this.auth.jwtPayload.user_name)
         .set('from', moment(filter.dtInicial).format('YYYY-MM-DD'))
-        .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))};
+        .set('to', moment(filter.dtFinal).format('YYYY-MM-DD'))
+        .set('costCenter', JSON.stringify(filter.centroCustoPrimario))};
 
     return this.http.get<Array<any>>(`${environment.apiUrl}${api_dominio.lancamento}/estatisticas/debito/por-centrocusto-analitico`, httpOptions)
     .toPromise();

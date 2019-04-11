@@ -35,7 +35,8 @@
             </div>
             <div class="ui-g-3 ui-fluid">
                 <label>Valor da Parcela</label>
-                <input pInputText type="text" name="valorParcela" style="text-transform:uppercase;" required #valorParcela="ngModel" [(ngModel)]="entity.valorParcela" placeholder="0,00" (ngModelChange)="onSpinnerChangeEvent($event)" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }">
+                <input pInputText type="text" name="valorParcela" style="text-transform:uppercase;" required #valorParcela="ngModel" [(ngModel)]="entity.valorParcela" placeholder="0,00" (ngModelChange)="onSpinnerChangeEvent($event)" onclick="this.setSelectionRange(0, this.value.length)"
+                    currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: false }">
                 <app-message [control]="valorParcela" error="required" text="Valor da parcela é obrigatório" severity="error"></app-message>
             </div>
             <div class="ui-g-3 ui-fluid">

@@ -1,3 +1,4 @@
+import { CentrocustoService } from './../../centrocusto/centrocusto.service';
 import { Component, OnInit } from '@angular/core';
 
 import * as moment from 'moment';
@@ -14,12 +15,15 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private dashboardService: DashboardService,
+    private centroCustoService: CentrocustoService,
     private auth: AuthService) { }
 
   pieChartDataCreditSynthetic: any;
   pieChartDataDebitSynthetic: any;
   pieChartDataCreditAnalytical: any;
   pieChartDataDebitAnalytical: any;
+
+  centroCustoPrimarioSelecionados: any[];
 
   filter = new Filter();
 
@@ -377,5 +381,23 @@ export class DashboardComponent implements OnInit {
             ]
           };
         });
+    }
+
+    filtrarListaCentroCusto(event) {
+      const query = event.query;
+      this.centroCustoService.findAllPrimaryActive().then(data => {
+          this.centroCustoPrimarioSelecionados = this.filtrarRegistro(query, data);
+      });
+    }
+
+    filtrarRegistro(query, allData: any[]): any[] {
+      const filtered: any[] = [];
+      for (let i = 0; i < allData.length; i++) {
+        const data = allData[i];
+        if (data.nome.toLowerCase().indexOf(query.toLowerCase()) === 0) {
+          filtered.push(data);
+        }
+      }
+      return filtered;
     }
 }
