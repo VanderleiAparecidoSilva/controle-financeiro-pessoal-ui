@@ -9,7 +9,7 @@
             </div>
             <div class="ui-g-12 ui-md-6 ui-fluid">
                 <label>Descrição</label>
-                <input pInputText type="text" name="descricao" style="text-transform:uppercase;width: 532px;" required minlength="5" [(ngModel)]="entity.descricao" #descricao="ngModel" [disabled]="onEdit" autofocus>
+                <input pInputText type="text" name="descricao" style="text-transform:uppercase;width: 532px;" required minlength="3" [(ngModel)]="entity.descricao" #descricao="ngModel" [disabled]="onEdit" autofocus>
                 <app-message [control]="descricao" error="required" text="Descrição é obrigatória" severity="error"></app-message>
                 <app-message [control]="descricao" error="minlength" text="Mínimo de {{ descricao.errors?.minlength?.requiredLength }} caracteres" severity="warn"></app-message>
                 <button type="button" (click)="findDescriptionByType()" pButton icon="pi pi-search" [disabled]="onEdit" pTooltip="Localizar descrição" tooltipPosition="top" placeholder="Top"></button>
