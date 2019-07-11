@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <h1>Relatório de {{ typeName }}</h1>
+    </div>
+    <div class="ui-g-12">
+        <p-fieldset legend="Filtro" [toggleable]="true">
+            <div class="ui-g-2 ui-fluid">
+                <label>Data Inicial</label>
+                <p-calendar required #dataInicial="ngModel" name="dataInicial" [(ngModel)]="filter.dtInicial" showIcon="true" dateFormat="dd/mm/yy" [locale]="calendarPortuguese" showButtonBar="true" [inputStyle]="{'width':'135px'}"></p-calendar>
+                <app-message [control]="dataInicial" error="required" text="Data inicial é obrigatória" severity="error"></app-message>
+            </div>
+            <div class="ui-g-2 ui-fluid">
+                <label>Data Final</label>
+                <p-calendar required #dataFinal="ngModel" name="dataFinal" [(ngModel)]="filter.dtFinal" showIcon="true" dateFormat="dd/mm/yy" [locale]="calendarPortuguese" showButtonBar="true" [inputStyle]="{'width':'135px'}"></p-calendar>
+                <app-message [control]="dataFinal" error="required" text="Data final é obrigatória" severity="error"></app-message>
+            </div>
+            <div class="ui-g-4 ui-fluid">
+                <label>Descrição do lançamento</label>
+                <input pInputText type="text" name="descricaoLancamento" style="text-transform:uppercase;width: 322px;" [(ngModel)]="filter.descricaoLancamento" #descricaoLancamento="ngModel" (keyup)="columnFilter($event)">
+                <button type="button" (click)="findDescription()" pButton icon="pi pi-search" pTooltip="Localizar descrição" tooltipPosition="top" placeholder="Top"></button>
+            </div>
+            <div class="ui-g-3" style="width:250px;margin-bottom:10px">
+                <label>Somente títulos em aberto</label>
+                <div class="ui-g-6">
+                    <p-radioButton class="ui-radiobutton-box" name="grpTituloAberto" value="Sim" label="Sim" [(ngModel)]="filter.somenteTitulosAbertos" inputId="yes"></p-radioButton>
+                </div>
+                <div class="ui-g-6">
+                    <p-radioButton class="ui-radiobutton-box" name="grpTituloAberto" value="Nao" label="Não" [(ngModel)]="filter.somenteTitulosAbertos" inputId="no"></p-radioButton>
+                </div>
+            </div>
+        </p-fieldset>
+    </div>
+    <div class="ui-g-12">
+      <button pButton type="button" icon="fa fa-print" class="ui-button-icon ui-button-info" (click)="gerar()" label="Gerar"></button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <h1>Relatório de Centro de Custo por Tipo</h1>
+      </div>
+
+      <form #f="ngForm" (ngSubmit)="gerar()">
+        <div class="ui-g-12">
+          <div class="ui-g-12">
+            <label>Selecione o tipo de centro de custo para impressão:</label>
+          </div>
+          <div class="ui-g-12">
+            <p-selectButton required [options]="types" [(ngModel)]="selectedType" name="selectedType"></p-selectButton>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <button pButton type="submit" icon="fa fa-print" class="ui-button-icon ui-button-info" label="Gerar" [disabled]="f.invalid"></button>
+        </div>
+      </form>
+    </div>
+  </div>

@@ -68,25 +68,30 @@ export class NavbarComponent implements OnInit {
             },
             {
               label: 'Lançamentos',
+              icon: 'fa fa-print',
               items: [
                 {
                   label: 'Receitas',
-                  icon: 'fa fa-print'
+                  icon: 'fa fa-print',
+                  routerLink: '/relatorio/lancamento/receita'
                 },
                 {
                   label: 'Despesas',
-                  icon: 'fa fa-print'
+                  icon: 'fa fa-print',
+                  routerLink: '/relatorio/lancamento/despesa'
                 }
               ]
             },
             {separator: true},
             {
               label: 'Centro de Custo',
-              icon: 'fa fa-print'
+              icon: 'fa fa-print',
+              routerLink: '/relatorio/centrocusto'
             },
             {
               label: 'Conta Bancária',
-              icon: 'fa fa-print'
+              icon: 'fa fa-print',
+              routerLink: '/relatorio/contabancaria'
             }
           ]
       }

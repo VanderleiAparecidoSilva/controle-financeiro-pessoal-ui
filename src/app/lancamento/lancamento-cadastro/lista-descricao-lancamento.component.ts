@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/api';
 
@@ -25,7 +25,7 @@ import { LancamentoFiltroDTO } from '../../../models/domain/lancamentofiltro.dto
       </p-table>
   `
 })
-export class ListaDescricaoLancamentoComponent {
+export class ListaDescricaoLancamentoComponent implements OnInit {
 
   nomes: LancamentoFiltroDTO[];
 

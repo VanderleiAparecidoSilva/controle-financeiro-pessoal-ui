@@ -20,6 +20,7 @@ import { CentrocustoService } from '../centrocusto/centrocusto.service';
 import { ContabancariaService } from './../contabancaria/contabancaria.service';
 import { LancamentoService } from './../lancamento/lancamento.service';
 import { DashboardService } from '../dashboard/dashboard.service';
+import { RelatoriosService } from '../relatorios/relatorios.service';
 import { ErrorHandlerService } from './error-handler.service';
 import { AuthService } from './../seguranca/auth.service';
 import { UsuarioService } from '../seguranca/usuario.service';
@@ -56,6 +57,7 @@ registerLocaleData(localePt);
     ContabancariaService,
     LancamentoService,
     DashboardService,
+    RelatoriosService,
     ErrorHandlerService,
     JwtHelperService,
     AuthService,

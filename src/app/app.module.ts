@@ -14,6 +14,7 @@ import { AuthInterceptor } from './seguranca/auth-interceptor';
 import { SegurancaModule } from './seguranca/seguranca.module';
 import { ContabancariaModule } from './contabancaria/contabancaria.module';
 import { LancamentoModule } from './lancamento/lancamento.module';
+import { RelatoriosModule } from './relatorios/relatorios.module';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { LancamentoModule } from './lancamento/lancamento.module';
     LancamentoModule,
     SegurancaModule,
     DashboardModule,
+    RelatoriosModule,
 
     AppRoutingModule
   ],
