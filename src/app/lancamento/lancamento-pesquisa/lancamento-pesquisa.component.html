@@ -126,7 +126,7 @@
                     <div class="ui-toolbar-group-left">
                         <p-splitButton label="Receita(s)" (onClick)="insertCredit()" icon="pi pi-list" [model]="creditSplitItems" styleClass="ui-button-warning"></p-splitButton>
                         <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
-                        <p-splitButton label="Selecão" icon="fa fa-square-o" [model]="creditSelectionItems" styleClass="ui-button-success"></p-splitButton>
+                        <p-splitButton label="Seleção" (onClick)="uncheckAllCredit()" icon="fa fa-square-o" [model]="creditSelectionItems" styleClass="ui-button-success"></p-splitButton>
                     </div>
                     <div class="ui-toolbar-group-right">
                         <p-fileUpload #uploaderCredit mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload" accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploaderCredit)" pTooltip="Importar Arquivo" tooltipPosition="right">
@@ -144,7 +144,7 @@
                     <div class="ui-toolbar-group-left">
                         <p-splitButton label="Despesa(s)" (onClick)="insertDebit()" icon="pi pi-list" [model]="debitSplitItems" styleClass="ui-button-warning"></p-splitButton>
                         <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
-                        <p-splitButton label="Selecão" icon="fa fa-square-o" [model]="debitSelectionItems" styleClass="ui-button-success"></p-splitButton>
+                        <p-splitButton label="Seleção" (onClick)="uncheckAllDebit()" icon="fa fa-square-o" [model]="debitSelectionItems" styleClass="ui-button-success"></p-splitButton>
                     </div>
                     <div class="ui-toolbar-group-right">
                         <p-fileUpload #uploaderDebit mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload" accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploaderDebit)" pTooltip="Importar Arquivo" tooltipPosition="right">

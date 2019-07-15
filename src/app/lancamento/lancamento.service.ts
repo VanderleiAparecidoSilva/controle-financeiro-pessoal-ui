@@ -206,6 +206,25 @@ export class LancamentoService {
       .then(() => null);
   }
 
+  findOpenInstallmentsById(obj: string): Promise<any> {
+    const httpOptions = {
+      headers: new HttpHeaders()
+      .set('Authorization', 'Basic YM5ndWxhcjpAbmd1bEByMA==')
+      .set('Content-Type', 'application/json')
+    };
+
+    return this.httpClient.get<any>(`${environment.apiUrl}${api_dominio.lancamento}/parcelas/${obj}`, httpOptions)
+    .toPromise()
+    .then(response => {
+      const obj = response.content;
+      const result = {
+        obj,
+        totalElements: response.totalElements
+      };
+      return result;
+    });
+  }
+
   disable(obj: string): Promise<void> {
     const httpOptions = {
       headers: new HttpHeaders()

@@ -235,15 +235,37 @@ export class LancamentoPesquisaComponent implements OnInit {
       acceptLabel: 'Sim',
       rejectLabel: 'Não',
       accept: () => {
-        this.selectedCredits.forEach(cr => {
-          this.service.disable(cr.id)
-          .then(resultado => {
-            this.dataSourceCredit = [];
-            this.findAllReceita();
-            this.clearSelectedCredit();
-            this.defineMenuCredit();
-          })
-          .catch(erro => this.errorHandler.handle(erro));
+        this.selectedCredits.forEach(db => {
+          if (this.selectedCredits.length === 1) {
+            this.service.findOpenInstallmentsById(db.id)
+            .then(resultado => {
+              if (resultado.obj != null && resultado.obj.length > 0) {
+                this.confirmationService.confirm({
+                  message: `O lançamento ${db.descricao} [${db.observacao}] contém outras parcelas em aberto. Deseja excluir todas?`,
+                  header: `Confirmação de Exclusão`,
+                  icon: `pi pi-exclamation-triangle`,
+                  acceptLabel: 'Sim',
+                  rejectLabel: 'Não',
+                  accept: () => {
+                    this.disable(db.id, false);
+                    resultado.obj.forEach(lc => {
+                      this.disable(lc.id, false);
+                    });
+                    this.dataSourceDebit = [];
+                    this.findAllReceita();
+                    this.clearSelectedCredit();
+                    this.defineMenuCredit();
+                  },
+                  reject: () => {
+                    this.disable(db.id, true);
+                  }
+                });
+              }
+            })
+            .catch(erro => this.errorHandler.handle(erro));
+          } else {
+            this.disable(db.id, true);
+          }
         });
       }
     });
@@ -334,6 +356,17 @@ export class LancamentoPesquisaComponent implements OnInit {
         });
       }
     });
+  }
+
+  disable(id: string, clearGrid: Boolean) {
+    this.service.disable(id)
+    .then(resultado => {
+      this.dataSourceDebit = [];
+      this.findAllDespesa();
+      this.clearSelectedDebit();
+      this.defineMenuDebit();
+    })
+    .catch(erro => this.errorHandler.handle(erro));
   }
 
   changeTypeDebit() {
