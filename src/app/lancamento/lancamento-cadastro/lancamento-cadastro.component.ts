@@ -147,9 +147,8 @@ export class LancamentoCadastroComponent implements OnInit {
 
   insertEntity(form: FormControl) {
     this.entity.usuario = this.getUser();
-    this.entity.contabancaria === '' ? this.entity.contabancaria = null : this.entity.contabancaria;
-    (this.entity.observacao === undefined || this.entity.observacao === '') ? this.entity.observacao = null : this.entity.observacao;
-    console.log(this.entity.observacao);
+    (this.entity.contabancaria === undefined || this.entity.contabancaria === '') ? this.entity.contabancaria = null : this.entity.contabancaria = this.entity.contabancaria;
+    (this.entity.observacao === undefined || this.entity.observacao === '') ? this.entity.observacao = null : this.entity.observacao = this.entity.observacao.toUpperCase();
     this.service.save(this.entity)
       .then((response) => {
         this.messageService.add({severity: 'success', summary: this.entityName,
@@ -167,8 +166,8 @@ export class LancamentoCadastroComponent implements OnInit {
 
   updateEntity(form: FormControl) {
     this.entity.usuario = this.getUser();
-    this.entity.contabancaria === '' ? this.entity.contabancaria = null : this.entity.contabancaria;
-    this.entity.observacao === '' ? this.entity.observacao = null : this.entity.observacao;
+    (this.entity.contabancaria === undefined || this.entity.contabancaria === '') ? this.entity.contabancaria = null : this.entity.contabancaria = this.entity.contabancaria;
+    (this.entity.observacao === undefined || this.entity.observacao === '') ? this.entity.observacao = null : this.entity.observacao = this.entity.observacao.toUpperCase();
     this.service.update(this.entity)
     .then((response) => {
       this.entity = response;

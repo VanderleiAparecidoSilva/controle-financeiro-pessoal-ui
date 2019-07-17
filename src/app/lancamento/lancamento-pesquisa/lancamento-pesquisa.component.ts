@@ -244,20 +244,16 @@ export class LancamentoPesquisaComponent implements OnInit {
             .then(resultado => {
               if (resultado.obj != null && resultado.obj.length > 0) {
                 this.confirmationService.confirm({
-                  message: `O lançamento ${db.descricao} [${db.observacao}] contém outras parcelas em aberto. Deseja excluir todas?`,
+                  message: `O lançamento ${db.descricao} ${(db.observacao === null || db.observacao === '') ? '' : [db.observacao]} contém outras parcelas em aberto. Deseja excluir todas?`,
                   header: 'Confirmação de Exclusão',
                   icon: 'pi pi-exclamation-triangle',
                   acceptLabel: 'Sim',
                   rejectLabel: 'Não',
                   accept: () => {
-                    this.disable(db.id, false, false);
+                    this.disable(db.id, true, false);
                     resultado.obj.forEach(lc => {
-                      this.disable(lc.id, false, false);
+                      this.disable(lc.id, true, false);
                     });
-                    this.dataSourceCredit = [];
-                    this.findAllReceita();
-                    this.clearSelectedCredit();
-                    this.defineMenuCredit();
                   },
                   reject: () => {
                     this.disable(db.id, true, false);
@@ -355,15 +351,15 @@ export class LancamentoPesquisaComponent implements OnInit {
             .then(resultado => {
               if (resultado.obj != null && resultado.obj.length > 0) {
                 this.confirmationService.confirm({
-                  message: `O lançamento ${db.descricao} [${db.observacao}] contém outras parcelas em aberto. Deseja excluir todas?`,
+                  message: `O lançamento ${db.descricao} ${(db.observacao === null || db.observacao === '') ? '' : [db.observacao]} contém outras parcelas em aberto. Deseja excluir todas?`,
                   header: 'Confirmação de Exclusão',
                   icon: 'pi pi-exclamation-triangle',
                   acceptLabel: 'Sim',
                   rejectLabel: 'Não',
                   accept: () => {
-                    this.disable(db.id, false, false);
+                    this.disable(db.id, false, true);
                     resultado.obj.forEach(lc => {
-                      this.disable(lc.id, false, false);
+                      this.disable(lc.id, false, true);
                     });
                     this.dataSourceDebit = [];
                     this.findAllDespesa();
