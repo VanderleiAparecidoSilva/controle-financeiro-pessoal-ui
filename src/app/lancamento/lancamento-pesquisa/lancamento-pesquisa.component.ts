@@ -104,6 +104,9 @@ export class LancamentoPesquisaComponent implements OnInit {
       { field: 'status', header: 'Status' }
     ];
 
+    this.dataSourceCredit = [];
+    this.dataSourceDebit = [];
+
     this.defineMenuCredit();
     this.defineMenuDebit();
 
@@ -242,29 +245,31 @@ export class LancamentoPesquisaComponent implements OnInit {
               if (resultado.obj != null && resultado.obj.length > 0) {
                 this.confirmationService.confirm({
                   message: `O lançamento ${db.descricao} [${db.observacao}] contém outras parcelas em aberto. Deseja excluir todas?`,
-                  header: `Confirmação de Exclusão`,
-                  icon: `pi pi-exclamation-triangle`,
+                  header: 'Confirmação de Exclusão',
+                  icon: 'pi pi-exclamation-triangle',
                   acceptLabel: 'Sim',
                   rejectLabel: 'Não',
                   accept: () => {
-                    this.disable(db.id, false);
+                    this.disable(db.id, false, false);
                     resultado.obj.forEach(lc => {
-                      this.disable(lc.id, false);
+                      this.disable(lc.id, false, false);
                     });
-                    this.dataSourceDebit = [];
+                    this.dataSourceCredit = [];
                     this.findAllReceita();
                     this.clearSelectedCredit();
                     this.defineMenuCredit();
                   },
                   reject: () => {
-                    this.disable(db.id, true);
+                    this.disable(db.id, true, false);
                   }
                 });
+              } else {
+                this.disable(db.id, true, false);
               }
             })
             .catch(erro => this.errorHandler.handle(erro));
           } else {
-            this.disable(db.id, true);
+            this.disable(db.id, true, false);
           }
         });
       }
@@ -345,26 +350,59 @@ export class LancamentoPesquisaComponent implements OnInit {
       rejectLabel: 'Não',
       accept: () => {
         this.selectedDebits.forEach(db => {
-          this.service.disable(db.id)
-          .then(resultado => {
-            this.dataSourceDebit = [];
-            this.findAllDespesa();
-            this.clearSelectedDebit();
-            this.defineMenuDebit();
-          })
-          .catch(erro => this.errorHandler.handle(erro));
+          if (this.selectedDebits.length === 1) {
+            this.service.findOpenInstallmentsById(db.id)
+            .then(resultado => {
+              if (resultado.obj != null && resultado.obj.length > 0) {
+                this.confirmationService.confirm({
+                  message: `O lançamento ${db.descricao} [${db.observacao}] contém outras parcelas em aberto. Deseja excluir todas?`,
+                  header: 'Confirmação de Exclusão',
+                  icon: 'pi pi-exclamation-triangle',
+                  acceptLabel: 'Sim',
+                  rejectLabel: 'Não',
+                  accept: () => {
+                    this.disable(db.id, false, false);
+                    resultado.obj.forEach(lc => {
+                      this.disable(lc.id, false, false);
+                    });
+                    this.dataSourceDebit = [];
+                    this.findAllDespesa();
+                    this.clearSelectedDebit();
+                    this.defineMenuDebit();
+                  },
+                  reject: () => {
+                    this.disable(db.id, false, true);
+                  }
+                });
+              } else {
+                this.disable(db.id, false, true);
+              }
+            })
+            .catch(erro => this.errorHandler.handle(erro));
+          } else {
+            this.disable(db.id, false, true);
+          }
         });
       }
     });
   }
 
-  disable(id: string, clearGrid: Boolean) {
+  disable(id: string, clearGridCredit: boolean, clearGridDebit: boolean) {
     this.service.disable(id)
     .then(resultado => {
-      this.dataSourceDebit = [];
-      this.findAllDespesa();
-      this.clearSelectedDebit();
-      this.defineMenuDebit();
+      if (clearGridCredit) {
+        this.dataSourceCredit = [];
+        this.findAllReceita();
+        this.clearSelectedCredit();
+        this.defineMenuCredit();
+      }
+
+      if (clearGridDebit) {
+        this.dataSourceDebit = [];
+        this.findAllDespesa();
+        this.clearSelectedDebit();
+        this.defineMenuDebit();
+      }
     })
     .catch(erro => this.errorHandler.handle(erro));
   }
@@ -625,6 +663,7 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   checkAllCredit() {
+    this.uncheckAllCredit();
     if (this.dataSourceCredit != null) {
       this.dataSourceCredit.forEach(cr => {
         this.selectedCredits.push(cr);
@@ -646,6 +685,7 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   checkAllDebit() {
+    this.uncheckAllDebit();
     if (this.dataSourceDebit != null) {
       this.dataSourceDebit.forEach(db => {
         this.selectedDebits.push(db);
@@ -680,7 +720,7 @@ export class LancamentoPesquisaComponent implements OnInit {
     const baixa = new BaixaDTO();
     baixa.usuario = lancamento.usuario;
     baixa.data = new Date();
-    baixa.observacao = `Lançamento de ${lancamento.tipo === 'RECEITA' ? ' crédito, recebido ' : ' débito, pago '} em ${new Date().getDate.toString()}`;
+    baixa.observacao = `Lançamento de ${lancamento.tipo === 'RECEITA' ? ' crédito, recebido ' : ' débito, pago '} em ${moment(new Date()).format('DD/MM/YYYY hh:mm:ss')}`;
 
     return baixa;
   }
