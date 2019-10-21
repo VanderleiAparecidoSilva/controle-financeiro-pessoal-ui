@@ -107,6 +107,9 @@ export class LancamentoPesquisaComponent implements OnInit {
     this.dataSourceCredit = [];
     this.dataSourceDebit = [];
 
+    this.selectedCredits = [];
+    this.selectedDebits = [];
+
     this.defineMenuCredit();
     this.defineMenuDebit();
 
@@ -143,7 +146,7 @@ export class LancamentoPesquisaComponent implements OnInit {
   defineMenuCreditSelection() {
     const canSumSelectedCredit = (this.selectedCredits == null || this.selectedCredits.length <= 0);
     this.creditSelectionItems = [
-      { label: 'Marcar todos', icon: 'pi pi-circle-on', disabled: false, command: () => { this.checkAllCredit(); } },
+      { label: 'Marcar todos', icon: 'pi pi-circle-on', disabled: false, command: () => { this.checkAllCredit(true); } },
       { label: 'Desmarcar todos', icon: 'pi pi-circle-off', disabled: false, command: () => { this.uncheckAllCredit(); } },
       { disabled: true, target: 'separator' },
       { label: 'Calcular seleção', icon: 'pi pi-plus', disabled: canSumSelectedCredit, command: () => { this.showSumCredit(); } }
@@ -153,7 +156,7 @@ export class LancamentoPesquisaComponent implements OnInit {
   defineMenuDebitSelection() {
     const canSumSelectedDebit = (this.selectedDebits == null || this.selectedDebits.length <= 0);
     this.debitSelectionItems = [
-      { label: 'Marcar todos', icon: 'pi pi-circle-on', disabled: false, command: () => { this.checkAllDebit(); } },
+      { label: 'Marcar todos', icon: 'pi pi-circle-on', disabled: false, command: () => { this.checkAllDebit(true); } },
       { label: 'Desmarcar todos', icon: 'pi pi-circle-off', disabled: false, command: () => { this.uncheckAllDebit(); } },
       { disabled: true, target: 'separator' },
       { label: 'Calcular seleção', icon: 'pi pi-plus', disabled: canSumSelectedDebit, command: () => { this.showSumDebit(); } }
@@ -297,7 +300,11 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   insertCredit() {
-    this.router.navigate(['/lancamento/nova/receita']);
+    if (this.selectedCredits.length === 1) {
+      this.editCredit();
+    } else {
+      this.router.navigate(['/lancamento/nova/receita']);
+    }
   }
 
   payDebit() {
@@ -430,7 +437,11 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   insertDebit() {
-    this.router.navigate(['/lancamento/nova/despesa']);
+    if (this.selectedDebits.length === 1) {
+      this.editDebit();
+    } else {
+      this.router.navigate(['/lancamento/nova/despesa']);
+    }
   }
 
   clearSelectedCredit() {
@@ -658,48 +669,64 @@ export class LancamentoPesquisaComponent implements OnInit {
     };
   }
 
-  checkAllCredit() {
-    this.uncheckAllCredit();
+  checkAllCredit(clearAllCredits: boolean = false) {
+    if (clearAllCredits) {
+      this.uncheckAllCredit();
+    }
+
     if (this.dataSourceCredit != null) {
       this.dataSourceCredit.forEach(cr => {
         this.selectedCredits.push(cr);
         this.qtdSelectedRowsCredit++;
       });
-
-      this.selectedCredits = this.selectedCredits.slice();
+      if (this.selectedCredits != null) {
+        this.selectedCredits = this.selectedCredits.slice();
+      }
     }
     this.defineMenuCredit();
     this.defineMenuCreditSelection();
   }
 
   uncheckAllCredit() {
-    this.selectedRowCredit = null;
-    this.selectedCredits = [];
-    this.qtdSelectedRowsCredit = 0;
-    this.defineMenuCredit();
-    this.defineMenuCreditSelection();
+    if (this.qtdSelectedRowsCredit > 0) {
+      this.selectedRowCredit = null;
+      this.selectedCredits = [];
+      this.qtdSelectedRowsCredit = 0;
+      this.defineMenuCredit();
+      this.defineMenuCreditSelection();
+    } else {
+      this.checkAllCredit();
+    }
   }
 
-  checkAllDebit() {
-    this.uncheckAllDebit();
+  checkAllDebit(clearAllDebits: boolean = false) {
+    if (clearAllDebits) {
+      this.uncheckAllDebit();
+    }
+
     if (this.dataSourceDebit != null) {
       this.dataSourceDebit.forEach(db => {
         this.selectedDebits.push(db);
         this.qtdSelectedRowsDebit++;
       });
-
-      this.selectedDebits = this.selectedDebits.slice();
+      if (this.selectedDebits != null) {
+        this.selectedDebits = this.selectedDebits.slice();
+      }
     }
     this.defineMenuDebit();
     this.defineMenuDebitSelection();
   }
 
   uncheckAllDebit() {
-    this.selectedRowDebit = null;
-    this.selectedDebits = [];
-    this.qtdSelectedRowsDebit = 0;
-    this.defineMenuDebit();
-    this.defineMenuDebitSelection();
+    if (this.qtdSelectedRowsDebit > 0) {
+      this.selectedRowDebit = null;
+      this.selectedDebits = [];
+      this.qtdSelectedRowsDebit = 0;
+      this.defineMenuDebit();
+      this.defineMenuDebitSelection();
+    } else {
+      this.checkAllDebit();
+    }
   }
 
   selectCredit(event, lancamento: LancamentoDTO, overlaypanel: OverlayPanel) {
