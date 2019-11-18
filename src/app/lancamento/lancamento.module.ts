@@ -19,6 +19,7 @@ import {SplitButtonModule} from 'primeng/splitbutton';
 import {TooltipModule} from 'primeng/tooltip';
 import { DynamicDialogModule } from 'primeng/components/dynamicdialog/dynamicdialog';
 import { FileUploadModule } from 'primeng/fileupload';
+import {DropdownModule} from 'primeng/dropdown';
 
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
@@ -49,6 +50,7 @@ import { ListaDescricaoLancamentoComponent } from './lancamento-cadastro/lista-d
     CheckboxModule,
     RadioButtonModule,
     FileUploadModule,
+    DropdownModule,
     SplitButtonModule,
     TooltipModule,
     DynamicDialogModule,

@@ -128,14 +128,20 @@
                         <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
                         <p-splitButton label="Seleção" (onClick)="uncheckAllCredit()" icon="fa fa-square-o" [model]="creditSelectionItems" styleClass="ui-button-success"></p-splitButton>
                     </div>
-                    <div class="ui-toolbar-group-right">
-                        <p-fileUpload #uploaderCredit mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload" accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploaderCredit)" pTooltip="Importar Arquivo" tooltipPosition="right">
-                        </p-fileUpload>
-                    </div>
-                    <div class="ui-toolbar-group-right">
-                        <button pButton type="button" label="Exemplo" icon="fa fa-file-text" class="ui-button-raised" (click)="downloadExampleCSV({type: 'LC', singleparcel: 'FALSE', status: 'ABERTO', launchtype: 'RECEITA', filename: 'lancamento_receita.csv'})" pTooltip="Fazer download de arquivo de exemplo"
+                </p-toolbar>
+                <p-toolbar>
+                    <div>
+                      <div class="ui-toolbar-group-left">
+                        <p-dropdown [options]="uploadBankCredit" [(ngModel)]="selectedBankCredit"></p-dropdown>
+                      </div>
+                      <div class="ui-toolbar-group-left">
+                          <button pButton type="button" [disabled]="selectedBankCredit != 'Padrao'" label="Exemplo" icon="fa fa-file-text" class="ui-button-raised" (click)="downloadExampleCSV({type: 'LC', singleparcel: 'FALSE', status: 'ABERTO', launchtype: 'RECEITA', filename: 'lancamento_receita.csv'})" pTooltip="Fazer download de arquivo de exemplo padrão"
                             tooltipPosition="left">
-                    </button>
+                          </button>
+                      </div>
+                      <div class="ui-toolbar-group-left">
+                        <p-fileUpload #uploaderCredit [disabled]="selectedBankCredit == null" mode="basic" name="myCreditFiles" auto="true" chooseLabel="Upload" accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploaderCredit)" pTooltip="Importar Arquivo" tooltipPosition="right"></p-fileUpload>
+                      </div>
                     </div>
                 </p-toolbar>
             </div>
@@ -146,15 +152,21 @@
                         <i class="ui-toolbar-separator pi pi-bars" style="vertical-align: middle"></i>
                         <p-splitButton label="Seleção" (onClick)="uncheckAllDebit(true)" icon="fa fa-square-o" [model]="debitSelectionItems" styleClass="ui-button-success"></p-splitButton>
                     </div>
-                    <div class="ui-toolbar-group-right">
-                        <p-fileUpload #uploaderDebit mode="basic" name="myFiles[]" auto="true" chooseLabel="Upload" accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploaderDebit)" pTooltip="Importar Arquivo" tooltipPosition="right">
-                        </p-fileUpload>
+                </p-toolbar>
+                <p-toolbar>
+                  <div>
+                    <div class="ui-toolbar-group-left">
+                      <p-dropdown [options]="uploadBankDebit" [(ngModel)]="selectedBankDebit"></p-dropdown>
                     </div>
-                    <div class="ui-toolbar-group-right">
-                        <button pButton type="button" label="Exemplo" icon="fa fa-file-text" class="ui-button-raised" (click)="downloadExampleCSV({type: 'LC', singleparcel: 'FALSE', status: 'ABERTO', launchtype: 'DESPESA', filename: 'lancamento_despesa.csv'})" pTooltip="Fazer download de arquivo de exemplo"
+                    <div class="ui-toolbar-group-left">
+                        <button pButton type="button" [disabled]="selectedBankDebit != 'Padrao'" label="Exemplo" icon="fa fa-file-text" class="ui-button-raised" (click)="downloadExampleCSV({type: 'LC', singleparcel: 'FALSE', status: 'ABERTO', launchtype: 'DESPESA', filename: 'lancamento_despesa.csv'})" pTooltip="Fazer download de arquivo de exemplo padrão"
                             tooltipPosition="left">
-                    </button>
+                        </button>
                     </div>
+                    <div class="ui-toolbar-group-left">
+                      <p-fileUpload #uploaderDebit [disabled]="selectedBankDebit == null" mode="basic" name="myDebitFiles" auto="true" chooseLabel="Upload" accept=".csv" customUpload="true" maxFileSize="1000000" (uploadHandler)="onUploadHandler($event, uploaderDebit)" pTooltip="Importar Arquivo" tooltipPosition="right"></p-fileUpload>
+                    </div>
+                  </div>
                 </p-toolbar>
             </div>
         </div>

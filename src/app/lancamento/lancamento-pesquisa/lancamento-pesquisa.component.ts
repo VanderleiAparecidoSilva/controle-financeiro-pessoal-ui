@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Router } from '@angular/router';
 
-import { LazyLoadEvent, MessageService, MenuItem, ConfirmationService, DialogService } from 'primeng/api';
+import { LazyLoadEvent, MessageService, MenuItem, ConfirmationService, DialogService, SelectItem } from 'primeng/api';
 import { OverlayPanel } from 'primeng/overlaypanel';
 
 import * as moment from 'moment';
@@ -16,6 +16,9 @@ import { ErrorHandlerService } from 'src/app/core/error-handler.service';
 import { AuthService } from 'src/app/seguranca/auth.service';
 import { ListaDescricaoLancamentoComponent } from '../lancamento-cadastro/lista-descricao-lancamento.component';
 import { LancamentoFiltroDTO } from 'src/models/domain/lancamentofiltro.dto';
+import { UploadBankService } from '../upload-bank.service';
+import { LancamentoUploadDTO } from './../../../models/domain/lancamento-upload.dto';
+import { UploadBankDTO } from 'src/models/domain/upload-bank.dto';
 
 @Component({
   selector: 'app-lancamento-pesquisa',
@@ -82,16 +85,37 @@ export class LancamentoPesquisaComponent implements OnInit {
 
   observacao: string;
 
+  uploadBankCredit: SelectItem[];
+
+  selectedBankCredit: string;
+
+  uploadBankDebit: SelectItem[];
+
+  selectedBankDebit: string;
+
   constructor(
     private title: Title,
     private service: LancamentoService,
+    private uploadBankService: UploadBankService,
     private errorHandler: ErrorHandlerService,
     private auth: AuthService,
     private messageService: MessageService,
     private router: Router,
     private confirmationService: ConfirmationService,
     private dialogService: DialogService
-  ) { }
+  ) {
+    this.uploadBankCredit = [
+      {label: 'Selecione a origem do upload', value: null},
+      {label: 'Padrão', value: 'Padrao'}
+    ];
+
+    this.uploadBankDebit = [
+      {label: 'Selecione a origem do upload', value: null},
+      {label: 'Banco Inter', value: 'BancoInter'},
+      {label: 'Porto Seguro', value: 'PortoSeguro'},
+      {label: 'Padrão', value: 'Padrao'}
+    ];
+  }
 
   ngOnInit() {
     this.title.setTitle(`${environment.childTitle} Pesquisa de ${this.entityName}`);
@@ -626,27 +650,28 @@ export class LancamentoPesquisaComponent implements OnInit {
   }
 
   uploadFile(file, uploader) {
-    const reader: FileReader = new FileReader();
-    reader.readAsText(file, 'UTF-8');
-    reader.onload = (e) => {
-      const csv = reader.result;
-      const allTextLines = csv.toString().split(/\r|\n|\r/);
-      const headers = allTextLines[0].split(';');
-      for (let i = 0; i < allTextLines.length; i++) {
-        if (i > 0) {
-          if (allTextLines[i].split(';').length === headers.length) {
-            this.uploadData(allTextLines[i]);
+    this.uploadBankService.findById(uploader.name === 'myCreditFiles' ? this.selectedBankCredit : this.selectedBankDebit)
+    .then(resultado => {
+      const reader: FileReader = new FileReader();
+      reader.readAsText(file, 'UTF-8');
+      reader.onload = (e) => {
+        const csv = reader.result;
+        const allTextLines = csv.toString().split(/\r|\n|\r/);
+        for (let i = 0; i < allTextLines.length; i++) {
+          if ((i + 1) >= resultado.linhaInicialArquivo) {
+            console.log(this.buildLancamentoUpload(resultado, allTextLines[i]));
+             //this.uploadData(resultado.tipo, allTextLines[i]);
           }
         }
-      }
-      uploader.clear();
-    };
-    this.messageService.add({severity: 'success', summary: 'Importação de Arquivo',
-      detail: `Arquivo enviado para processamento!`});
+        uploader.clear();
+      };
+      this.messageService.add({severity: 'success', summary: 'Importação de Arquivo',
+        detail: `Arquivo enviado para processamento!`});
+    }).catch(erro => this.errorHandler.handle(erro));
   }
 
-  uploadData(data: string) {
-    this.service.upload(data)
+  uploadData(type: string, data: LancamentoUploadDTO) {
+    this.service.upload(type, data)
     .then(() => {
       this.findCreditDebit(this.filter.page);
     })
@@ -746,5 +771,39 @@ export class LancamentoPesquisaComponent implements OnInit {
     baixa.observacao = `Lançamento de ${lancamento.tipo === 'RECEITA' ? ' crédito, recebido ' : ' débito, pago '} em ${moment(new Date()).format('DD/MM/YYYY hh:mm:ss')}`;
 
     return baixa;
+  }
+
+  buildLancamentoUpload(uploadBank: UploadBankDTO, lancamento: string) {
+    const lancamentoData = lancamento.split(';');
+    if (lancamentoData.length > 1) {
+      const lancamentoUpload = new LancamentoUploadDTO();
+      lancamentoUpload.tipoLancamento = 'LC';
+      lancamentoUpload.descricao = uploadBank.descricao;
+      lancamentoUpload.centroCustoPrimario = uploadBank.centroCustoPrimario;
+      lancamentoUpload.centroCustoSecundario = uploadBank.centroCustoSecundario;
+      lancamentoUpload.contaBancaria = uploadBank.contaBancaria;
+      lancamentoUpload.observacao = lancamentoData[1].toUpperCase();
+      lancamentoUpload.gerarParcelaUnica = true;
+      lancamentoUpload.parcela = 1;
+      lancamentoUpload.status = 'ABERTO';
+      console.log(lancamentoData[2]);
+      lancamentoUpload.valorParcela = Number.parseFloat(lancamentoData[3].replace('+', '').replace(',', '.'));
+      lancamentoUpload.vencimento = this.buildLancamentoUploadVencimento(uploadBank.diaVencimento);
+
+      return lancamentoUpload;
+    }
+  }
+
+  buildLancamentoUploadVencimento(diaVencimento: number) {
+    const now = new Date();
+    if (now.getDate() <= diaVencimento) {
+      return new Date(now.getFullYear(), now.getMonth(), diaVencimento);
+    } else if (new Date().getDate() > diaVencimento) {
+      if (now.getMonth() == 11) {
+        return new Date(now.getFullYear() + 1, 0, diaVencimento);
+      } else {
+        return new Date(now.getFullYear(), now.getMonth() + 1, diaVencimento);
+      }
+    }
   }
 }

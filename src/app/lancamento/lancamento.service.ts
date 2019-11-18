@@ -1,4 +1,3 @@
-import { BaixaDTO } from './../../models/domain/baixa.dto';
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 
@@ -6,9 +5,11 @@ import * as moment from 'moment';
 
 import { MoneyHttp } from '../seguranca/money-http';
 import { AuthService } from '../seguranca/auth.service';
-import { LancamentoDTO } from './../../models/domain/lancamento.dto';
 import { environment } from 'src/environments/environment';
 import { api_dominio } from 'src/environments/api.dominio';
+import { LancamentoDTO } from './../../models/domain/lancamento.dto';
+import { LancamentoUploadDTO } from './../../models/domain/lancamento-upload.dto';
+import { BaixaDTO } from './../../models/domain/baixa.dto';
 
 export class Filter {
   page = 0;
@@ -191,10 +192,11 @@ export class LancamentoService {
       .then(response => response);
   }
 
-  upload(obj: string): Promise<void> {
+  upload(type: string, obj: LancamentoUploadDTO): Promise<void> {
     const httpOptions = {
       params: new HttpParams()
-        .set('email', this.auth.jwtPayload.user_name),
+        .set('email', this.auth.jwtPayload.user_name)
+        .set('tipo', type),
       headers: new HttpHeaders()
         .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
         .set('Content-Type', 'application/json')
