@@ -8,7 +8,6 @@ import { AuthService } from '../seguranca/auth.service';
 import { environment } from 'src/environments/environment';
 import { api_dominio } from 'src/environments/api.dominio';
 import { LancamentoDTO } from './../../models/domain/lancamento.dto';
-import { LancamentoUploadDTO } from './../../models/domain/lancamento-upload.dto';
 import { BaixaDTO } from './../../models/domain/baixa.dto';
 
 export class Filter {
@@ -192,11 +191,10 @@ export class LancamentoService {
       .then(response => response);
   }
 
-  upload(type: string, obj: LancamentoUploadDTO): Promise<void> {
+  upload(obj: string): Promise<void> {
     const httpOptions = {
       params: new HttpParams()
-        .set('email', this.auth.jwtPayload.user_name)
-        .set('tipo', type),
+        .set('email', this.auth.jwtPayload.user_name),
       headers: new HttpHeaders()
         .set('Authorization', 'Basic YW5ndWxhcjpAbmd1bEByMA==')
         .set('Content-Type', 'application/json')

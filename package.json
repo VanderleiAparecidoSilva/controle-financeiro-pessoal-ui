@@ -13,8 +13,8 @@
     "private": true,
     "dependencies": {
         "@angular/animations": "^7.2.7",
-        "@angular/common": "^7.2.7",
         "@angular/cdk": "^7.2.7",
+        "@angular/common": "^7.2.7",
         "@angular/compiler": "^7.2.7",
         "@angular/core": "^7.2.7",
         "@angular/forms": "^7.2.7",
@@ -23,6 +23,7 @@
         "@angular/platform-browser-dynamic": "^7.2.7",
         "@angular/router": "^7.2.7",
         "@auth0/angular-jwt": "^2.0.0",
+        "@types/xlsx": "0.0.36",
         "angular-font-awesome": "^3.1.2",
         "chart.js": "^2.8.0",
         "core-js": "^2.5.4",
@@ -33,6 +34,8 @@
         "primeicons": "^1.0.0",
         "primeng": "^7.0.0",
         "rxjs": "~6.4.0",
+        "ts-xlsx": "0.0.11",
+        "xlsx": "^0.15.2",
         "zone.js": "~0.8.29"
     },
     "devDependencies": {
